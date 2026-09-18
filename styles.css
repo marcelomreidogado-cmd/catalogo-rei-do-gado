@@ -1152,7 +1152,7 @@ td small {
     width: 100px;
   }
 }
-@media (max-width: 620px) {
+@media (max-width: 700px) {
   .wrap {
     padding-left: 18px;
     padding-right: 18px;
@@ -1404,7 +1404,7 @@ td small {
 .product-photo.placeholder {
   background: #f4f0ec;
 }
-@media (max-width: 620px) {
+@media (max-width: 700px) {
   .intro-inner {
     min-height: 0;
     padding-top: 18px;
@@ -1436,4 +1436,10 @@ td small {
   .price {
     font-size: 18px;
   }
+}
+
+@media (max-width: 850px) {
+  .cart-top { display: none; }
+  .brand { flex-shrink: 0; }
+  .brand strong, .brand small { white-space: nowrap; }
 }
