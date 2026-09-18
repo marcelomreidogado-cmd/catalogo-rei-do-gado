@@ -1,0 +1,16 @@
+{
+  "indexes": [],
+  "fieldOverrides": [
+    { "collectionGroup": "products", "fieldPath": "image", "indexes": [] },
+    {
+      "collectionGroup": "products",
+      "fieldPath": "description",
+      "indexes": []
+    },
+    { "collectionGroup": "products", "fieldPath": "variants", "indexes": [] },
+    { "collectionGroup": "orders", "fieldPath": "items", "indexes": [] },
+    { "collectionGroup": "orders", "fieldPath": "address", "indexes": [] },
+    { "collectionGroup": "orders", "fieldPath": "notes", "indexes": [] },
+    { "collectionGroup": "orders", "fieldPath": "customer", "indexes": [] }
+  ]
+}

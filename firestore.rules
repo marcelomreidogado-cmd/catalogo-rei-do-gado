@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // admins/{uid}: {branchId, enabled}. Provisioned ONLY via Console/Admin SDK.
+    // branches/{branch}/categories/{id}: {name, sort} public catalog.
+    // branches/{branch}/products/{id}: see data/catalog.json; photo <=180 KB Base64.
+    // branches/{branch}/orders/{id}: immutable customer, basket and estimated total;
+    // the store may update ONLY status and updatedAt. Prices are estimates and must
+    // be confirmed by the store before payment. No online payment is performed.
+    function signedIn() { return request.auth != null; }
+    function validBranch(branch) { return branch in ['coronel', 'bingen', 'correas']; }
+    function storeAdmin(branch) {
+      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.enabled == true
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.branchId == branch;
+    }
+    function str(value, min, max) { return value is string && value.size() >= min && value.size() <= max; }
+    function validCategory(d) {
+      return d.keys().hasAll(['name','sort']) && d.keys().hasOnly(['name','sort'])
+        && str(d.name,1,60) && d.sort is int && d.sort >= 0 && d.sort <= 999;
+    }
+    function validProduct(d) {
+      return d.keys().hasAll(['name','categoryId','description','unit','saleMode','weightGrams','priceCents','variants','image','imagePath','active','sort','reviewRequired'])
+        && d.keys().hasOnly(['name','categoryId','description','unit','saleMode','weightGrams','priceCents','variants','image','imagePath','active','sort','reviewRequired'])
+        && str(d.name,1,100) && str(d.categoryId,1,128) && str(d.description,0,2000)
+        && d.unit in ['kg','un'] && d.saleMode in ['weight','piece','unit']
+        && (d.unit == 'un' ? d.saleMode == 'unit' : d.saleMode != 'unit')
+        && d.priceCents is int && d.priceCents > 0 && d.priceCents <= 10000000
+        && d.weightGrams is int && d.weightGrams >= 0 && d.weightGrams <= 30000
+        && (d.saleMode != 'piece' || d.weightGrams > 0)
+        && d.variants is list && d.variants.size() > 0 && d.variants.size() <= 20
+        && str(d.image,0,180000) && str(d.imagePath,0,300)
+        && d.active is bool && d.reviewRequired is bool && d.sort is int && d.sort >= 0;
+    }
+    function validCustomer(c) {
+      return c is map && c.keys().hasAll(['name','phone']) && c.keys().hasOnly(['name','phone'])
+        && str(c.name,2,80) && c.phone is string && c.phone.matches('^[1-9][0-9]{9,10}$');
+    }
+    // These are customer-supplied estimates, not a trusted charge or invoice.
+    // Validate the display envelope here; staff confirm authoritative product prices.
+    function validLine(l) {
+      return l is map && l.name is string && l.totalCents is int && l.totalCents > 0;
+    }
+    function validOrder(d, branch) {
+      return d.keys().hasAll(['code','customer','fulfillment','payment','address','changeFor','notes','branchId','items','totalCents','status','ownerUid','createdAt','updatedAt'])
+        && d.keys().hasOnly(['code','customer','fulfillment','payment','address','changeFor','notes','branchId','items','totalCents','status','ownerUid','createdAt','updatedAt'])
+        && d.branchId == branch && str(d.code,8,8) && str(d.ownerUid,1,128) && validCustomer(d.customer)
+        && d.fulfillment in ['delivery','pickup']
+        && d.payment in ['Pix','Cartão de crédito','Cartão de débito','Dinheiro']
+        && str(d.address,0,400) && (d.fulfillment != 'delivery' || d.address.size() >= 10)
+        && str(d.changeFor,0,40) && str(d.notes,0,500)
+        && d.status in ['pending','preparing','delivery','done']
+        && d.totalCents is int && d.totalCents > 0 && d.totalCents <= 1000000000
+        && d.createdAt is timestamp && d.updatedAt is timestamp
+        && d.items is list && d.items.size() > 0 && d.items.size() <= 10
+        && validItems(d.items) && d.totalCents == sum0(d.items);
+    }
+    // Item validation is expanded below because Rules deliberately have no loops.
+    function valid0(items) { return (items.size() <= 0 || (validLine(items[0]) && (items.size() <= 1 || (validLine(items[1]) && (items.size() <= 2 || (validLine(items[2]) && (items.size() <= 3 || (validLine(items[3]) && (items.size() <= 4 || (validLine(items[4]) && (items.size() <= 5 || (validLine(items[5]) && (items.size() <= 6 || (validLine(items[6]) && (items.size() <= 7 || (validLine(items[7]) && (items.size() <= 8 || (validLine(items[8]) && (items.size() <= 9 || (validLine(items[9]) && true)))))))))))))))))))); }
+    function sum0(items) { return (items.size() <= 0 ? 0 : items[0].totalCents + (items.size() <= 1 ? 0 : items[1].totalCents + (items.size() <= 2 ? 0 : items[2].totalCents + (items.size() <= 3 ? 0 : items[3].totalCents + (items.size() <= 4 ? 0 : items[4].totalCents + (items.size() <= 5 ? 0 : items[5].totalCents + (items.size() <= 6 ? 0 : items[6].totalCents + (items.size() <= 7 ? 0 : items[7].totalCents + (items.size() <= 8 ? 0 : items[8].totalCents + (items.size() <= 9 ? 0 : items[9].totalCents + 0)))))))))); }
+    function validItems(items) { return valid0(items); }
+    match /admins/{uid} {
+      allow get: if signedIn() && request.auth.uid == uid;
+      allow list, write: if false;
+    }
+    match /branches/{branch}/categories/{categoryId} {
+      allow read: if validBranch(branch);
+      allow create, update: if storeAdmin(branch) && validCategory(request.resource.data);
+      allow delete: if storeAdmin(branch);
+    }
+    match /branches/{branch}/products/{productId} {
+      allow read: if validBranch(branch) && (resource.data.active == true || storeAdmin(branch));
+      allow create, update: if storeAdmin(branch) && validProduct(request.resource.data);
+      allow delete: if storeAdmin(branch);
+    }
+    match /branches/{branch}/orders/{orderId} {
+      allow get: if storeAdmin(branch) || (signedIn() && (resource == null || resource.data.ownerUid == request.auth.uid));
+      allow list: if storeAdmin(branch);
+      allow create: if validBranch(branch) && signedIn()
+        && request.resource.data.ownerUid == request.auth.uid
+        && request.resource.data.status == 'pending'
+        && request.resource.data.createdAt == request.time
+        && request.resource.data.updatedAt == request.time
+        && validOrder(request.resource.data, branch);
+      allow update: if storeAdmin(branch)
+        && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','updatedAt'])
+        && request.resource.data.updatedAt == request.time
+        && validOrder(request.resource.data, branch);
+      allow delete: if false;
+    }
+    match /{document=**} { allow read, write: if false; }
+  }
+}

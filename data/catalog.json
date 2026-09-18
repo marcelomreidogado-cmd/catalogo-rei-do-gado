@@ -1,0 +1,2441 @@
+{
+  "source": "https://cardapio-rei-do-gado.goomer.app",
+  "importedAt": "2026-09-17",
+  "categories": [
+    {
+      "id": "105176",
+      "name": "Para o dia a dia",
+      "sort": 0
+    },
+    {
+      "id": "91324",
+      "name": "Hambúrgueres",
+      "sort": 1
+    },
+    {
+      "id": "88433",
+      "name": "Picanhas",
+      "sort": 2
+    },
+    {
+      "id": "88484",
+      "name": "Cortes resfriados",
+      "sort": 3
+    },
+    {
+      "id": "91016",
+      "name": "Cortes congelados",
+      "sort": 4
+    },
+    {
+      "id": "1047543",
+      "name": "Frango",
+      "sort": 5
+    },
+    {
+      "id": "88808",
+      "name": "Cordeiro",
+      "sort": 6
+    },
+    {
+      "id": "91248",
+      "name": "Suínos",
+      "sort": 7
+    },
+    {
+      "id": "90468",
+      "name": "Linguiças",
+      "sort": 8
+    },
+    {
+      "id": "88807",
+      "name": "Pão de alho & espetinhos",
+      "sort": 9
+    },
+    {
+      "id": "91383",
+      "name": "Peixes",
+      "sort": 10
+    },
+    {
+      "id": "662714",
+      "name": "Sais & temperos",
+      "sort": 11
+    },
+    {
+      "id": "663231",
+      "name": "Acompanhamentos",
+      "sort": 12
+    },
+    {
+      "id": "293336",
+      "name": "Molhos",
+      "sort": 13
+    },
+    {
+      "id": "88425",
+      "name": "Bebidas",
+      "sort": 14
+    },
+    {
+      "id": "662713",
+      "name": "Acessórios",
+      "sort": 15
+    },
+    {
+      "id": "989899",
+      "name": "Acendedores",
+      "sort": 16
+    }
+  ],
+  "products": [
+    {
+      "id": "1502178",
+      "categoryId": "105176",
+      "name": "Patinho angus",
+      "description": "VALOR DO KG",
+      "priceCents": 6590,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Moido",
+          "priceCents": 6590
+        },
+        {
+          "id": "1",
+          "name": "Bife ou pedaço",
+          "priceCents": 6890
+        },
+        {
+          "id": "2",
+          "name": "Picadinho (strogonoff)",
+          "priceCents": 6890
+        }
+      ],
+      "image": "assets/products/1502178.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 0,
+      "reviewRequired": false
+    },
+    {
+      "id": "1502156",
+      "categoryId": "105176",
+      "name": "Alcatra",
+      "description": "VALOR DO KG BIFE / PEDAÇO",
+      "priceCents": 6990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Bife ou pedaço",
+          "priceCents": 6990
+        },
+        {
+          "id": "1",
+          "name": "Strogonoff",
+          "priceCents": 7290
+        }
+      ],
+      "image": "assets/products/1502156.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 1,
+      "reviewRequired": false
+    },
+    {
+      "id": "617828",
+      "categoryId": "105176",
+      "name": "Contra file - dia a dia",
+      "description": "VENDA POR KG",
+      "priceCents": 6890,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 6890
+        }
+      ],
+      "image": "assets/products/617828.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 2,
+      "reviewRequired": false
+    },
+    {
+      "id": "3808712",
+      "categoryId": "105176",
+      "name": "Almôndegas temperadas",
+      "description": "Valor por kg -65,90\r\n\r\nEmbalagens com media de 0,400gr",
+      "priceCents": 3000,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Pacote",
+          "priceCents": 3000
+        }
+      ],
+      "image": "assets/products/3808712.jpg",
+      "imagePath": "",
+      "active": false,
+      "sort": 3,
+      "reviewRequired": true
+    },
+    {
+      "id": "543971",
+      "categoryId": "105176",
+      "name": "Peito de frango extra limpo",
+      "description": "PCT FILEZINHO/STROGONOFF COM MEDIA DE 500 GR\r\nPCT PEITO COM MEDIA DE 700 GR",
+      "priceCents": 2990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Filezinho",
+          "priceCents": 2990
+        },
+        {
+          "id": "1",
+          "name": "Strogonoff",
+          "priceCents": 2990
+        },
+        {
+          "id": "2",
+          "name": "Peito",
+          "priceCents": 2990
+        }
+      ],
+      "image": "assets/products/543971.jpg",
+      "imagePath": "",
+      "active": false,
+      "sort": 4,
+      "reviewRequired": true
+    },
+    {
+      "id": "9596640",
+      "categoryId": "105176",
+      "name": "Acém",
+      "description": "MOIDO / CUBOS / PEDAÇO",
+      "priceCents": 4490,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 4490
+        }
+      ],
+      "image": "assets/products/9596640.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 5,
+      "reviewRequired": false
+    },
+    {
+      "id": "3126253",
+      "categoryId": "105176",
+      "name": "File mignon (peça) - valor kg",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1,6kg \r\nRaça: Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 13590,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1600,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Bifinho deitado /",
+          "priceCents": 13590
+        },
+        {
+          "id": "1",
+          "name": "Medalhao (2 dedos)",
+          "priceCents": 13590
+        },
+        {
+          "id": "2",
+          "name": "Medalhao (1dedo)",
+          "priceCents": 13590
+        },
+        {
+          "id": "3",
+          "name": "Estrogonofe (peca toda)",
+          "priceCents": 13590
+        },
+        {
+          "id": "4",
+          "name": "Inteiro e limpo",
+          "priceCents": 13590
+        }
+      ],
+      "image": "assets/products/3126253.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 6,
+      "reviewRequired": false
+    },
+    {
+      "id": "5494672",
+      "categoryId": "105176",
+      "name": "Bombom da alcatra",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,700kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 10990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 700,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Bifinho",
+          "priceCents": 10990
+        },
+        {
+          "id": "1",
+          "name": "Estrogonofe",
+          "priceCents": 10990
+        },
+        {
+          "id": "2",
+          "name": "Fondue",
+          "priceCents": 10990
+        },
+        {
+          "id": "3",
+          "name": "Churrasco",
+          "priceCents": 10990
+        },
+        {
+          "id": "4",
+          "name": "Medalhao",
+          "priceCents": 10990
+        }
+      ],
+      "image": "assets/products/5494672.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 7,
+      "reviewRequired": false
+    },
+    {
+      "id": "5060180",
+      "categoryId": "105176",
+      "name": "Lagarto red angus",
+      "description": "",
+      "priceCents": 6990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 6990
+        }
+      ],
+      "image": "assets/products/5060180.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 8,
+      "reviewRequired": false
+    },
+    {
+      "id": "5998005",
+      "categoryId": "105176",
+      "name": "Medalhão de sobrecoxa com bacon",
+      "description": "BANDEJA SAINDO NA FAIXA DE $25,00 COM MEDIA DE 0,500GR - VALOR REFERENTE AO KG $49,90",
+      "priceCents": 5790,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Bandeja",
+          "priceCents": 5790
+        }
+      ],
+      "image": "assets/products/5998005.jpg",
+      "imagePath": "",
+      "active": false,
+      "sort": 9,
+      "reviewRequired": true
+    },
+    {
+      "id": "544253",
+      "categoryId": "91324",
+      "name": "Hambúrgueres artesanais",
+      "description": "VENDIDO A CADA 2 UNIDADES - 180GR CADA\r\n\r\nPARA FINALIZAR EM CASA",
+      "priceCents": 2780,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Picanha 2 unidades",
+          "priceCents": 2980
+        },
+        {
+          "id": "1",
+          "name": "Fraldinha 2 unidades",
+          "priceCents": 2780
+        },
+        {
+          "id": "2",
+          "name": "Fraldinha c/ bacon 2 unidades",
+          "priceCents": 2780
+        },
+        {
+          "id": "3",
+          "name": "Costela angus 2 unidades",
+          "priceCents": 2780
+        }
+      ],
+      "image": "assets/products/544253.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 10,
+      "reviewRequired": false
+    },
+    {
+      "id": "544291",
+      "categoryId": "91324",
+      "name": "Pão de hambúrguer",
+      "description": "",
+      "priceCents": 680,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Brioche 2 unidades",
+          "priceCents": 680
+        },
+        {
+          "id": "1",
+          "name": "Australiano 2 unidades",
+          "priceCents": 680
+        }
+      ],
+      "image": "assets/products/544291.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 11,
+      "reviewRequired": false
+    },
+    {
+      "id": "544314",
+      "categoryId": "91324",
+      "name": "Cheddar",
+      "description": "BANDEJA COM 8 FATIAS, 0,120 GR  $6,90 EM MEDIA",
+      "priceCents": 8990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 8990
+        }
+      ],
+      "image": "assets/products/544314.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 12,
+      "reviewRequired": false
+    },
+    {
+      "id": "6603712",
+      "categoryId": "91324",
+      "name": "Queijo mussarela fatiado",
+      "description": "BANDEJA COM 8 FATIAS 0,120 GR $9,50 EM MEDIA",
+      "priceCents": 7900,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 7900
+        }
+      ],
+      "image": "assets/products/6603712.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 13,
+      "reviewRequired": false
+    },
+    {
+      "id": "544354",
+      "categoryId": "91324",
+      "name": "Bacon fatiado",
+      "description": "VENDA POR KG\r\nPREÇO MEDIO $9,00 BDJ 0,150 GR",
+      "priceCents": 5590,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 5590
+        }
+      ],
+      "image": "assets/products/544354.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 14,
+      "reviewRequired": false
+    },
+    {
+      "id": "5064972",
+      "categoryId": "91324",
+      "name": "Hamburguer de pernil cordeiro vpj",
+      "description": "CX COM 2 UN DE 150 GR",
+      "priceCents": 3590,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 3590
+        }
+      ],
+      "image": "assets/products/5064972.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 15,
+      "reviewRequired": false
+    },
+    {
+      "id": "6603747",
+      "categoryId": "91324",
+      "name": "Maionese do rei",
+      "description": "DEFUMADA OU COM BACON",
+      "priceCents": 2490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Defumada",
+          "priceCents": 2990
+        },
+        {
+          "id": "1",
+          "name": "Com bacon",
+          "priceCents": 2490
+        }
+      ],
+      "image": "assets/products/6603747.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 16,
+      "reviewRequired": false
+    },
+    {
+      "id": "3363425",
+      "categoryId": "91324",
+      "name": "Molhos",
+      "description": "MOSTARDA E MEL / BARBECUE",
+      "priceCents": 2490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Mostarda e mel",
+          "priceCents": 2690
+        },
+        {
+          "id": "1",
+          "name": "Barbecue",
+          "priceCents": 2490
+        },
+        {
+          "id": "2",
+          "name": "Dijonese",
+          "priceCents": 2990
+        }
+      ],
+      "image": "assets/products/3363425.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 17,
+      "reviewRequired": false
+    },
+    {
+      "id": "746827",
+      "categoryId": "88433",
+      "name": "Picanha pull gril",
+      "description": "Categoria: Resfriado\r\nPaís: Paraguai \r\nPeso médio: 1,4kg \r\nRaça: Britânicas\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 10490,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1400,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 10490
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 18,
+      "reviewRequired": false
+    },
+    {
+      "id": "1235984",
+      "categoryId": "88433",
+      "name": "Picanha estância 92",
+      "description": "Categoria: Resfriado \r\nPaís: Brasil\r\nPeso médio: 1,2kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 14900,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1200,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 14900
+        }
+      ],
+      "image": "assets/products/1235984.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 19,
+      "reviewRequired": false
+    },
+    {
+      "id": "746818",
+      "categoryId": "88433",
+      "name": "Picanha estancia angus",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1,1kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 16990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1100,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 16990
+        }
+      ],
+      "image": "assets/products/746818.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 20,
+      "reviewRequired": false
+    },
+    {
+      "id": "542612",
+      "categoryId": "88484",
+      "name": "Contra filé grill",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1kg \r\n\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 7550,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1000,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 7550
+        }
+      ],
+      "image": "assets/products/542612.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 21,
+      "reviewRequired": false
+    },
+    {
+      "id": "542498",
+      "categoryId": "88484",
+      "name": "Chorizo angus",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1kg - Fracionado\r\nRaça: Angus\r\nValor por kg*",
+      "priceCents": 11990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 1000,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 11990
+        }
+      ],
+      "image": "assets/products/542498.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 22,
+      "reviewRequired": false
+    },
+    {
+      "id": "6876194",
+      "categoryId": "88484",
+      "name": "Ancho bassi peça",
+      "description": "",
+      "priceCents": 8590,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 8590
+        }
+      ],
+      "image": "assets/products/6876194.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 23,
+      "reviewRequired": false
+    },
+    {
+      "id": "5462803",
+      "categoryId": "88484",
+      "name": "Filé de costela angus",
+      "description": "",
+      "priceCents": 11990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 11990
+        }
+      ],
+      "image": "assets/products/5462803.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 24,
+      "reviewRequired": false
+    },
+    {
+      "id": "1501821",
+      "categoryId": "88484",
+      "name": "Baby beef estancia angus",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1,4kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 10990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1400,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 10990
+        }
+      ],
+      "image": "assets/products/1501821.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 25,
+      "reviewRequired": false
+    },
+    {
+      "id": "542575",
+      "categoryId": "88484",
+      "name": "Bombom da alcatra",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,700kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 10790,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 700,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 10790
+        }
+      ],
+      "image": "assets/products/542575.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 26,
+      "reviewRequired": false
+    },
+    {
+      "id": "542587",
+      "categoryId": "88484",
+      "name": "Shoulder  angus",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 10990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1000,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 10990
+        }
+      ],
+      "image": "assets/products/542587.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 27,
+      "reviewRequired": false
+    },
+    {
+      "id": "5368082",
+      "categoryId": "88484",
+      "name": "Shoulder estancia 92",
+      "description": "Raça: Novilho de Nelore\r\nPais: Brasil",
+      "priceCents": 12990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 12990
+        }
+      ],
+      "image": "assets/products/5368082.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 28,
+      "reviewRequired": false
+    },
+    {
+      "id": "2685033",
+      "categoryId": "88484",
+      "name": "Chuck eye roll  angus",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,550kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 9990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 550,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 9990
+        }
+      ],
+      "image": "assets/products/2685033.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 29,
+      "reviewRequired": false
+    },
+    {
+      "id": "2685026",
+      "categoryId": "88484",
+      "name": "Denver angus",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,500kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 23990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 23990
+        }
+      ],
+      "image": "assets/products/2685026.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 30,
+      "reviewRequired": false
+    },
+    {
+      "id": "542681",
+      "categoryId": "88484",
+      "name": "Fraldinha red",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,700kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 14990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 700,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 14990
+        }
+      ],
+      "image": "assets/products/542681.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 31,
+      "reviewRequired": false
+    },
+    {
+      "id": "542677",
+      "categoryId": "88484",
+      "name": "Maminha  angus",
+      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,900kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 10900,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 900,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 10900
+        }
+      ],
+      "image": "assets/products/542677.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 32,
+      "reviewRequired": false
+    },
+    {
+      "id": "5368073",
+      "categoryId": "88484",
+      "name": "Cupim novilho",
+      "description": "Raça: Novilho de Nelore \r\nPais: Brasil",
+      "priceCents": 10590,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 10590
+        }
+      ],
+      "image": "assets/products/5368073.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 33,
+      "reviewRequired": false
+    },
+    {
+      "id": "543453",
+      "categoryId": "91016",
+      "name": "Assado de tiras angus",
+      "description": "Categoria: Congelado\r\nPaís: Brasil \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 12990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 12990
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 34,
+      "reviewRequired": false
+    },
+    {
+      "id": "5192767",
+      "categoryId": "91016",
+      "name": "Denver vpj black angus",
+      "description": "Raça: Angus \r\nLinha: Black Angus \r\nPEÇA COM MEDIA DE 1 KG",
+      "priceCents": 35990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 35990
+        }
+      ],
+      "image": "assets/products/5192767.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 35,
+      "reviewRequired": false
+    },
+    {
+      "id": "3363350",
+      "categoryId": "91016",
+      "name": "Bananinha angus",
+      "description": "Categoria: Congelado\r\nPaís: Brasil \r\nPeso médio: 1,000kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "priceCents": 9990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 1000,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 9990
+        }
+      ],
+      "image": "assets/products/3363350.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 36,
+      "reviewRequired": false
+    },
+    {
+      "id": "8810771",
+      "categoryId": "1047543",
+      "name": "Peito de frango extra limpo",
+      "description": "PCT FILEZINHO/STROGONOFF COM MEDIA DE 500 GR\r\nPCT PEITO COM MEDIA DE 700 GR",
+      "priceCents": 2990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Peito",
+          "priceCents": 2990
+        },
+        {
+          "id": "1",
+          "name": "Filezinho",
+          "priceCents": 2990
+        },
+        {
+          "id": "2",
+          "name": "Strogonoff",
+          "priceCents": 2990
+        }
+      ],
+      "image": "assets/products/8810771.jpg",
+      "imagePath": "",
+      "active": false,
+      "sort": 37,
+      "reviewRequired": true
+    },
+    {
+      "id": "6380467",
+      "categoryId": "1047543",
+      "name": "Filé de coxa e sobrecoxa dessosada temperada",
+      "description": "PACOTE COM 700GR -  VALOR ANUNCIADO DO KG",
+      "priceCents": 4490,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 700,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 4490
+        }
+      ],
+      "image": "assets/products/6380467.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 38,
+      "reviewRequired": false
+    },
+    {
+      "id": "6380466",
+      "categoryId": "1047543",
+      "name": "Coxinha temperada",
+      "description": "PACOTE COM 700GR - VALOR ANUNCIADO DO KG",
+      "priceCents": 3450,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 700,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 3450
+        }
+      ],
+      "image": "assets/products/6380466.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 39,
+      "reviewRequired": false
+    },
+    {
+      "id": "6380464",
+      "categoryId": "1047543",
+      "name": "Tulipa temperada",
+      "description": "PACOTE COM 700GR - VALOR ANUNCIADO DO KG",
+      "priceCents": 4490,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 700,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 4490
+        }
+      ],
+      "image": "assets/products/6380464.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 40,
+      "reviewRequired": false
+    },
+    {
+      "id": "539779",
+      "categoryId": "88808",
+      "name": "Paleta de cordeiro",
+      "description": "",
+      "priceCents": 9990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 9990
+        }
+      ],
+      "image": "assets/products/539779.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 41,
+      "reviewRequired": false
+    },
+    {
+      "id": "539820",
+      "categoryId": "88808",
+      "name": "Pernil de cordeiro",
+      "description": "",
+      "priceCents": 9990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 9990
+        }
+      ],
+      "image": "assets/products/539820.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 42,
+      "reviewRequired": false
+    },
+    {
+      "id": "8437052",
+      "categoryId": "88808",
+      "name": "Carré de cordeiro porcionado",
+      "description": "PACOTE COM MEDIA 0,400 GR",
+      "priceCents": 21990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 21990
+        }
+      ],
+      "image": "assets/products/8437052.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 43,
+      "reviewRequired": false
+    },
+    {
+      "id": "5818523",
+      "categoryId": "88808",
+      "name": "Fraldinha de cordeiro vpj",
+      "description": "",
+      "priceCents": 14990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 14990
+        }
+      ],
+      "image": "assets/products/5818523.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 44,
+      "reviewRequired": false
+    },
+    {
+      "id": "8814683",
+      "categoryId": "88808",
+      "name": "Costela de cordeiro",
+      "description": "PCT COM MEDIA  1 KG",
+      "priceCents": 12990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 12990
+        }
+      ],
+      "image": "assets/products/8814683.jpg",
+      "imagePath": "",
+      "active": false,
+      "sort": 45,
+      "reviewRequired": true
+    },
+    {
+      "id": "5818512",
+      "categoryId": "88808",
+      "name": "Picanha de cordeiro vpj",
+      "description": "",
+      "priceCents": 16550,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 16550
+        }
+      ],
+      "image": "assets/products/5818512.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 46,
+      "reviewRequired": false
+    },
+    {
+      "id": "543838",
+      "categoryId": "91248",
+      "name": "Picanha duroc",
+      "description": "LINHA DUROC VPJ",
+      "priceCents": 13990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 13990
+        }
+      ],
+      "image": "assets/products/543838.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 47,
+      "reviewRequired": false
+    },
+    {
+      "id": "543883",
+      "categoryId": "91248",
+      "name": "Prime rib duroc",
+      "description": "",
+      "priceCents": 12990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 12990
+        }
+      ],
+      "image": "assets/products/543883.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 48,
+      "reviewRequired": false
+    },
+    {
+      "id": "543850",
+      "categoryId": "91248",
+      "name": "Assado de tiras duroc",
+      "description": "",
+      "priceCents": 12990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 12990
+        }
+      ],
+      "image": "assets/products/543850.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 49,
+      "reviewRequired": false
+    },
+    {
+      "id": "5818929",
+      "categoryId": "91248",
+      "name": "Copa lombo duroc vpj",
+      "description": "",
+      "priceCents": 8990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 8990
+        }
+      ],
+      "image": "assets/products/5818929.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 50,
+      "reviewRequired": false
+    },
+    {
+      "id": "543863",
+      "categoryId": "91248",
+      "name": "File mignon suino duroc",
+      "description": "",
+      "priceCents": 7890,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 7890
+        }
+      ],
+      "image": "assets/products/543863.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 51,
+      "reviewRequired": false
+    },
+    {
+      "id": "543996",
+      "categoryId": "91248",
+      "name": "Lombo duroc",
+      "description": "BIFE 2 DEDOS RECOMENDADO P/ CHURRASCO",
+      "priceCents": 8990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 8990
+        }
+      ],
+      "image": "assets/products/543996.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 52,
+      "reviewRequired": false
+    },
+    {
+      "id": "8098376",
+      "categoryId": "91248",
+      "name": "Panceta suina nabrasa temperada",
+      "description": "AO TOQUE DE LIMÃO",
+      "priceCents": 7490,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 7490
+        }
+      ],
+      "image": "assets/products/8098376.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 53,
+      "reviewRequired": false
+    },
+    {
+      "id": "8098480",
+      "categoryId": "91248",
+      "name": "Costela suina nabrasa",
+      "description": "SABOR BARBECUE",
+      "priceCents": 6560,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 6560
+        }
+      ],
+      "image": "assets/products/8098480.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 54,
+      "reviewRequired": false
+    },
+    {
+      "id": "8810927",
+      "categoryId": "91248",
+      "name": "Copa lombo dia a dia",
+      "description": "BIFE FININHO DIA A DIA",
+      "priceCents": 4990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 4990
+        }
+      ],
+      "image": "assets/products/8810927.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 55,
+      "reviewRequired": false
+    },
+    {
+      "id": "8810932",
+      "categoryId": "91248",
+      "name": "Lombo suino dia a dia",
+      "description": "BIFE FININHO DIA A DIA",
+      "priceCents": 4990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 4990
+        }
+      ],
+      "image": "assets/products/8810932.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 56,
+      "reviewRequired": false
+    },
+    {
+      "id": "12734661",
+      "categoryId": "91248",
+      "name": "Filé mignon suíno dia a dia",
+      "description": "PACOTE COM 4 MEDALHÕES APROXIMADAMENTE 400GR",
+      "priceCents": 4990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 4990
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": false,
+      "sort": 57,
+      "reviewRequired": true
+    },
+    {
+      "id": "544054",
+      "categoryId": "90468",
+      "name": "Linguiça de pernil",
+      "description": "EMBALAGEM COM  1KG",
+      "priceCents": 3690,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 3690
+        }
+      ],
+      "image": "assets/products/544054.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 58,
+      "reviewRequired": false
+    },
+    {
+      "id": "544067",
+      "categoryId": "90468",
+      "name": "Linguiça nabrasa recheada",
+      "description": "QUEIJO COALHO, PIMENTA BIQUINHO, ALHO E ERVAS E FRANGO COM BACON\r\n\r\nEMBALAGEM COM 600GR",
+      "priceCents": 2990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 2990
+        }
+      ],
+      "image": "assets/products/544067.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 59,
+      "reviewRequired": false
+    },
+    {
+      "id": "5060048",
+      "categoryId": "90468",
+      "name": "Linguiça de costela - vpj",
+      "description": "CAIXA COM 500GR",
+      "priceCents": 4990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 4990
+        }
+      ],
+      "image": "assets/products/5060048.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 60,
+      "reviewRequired": false
+    },
+    {
+      "id": "544004",
+      "categoryId": "90468",
+      "name": "Linguiça de cordeiro - vpj",
+      "description": "CAIXA COM 500GR",
+      "priceCents": 4290,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Unid",
+          "priceCents": 4290
+        }
+      ],
+      "image": "assets/products/544004.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 61,
+      "reviewRequired": false
+    },
+    {
+      "id": "12734670",
+      "categoryId": "90468",
+      "name": "Linguiça de pernil romana vpj",
+      "description": "EMBALAGEM COM 500GR",
+      "priceCents": 1895,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 1895
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 62,
+      "reviewRequired": false
+    },
+    {
+      "id": "544211",
+      "categoryId": "88807",
+      "name": "Pão de alho tradicional unid",
+      "description": "TRADICIONAL / BOLINHA / APIMENTADO",
+      "priceCents": 1790,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 1790
+        }
+      ],
+      "image": "assets/products/544211.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 63,
+      "reviewRequired": false
+    },
+    {
+      "id": "544105",
+      "categoryId": "88807",
+      "name": "Espeto de coração temperado",
+      "description": "EMBALAGEM COM 4 A 5 ESPETINHOS /  / VALOR POR KG\r\n\r\nEMBALAGEM COM MEDIA DE 0,370GR",
+      "priceCents": 6890,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 6890
+        }
+      ],
+      "image": "assets/products/544105.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 64,
+      "reviewRequired": false
+    },
+    {
+      "id": "544121",
+      "categoryId": "88807",
+      "name": "Espetinho de kafta temperado",
+      "description": "EMBALAGEM COM 4 A 5 ESPETINHOS /  / VALOR POR KG\r\n\r\nEMBALAGEM COM MEDIA DE 0,400GR",
+      "priceCents": 6990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 6990
+        }
+      ],
+      "image": "assets/products/544121.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 65,
+      "reviewRequired": false
+    },
+    {
+      "id": "11817278",
+      "categoryId": "88807",
+      "name": "Medalhao de queijo coalho com bacon",
+      "description": "PACOTE COM 2 ESPETOS MEDIA DE $24,00",
+      "priceCents": 7990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 7990
+        }
+      ],
+      "image": "assets/products/11817278.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 66,
+      "reviewRequired": false
+    },
+    {
+      "id": "544095",
+      "categoryId": "88807",
+      "name": "Queijo coalho  / valor por kg",
+      "description": "EMBALAGEM COM 4 ESPETOS  / VALOR POR KG\r\n\r\nEMBALAGEM COM MEDIA DE 0,400GR",
+      "priceCents": 7990,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 7990
+        }
+      ],
+      "image": "assets/products/544095.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 67,
+      "reviewRequired": false
+    },
+    {
+      "id": "3808651",
+      "categoryId": "88807",
+      "name": "Queijo bolinha",
+      "description": "Valor por Kg\r\n\r\nEMBALAGEM COM MEDIA DE 0,250GR",
+      "priceCents": 9490,
+      "unit": "kg",
+      "saleMode": "weight",
+      "weightGrams": 500,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 9490
+        }
+      ],
+      "image": "assets/products/3808651.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 68,
+      "reviewRequired": false
+    },
+    {
+      "id": "3093454",
+      "categoryId": "91383",
+      "name": "Salmao porcionado",
+      "description": "PACOTE COM MEDIA DE 230GR",
+      "priceCents": 12990,
+      "unit": "kg",
+      "saleMode": "piece",
+      "weightGrams": 230,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Kg",
+          "priceCents": 12990
+        }
+      ],
+      "image": "assets/products/3093454.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 69,
+      "reviewRequired": false
+    },
+    {
+      "id": "3811152",
+      "categoryId": "662714",
+      "name": "Sal de parrilla cantagallo 500gr",
+      "description": "",
+      "priceCents": 2290,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 2290
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 70,
+      "reviewRequired": false
+    },
+    {
+      "id": "5082979",
+      "categoryId": "662714",
+      "name": "Pedra de sal rosa do himalaia",
+      "description": "",
+      "priceCents": 9990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 9990
+        }
+      ],
+      "image": "assets/products/5082979.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 71,
+      "reviewRequired": false
+    },
+    {
+      "id": "5230844",
+      "categoryId": "662714",
+      "name": "Dry rub cantagallo",
+      "description": "",
+      "priceCents": 3490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 3490
+        }
+      ],
+      "image": "assets/products/5230844.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 72,
+      "reviewRequired": false
+    },
+    {
+      "id": "5064977",
+      "categoryId": "663231",
+      "name": "Palmito pupunha grill",
+      "description": "",
+      "priceCents": 3990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 3990
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 73,
+      "reviewRequired": false
+    },
+    {
+      "id": "6603797",
+      "categoryId": "293336",
+      "name": "Maionese do rei",
+      "description": "DEFUMADA OU COM BACON",
+      "priceCents": 2990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Defumada",
+          "priceCents": 2990
+        },
+        {
+          "id": "1",
+          "name": "Com bacon",
+          "priceCents": 2990
+        }
+      ],
+      "image": "assets/products/6603797.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 74,
+      "reviewRequired": false
+    },
+    {
+      "id": "5645375",
+      "categoryId": "293336",
+      "name": "Molhos",
+      "description": "MOSTARDA E MEL /  BARBECUE",
+      "priceCents": 2490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Mostarda e mel",
+          "priceCents": 2690
+        },
+        {
+          "id": "1",
+          "name": "Barbecue",
+          "priceCents": 2490
+        }
+      ],
+      "image": "assets/products/5645375.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 75,
+      "reviewRequired": false
+    },
+    {
+      "id": "3812110",
+      "categoryId": "293336",
+      "name": "Geleia agridoce queensberry",
+      "description": "Sabores: \r\nMenta com Hortelã\r\nPimenta Vermelha",
+      "priceCents": 3590,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 3590
+        }
+      ],
+      "image": "assets/products/3812110.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 76,
+      "reviewRequired": false
+    },
+    {
+      "id": "3830691",
+      "categoryId": "293336",
+      "name": "Fumaça liquida cantagallo",
+      "description": "",
+      "priceCents": 1990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 1990
+        }
+      ],
+      "image": "assets/products/3830691.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 77,
+      "reviewRequired": false
+    },
+    {
+      "id": "5362832",
+      "categoryId": "293336",
+      "name": "Molhos de cabron",
+      "description": "",
+      "priceCents": 2490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Sweet chilli decabron",
+          "priceCents": 2690
+        },
+        {
+          "id": "1",
+          "name": "Sriracha bacon decabron",
+          "priceCents": 2890
+        },
+        {
+          "id": "2",
+          "name": "Sweet chilli goiabada decabron",
+          "priceCents": 2890
+        },
+        {
+          "id": "3",
+          "name": "Cebola caramelizada decabron",
+          "priceCents": 2890
+        },
+        {
+          "id": "4",
+          "name": "Barbecue bourbon",
+          "priceCents": 2490
+        }
+      ],
+      "image": "assets/products/5362832.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 78,
+      "reviewRequired": false
+    },
+    {
+      "id": "5732285",
+      "categoryId": "88425",
+      "name": "Barril 5l heineken - gelado",
+      "description": "GELADO",
+      "priceCents": 11990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 11990
+        }
+      ],
+      "image": "assets/products/5732285.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 79,
+      "reviewRequired": false
+    },
+    {
+      "id": "530097",
+      "categoryId": "88425",
+      "name": "Heineken 330ml - gelada",
+      "description": "Venda e consumo proibido para menores de 18 anos. Beba com moderação.",
+      "priceCents": 749,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 749
+        }
+      ],
+      "image": "assets/products/530097.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 80,
+      "reviewRequired": false
+    },
+    {
+      "id": "532588",
+      "categoryId": "88425",
+      "name": "Stella 330ml - gelada",
+      "description": "",
+      "priceCents": 749,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 749
+        }
+      ],
+      "image": "assets/products/532588.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 81,
+      "reviewRequired": false
+    },
+    {
+      "id": "5496151",
+      "categoryId": "88425",
+      "name": "Stella 330ml sem gluten",
+      "description": "",
+      "priceCents": 799,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 799
+        }
+      ],
+      "image": "assets/products/5496151.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 82,
+      "reviewRequired": false
+    },
+    {
+      "id": "532601",
+      "categoryId": "88425",
+      "name": "Corona 330ml - gelada",
+      "description": "",
+      "priceCents": 799,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Comum",
+          "priceCents": 799
+        },
+        {
+          "id": "1",
+          "name": "Cero",
+          "priceCents": 799
+        },
+        {
+          "id": "2",
+          "name": "600 ml",
+          "priceCents": 1590
+        }
+      ],
+      "image": "assets/products/532601.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 83,
+      "reviewRequired": false
+    },
+    {
+      "id": "5223445",
+      "categoryId": "88425",
+      "name": "Coca cola comum 2l - gelada",
+      "description": "",
+      "priceCents": 1490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 1490
+        }
+      ],
+      "image": "assets/products/5223445.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 84,
+      "reviewRequired": false
+    },
+    {
+      "id": "5223460",
+      "categoryId": "88425",
+      "name": "Coca cola zero 1,5l",
+      "description": "",
+      "priceCents": 1490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 1490
+        }
+      ],
+      "image": "assets/products/5223460.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 85,
+      "reviewRequired": false
+    },
+    {
+      "id": "5223425",
+      "categoryId": "88425",
+      "name": "Agua mineral",
+      "description": "",
+      "priceCents": 400,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 400
+        }
+      ],
+      "image": "assets/products/5223425.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 86,
+      "reviewRequired": false
+    },
+    {
+      "id": "12414119",
+      "categoryId": "88425",
+      "name": "Amstel ultra 275ml",
+      "description": "LONG-NECK",
+      "priceCents": 699,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 699
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 87,
+      "reviewRequired": false
+    },
+    {
+      "id": "12414120",
+      "categoryId": "88425",
+      "name": "Lagunitas day time  350 ml",
+      "description": "LATA",
+      "priceCents": 990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 990
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 88,
+      "reviewRequired": false
+    },
+    {
+      "id": "12414122",
+      "categoryId": "88425",
+      "name": "Cerveja quilmes 340ml",
+      "description": "LONG-NECK",
+      "priceCents": 749,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 749
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 89,
+      "reviewRequired": false
+    },
+    {
+      "id": "12734635",
+      "categoryId": "88425",
+      "name": "Blue moon",
+      "description": "",
+      "priceCents": 999,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 999
+        }
+      ],
+      "image": "",
+      "imagePath": "",
+      "active": true,
+      "sort": 90,
+      "reviewRequired": false
+    },
+    {
+      "id": "5082799",
+      "categoryId": "662713",
+      "name": "Butcher tramontina",
+      "description": "",
+      "priceCents": 21990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 21990
+        }
+      ],
+      "image": "assets/products/5082799.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 91,
+      "reviewRequired": false
+    },
+    {
+      "id": "5082817",
+      "categoryId": "662713",
+      "name": "Jogo trinchante",
+      "description": "",
+      "priceCents": 11790,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 11790
+        }
+      ],
+      "image": "assets/products/5082817.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 92,
+      "reviewRequired": false
+    },
+    {
+      "id": "3812401",
+      "categoryId": "662713",
+      "name": "Churrasqueira apollo parrilla mini",
+      "description": "",
+      "priceCents": 48000,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 48000
+        }
+      ],
+      "image": "assets/products/3812401.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 93,
+      "reviewRequired": false
+    },
+    {
+      "id": "5495979",
+      "categoryId": "662713",
+      "name": "Limpa grelhas",
+      "description": "",
+      "priceCents": 3490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 3490
+        }
+      ],
+      "image": "assets/products/5495979.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 94,
+      "reviewRequired": false
+    },
+    {
+      "id": "5495999",
+      "categoryId": "662713",
+      "name": "Filme de polister para churrasco",
+      "description": "ASSAFORT",
+      "priceCents": 1490,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 1490
+        }
+      ],
+      "image": "assets/products/5495999.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 95,
+      "reviewRequired": false
+    },
+    {
+      "id": "8814650",
+      "categoryId": "662713",
+      "name": "Tabua rei do gado grande",
+      "description": "TABUA MADEIRA ARTESANAL CANELA GARUVA",
+      "priceCents": 19990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Padrão",
+          "priceCents": 19990
+        }
+      ],
+      "image": "assets/products/8814650.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 96,
+      "reviewRequired": false
+    },
+    {
+      "id": "5998409",
+      "categoryId": "989899",
+      "name": "Acendedores",
+      "description": "ELETRICO\r\nPASTILHA\r\nALCOOL GEL\r\nALCOOL LIQUIDO",
+      "priceCents": 1000,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Pastilha",
+          "priceCents": 1000
+        },
+        {
+          "id": "1",
+          "name": "Acendedor fosforo pequeno",
+          "priceCents": 1050
+        },
+        {
+          "id": "2",
+          "name": "Alcool gel",
+          "priceCents": 1490
+        },
+        {
+          "id": "3",
+          "name": "Acendedor eletrico",
+          "priceCents": 10590
+        }
+      ],
+      "image": "assets/products/5998409.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 97,
+      "reviewRequired": false
+    },
+    {
+      "id": "6604003",
+      "categoryId": "989899",
+      "name": "Maçarico",
+      "description": "MAÇARICO\r\nREFIL GAS",
+      "priceCents": 1990,
+      "unit": "un",
+      "saleMode": "unit",
+      "weightGrams": 0,
+      "variants": [
+        {
+          "id": "0",
+          "name": "Maçarico",
+          "priceCents": 3990
+        },
+        {
+          "id": "1",
+          "name": "Refil gas",
+          "priceCents": 1990
+        }
+      ],
+      "image": "assets/products/6604003.jpg",
+      "imagePath": "",
+      "active": true,
+      "sort": 98,
+      "reviewRequired": false
+    }
+  ]
+}

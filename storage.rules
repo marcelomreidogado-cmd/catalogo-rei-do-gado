@@ -1,0 +1,17 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function storeAdmin(branch) {
+      return request.auth != null && request.auth.token.storeAdmin == true
+        && request.auth.token.branchId == branch;
+    }
+    match /branches/{branch}/products/{filename} {
+      allow read: if true;
+      allow create, update: if storeAdmin(branch)
+        && request.resource.size < 200000
+        && request.resource.contentType == 'image/jpeg';
+      allow delete: if storeAdmin(branch);
+    }
+    match /{allPaths=**} { allow read, write: if false; }
+  }
+}

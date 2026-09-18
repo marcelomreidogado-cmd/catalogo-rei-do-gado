@@ -1,0 +1,25 @@
+# Guia rápido do proprietário
+
+**Catálogo:** abra o link entregue na conversa.  
+**Painel:** acrescente `?view=admin` ao link. Escolha a unidade e informe a senha do arquivo privado entregue separadamente.
+
+## Antes de divulgar
+
+1. Confira os preços de cada unidade. A base inicial veio do Goomer da Coronel e foi copiada para Bingen e Corrêas.
+2. Em **Produtos**, revise os seis itens pausados com indicação **Revisar**. Confira se são vendidos por kg, pacote/unidade ou peça e ajuste o peso médio. Marque **Disponível para pedidos** para publicá-los.
+3. Confira a descrição e o endereço de Bingen e Corrêas em `js/config.js`: somente o bairro e a cidade estão preenchidos, porque os endereços completos não foram informados.
+4. Faça um pedido pequeno de teste em cada unidade e confirme que o WhatsApp aberto pertence à loja. O site monta a mensagem; o cliente precisa tocar em enviar no WhatsApp.
+
+## Rotina
+
+- **Alterar preço ou foto:** Painel → Produtos → lápis do produto → salvar.
+- **Tirar um item de venda:** desmarque Disponível para pedidos.
+- **Organizar o balcão:** Painel → Categorias → nome e posição no catálogo.
+- **Atender pedido:** Painel → Pedidos → Ver pedido → conferir sacola e peso → atualizar status.
+- **Ver compras de um cliente:** Painel → Clientes → Ver compras.
+
+Os valores apresentados são estimativas. Confirme o preço final, frete e pagamento com o cliente. O painel não considera um pedido “pago” só porque ele foi registrado ou finalizado.
+
+O projeto Firebase do catálogo é **Rei do Gado Catalogo**, ID `rei-do-gado-catalogo-2026`. O projeto do caixa não foi alterado.
+
+Guarde as senhas fora do GitHub e compartilhe cada senha somente com a equipe da unidade correspondente. Para mudar uma senha, use o botão **Alterar senha** no painel. Se perder o acesso, o proprietário do Firebase pode redefinir a conta com o procedimento administrativo descrito no README.

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "3808712",
+    "name": "ALMÔNDEGAS TEMPERADAS",
+    "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
+    "sourcePrices": [
+      {
+        "name": "Pacote",
+        "price": 30,
+        "code": "",
+        "hash": "e17f57042943ffcc00781cfa33d310c088db432cbb2482b621e6de5a529ca00c"
+      }
+    ],
+    "sourceDescription": "Valor por kg -65,90\r\n\r\nEmbalagens com media de 0,400gr"
+  },
+  {
+    "id": "543971",
+    "name": "PEITO DE FRANGO EXTRA LIMPO",
+    "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
+    "sourcePrices": [
+      {
+        "name": "FILEZINHO",
+        "price": 29.9,
+        "code": "FILEZINHO",
+        "hash": "3eada16b8db0690fbbf8bc12fe68d32b12ddc9760c6254320fa107acdf10e1c4"
+      },
+      {
+        "name": "STROGONOFF",
+        "price": 29.9,
+        "code": "STROGONOFF",
+        "hash": "9199fde567589a3dbabfefa7310ee1b37e5c4cc96fb358163c8a794b0243c046"
+      },
+      {
+        "name": "PEITO",
+        "price": 29.9,
+        "code": "PEITO",
+        "hash": "d02d46760fbf5ac772a509f8e06c85b52cd1dbd65d9c38880de4f6f5c45a623c"
+      }
+    ],
+    "sourceDescription": "PCT FILEZINHO/STROGONOFF COM MEDIA DE 500 GR\r\nPCT PEITO COM MEDIA DE 700 GR"
+  },
+  {
+    "id": "5998005",
+    "name": "MEDALHÃO DE SOBRECOXA COM BACON",
+    "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
+    "sourcePrices": [
+      {
+        "name": "bandeja",
+        "price": 57.9,
+        "code": "",
+        "hash": "deddc1551ae8247a329052314edabd4f4a147a94fa13ef9a18e9ddec57c50eab"
+      }
+    ],
+    "sourceDescription": "BANDEJA SAINDO NA FAIXA DE $25,00 COM MEDIA DE 0,500GR - VALOR REFERENTE AO KG $49,90"
+  },
+  {
+    "id": "8810771",
+    "name": "PEITO DE FRANGO EXTRA LIMPO",
+    "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
+    "sourcePrices": [
+      {
+        "name": "PEITO ",
+        "price": 29.9,
+        "code": "",
+        "hash": "5bdda5030d05fcc645e6e763b21446af97323f42180020490b0fa86a675157fc"
+      },
+      {
+        "name": "FILEZINHO",
+        "price": 29.9,
+        "code": "",
+        "hash": "38c0e223d0bb685ba9aec632b045795b6914cafacbab739e2b40524bc67bfc9c"
+      },
+      {
+        "name": "STROGONOFF",
+        "price": 29.9,
+        "code": "",
+        "hash": "a20f435adfe5f289ebda1d71d35a7a705088dbe91626796226da19bd733387d4"
+      }
+    ],
+    "sourceDescription": "PCT FILEZINHO/STROGONOFF COM MEDIA DE 500 GR\r\nPCT PEITO COM MEDIA DE 700 GR"
+  },
+  {
+    "id": "8814683",
+    "name": "COSTELA DE CORDEIRO",
+    "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
+    "sourcePrices": [
+      {
+        "name": "",
+        "price": 129.9,
+        "code": "0",
+        "hash": "53b5df35a871c98cae718fba43d9e91480b72b96506c421911343a326875ecae"
+      }
+    ],
+    "sourceDescription": "PCT COM MEDIA  1 KG"
+  },
+  {
+    "id": "12734661",
+    "name": "FILÉ MIGNON SUÍNO DIA A DIA",
+    "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
+    "sourcePrices": [
+      {
+        "name": "",
+        "price": 49.9,
+        "code": "KG",
+        "hash": "8ccb0275776c13b69d1225a1f60d52dd876ac0c418703145bd6b48c87351073c"
+      }
+    ],
+    "sourceDescription": "PACOTE COM 4 MEDALHÕES APROXIMADAMENTE 400GR"
+  }
+]
