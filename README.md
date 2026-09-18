@@ -25,7 +25,9 @@ Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra 
 
 Tudo começa em `js/config.js`. As credenciais do aplicativo Web Firebase são públicas por definição; elas identificam o projeto. A autorização está nas regras, nos usuários de Authentication e nos documentos `admins/{uid}`. Nunca coloque chaves de conta de serviço ou senhas reais nesse arquivo.
 
-O projeto criado para este catálogo é `rei-do-gado-catalogo-2026`, independente de qualquer sistema de caixa. O banco `catalogo` usa Firestore Enterprise Native em `southamerica-east1` (São Paulo), com cota gratuita e atualizações em tempo real. Nenhuma conta de faturamento foi vinculada por este projeto.
+O catálogo está conectado ao projeto fornecido pelo proprietário: `gen-lang-client-0241129459`. O banco `catalogo` usa Firestore Enterprise Native em `southamerica-east1` (São Paulo), com cota gratuita e atualizações em tempo real. São Paulo indica a localização dos servidores do Google; as unidades continuam sendo Coronel, Bingen e Corrêas, em Petrópolis. Esta configuração não vinculou conta de faturamento nem ativou Storage.
+
+Em 18/09/2026, o catálogo e os três acessos administrativos foram copiados do projeto inicial para este projeto, preservando as senhas. O projeto inicial foi mantido; o sistema de caixa e o Realtime Database já existente no projeto fornecido não foram alterados. O site utiliza exclusivamente o banco Firestore chamado `catalogo`.
 
 WhatsApps configurados:
 

@@ -11,7 +11,7 @@
     "rules": "storage.rules"
   },
   "auth": {
-    "authorizedDomains": ["localhost", "marcelomreidogado-cmd.github.io"],
+    "authorizedDomains": ["gen-lang-client-0241129459.firebaseapp.com", "gen-lang-client-0241129459.web.app", "localhost", "marcelomreidogado-cmd.github.io"],
     "providers": {
       "anonymous": true,
       "emailPassword": true

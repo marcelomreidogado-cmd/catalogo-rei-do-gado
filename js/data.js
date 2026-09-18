@@ -1,4 +1,4 @@
-import { CONFIG } from "./config.js";
+import { CONFIG } from "./config.js?v=20260918-firebase2";
 import { cartTotal, makeLine } from "./core.js";
 export const isDemo = CONFIG.demo && !CONFIG.firebase.projectId;
 const prefix = "rdg-demo-v1:";

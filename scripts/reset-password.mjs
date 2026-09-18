@@ -4,12 +4,13 @@
  */
 import { initializeApp, applicationDefault, deleteApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
+import { CONFIG } from '../js/config.js';
 const email = process.argv[2];
 const password = process.env.RDG_NEW_PASSWORD;
 if (!email || !password || password.length < 10) {
   throw new Error('Informe o e-mail interno como argumento e RDG_NEW_PASSWORD (mínimo 10 caracteres).');
 }
-const app = initializeApp({ projectId: 'rei-do-gado-catalogo-2026', credential: applicationDefault() });
+const app = initializeApp({ projectId: CONFIG.firebase.projectId, credential: applicationDefault() });
 try {
   const auth = getAuth(app);
   const user = await auth.getUserByEmail(email);

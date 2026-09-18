@@ -1,12 +1,12 @@
 /** CONFIGURAÇÃO: copie aqui o objeto do Console Firebase > Configurações > Seus apps. */
 export const CONFIG = {
   firebase: {
-    projectId: "rei-do-gado-catalogo-2026",
-    appId: "1:3662126261:web:6aa935c1f7dc957a76f2fc",
-    storageBucket: "rei-do-gado-catalogo-2026.firebasestorage.app",
-    apiKey: "AIzaSyDvyJR5l2o1N4Qjbhlw-P20YNWrTTWHXHI",
-    authDomain: "rei-do-gado-catalogo-2026.firebaseapp.com",
-    messagingSenderId: "3662126261",
+    projectId: "gen-lang-client-0241129459",
+    appId: "1:434319751695:web:6acea23d982f1ab977017a",
+    storageBucket: "gen-lang-client-0241129459.firebasestorage.app",
+    apiKey: "AIzaSyBOXGoC-5fGX9QAD7MP9LVQILbpiwBM4sE",
+    authDomain: "gen-lang-client-0241129459.firebaseapp.com",
+    messagingSenderId: "434319751695",
   },
   // Sem projectId, funciona apenas como demonstração local. Nenhum pedido é enviado.
   demo: false,

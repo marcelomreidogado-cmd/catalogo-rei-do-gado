@@ -20,6 +20,6 @@
 
 Os valores apresentados são estimativas. Confirme o preço final, frete e pagamento com o cliente. O painel não considera um pedido “pago” só porque ele foi registrado ou finalizado.
 
-O projeto Firebase do catálogo é **Rei do Gado Catalogo**, ID `rei-do-gado-catalogo-2026`. O projeto do caixa não foi alterado.
+O catálogo usa o projeto Firebase que você forneceu, ID `gen-lang-client-0241129459`, e o banco Firestore **catalogo**. No Console Firebase, selecione esse banco para visualizar os produtos e pedidos. A região **São Paulo** é somente a localização dos servidores do Google; não é uma unidade da loja. O projeto do caixa não foi alterado.
 
 Guarde as senhas fora do GitHub e compartilhe cada senha somente com a equipe da unidade correspondente. Para mudar uma senha, use o botão **Alterar senha** no painel. Se perder o acesso, o proprietário do Firebase pode redefinir a conta com o procedimento administrativo descrito no README.

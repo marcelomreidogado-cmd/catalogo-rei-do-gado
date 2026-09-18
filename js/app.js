@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js";
-import * as data from "./data.js";
+import { CONFIG } from "./config.js?v=20260918-firebase2";
+import * as data from "./data.js?v=20260918-firebase2";
 import {
   money,
   escapeHTML as e,
