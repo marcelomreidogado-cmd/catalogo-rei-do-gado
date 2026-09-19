@@ -49,7 +49,7 @@
     },
     {
       "id": "88807",
-      "name": "Pão de alho & espetinhos",
+      "name": "Pão de alho e espetinhos",
       "sort": 9
     },
     {
@@ -59,7 +59,7 @@
     },
     {
       "id": "662714",
-      "name": "Sais & temperos",
+      "name": "Sais e temperos",
       "sort": 11
     },
     {
@@ -92,8 +92,8 @@
     {
       "id": "1502178",
       "categoryId": "105176",
-      "name": "Patinho angus",
-      "description": "VALOR DO KG",
+      "name": "Patinho Angus",
+      "description": "Moído, em bifes, em pedaço ou em tiras para estrogonofe. Escolha o preparo e a quantidade.",
       "priceCents": 6590,
       "unit": "kg",
       "saleMode": "weight",
@@ -101,17 +101,22 @@
       "variants": [
         {
           "id": "0",
-          "name": "Moido",
+          "name": "Moído",
           "priceCents": 6590
         },
         {
           "id": "1",
-          "name": "Bife ou pedaço",
+          "name": "Bifes",
+          "priceCents": 6890
+        },
+        {
+          "id": "pedaco",
+          "name": "Pedaço",
           "priceCents": 6890
         },
         {
           "id": "2",
-          "name": "Picadinho (strogonoff)",
+          "name": "Estrogonofe",
           "priceCents": 6890
         }
       ],
@@ -125,7 +130,7 @@
       "id": "1502156",
       "categoryId": "105176",
       "name": "Alcatra",
-      "description": "VALOR DO KG BIFE / PEDAÇO",
+      "description": "Em bifes, em pedaço ou para estrogonofe. Você escolhe como quer receber.",
       "priceCents": 6990,
       "unit": "kg",
       "saleMode": "weight",
@@ -133,12 +138,17 @@
       "variants": [
         {
           "id": "0",
-          "name": "Bife ou pedaço",
+          "name": "Bifes",
+          "priceCents": 6990
+        },
+        {
+          "id": "pedaco",
+          "name": "Pedaço",
           "priceCents": 6990
         },
         {
           "id": "1",
-          "name": "Strogonoff",
+          "name": "Estrogonofe",
           "priceCents": 7290
         }
       ],
@@ -151,8 +161,8 @@
     {
       "id": "617828",
       "categoryId": "105176",
-      "name": "Contra file - dia a dia",
-      "description": "VENDA POR KG",
+      "name": "Contrafilé do dia a dia",
+      "description": "Escolha a quantidade e indique nas observações como prefere o corte.",
       "priceCents": 6890,
       "unit": "kg",
       "saleMode": "weight",
@@ -160,7 +170,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 6890
         }
       ],
@@ -174,7 +184,7 @@
       "id": "3808712",
       "categoryId": "105176",
       "name": "Almôndegas temperadas",
-      "description": "Valor por kg -65,90\r\n\r\nEmbalagens com media de 0,400gr",
+      "description": "Almôndegas já temperadas. Embalagem com aproximadamente 400 g.",
       "priceCents": 3000,
       "unit": "un",
       "saleMode": "unit",
@@ -193,42 +203,10 @@
       "reviewRequired": true
     },
     {
-      "id": "543971",
-      "categoryId": "105176",
-      "name": "Peito de frango extra limpo",
-      "description": "PCT FILEZINHO/STROGONOFF COM MEDIA DE 500 GR\r\nPCT PEITO COM MEDIA DE 700 GR",
-      "priceCents": 2990,
-      "unit": "kg",
-      "saleMode": "piece",
-      "weightGrams": 500,
-      "variants": [
-        {
-          "id": "0",
-          "name": "Filezinho",
-          "priceCents": 2990
-        },
-        {
-          "id": "1",
-          "name": "Strogonoff",
-          "priceCents": 2990
-        },
-        {
-          "id": "2",
-          "name": "Peito",
-          "priceCents": 2990
-        }
-      ],
-      "image": "assets/products/543971.jpg",
-      "imagePath": "",
-      "active": false,
-      "sort": 4,
-      "reviewRequired": true
-    },
-    {
       "id": "9596640",
       "categoryId": "105176",
       "name": "Acém",
-      "description": "MOIDO / CUBOS / PEDAÇO",
+      "description": "Moído, em cubos ou em pedaço. Um corte para as receitas do dia a dia.",
       "priceCents": 4490,
       "unit": "kg",
       "saleMode": "weight",
@@ -236,7 +214,17 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Moído",
+          "priceCents": 4490
+        },
+        {
+          "id": "cubos",
+          "name": "Cubos",
+          "priceCents": 4490
+        },
+        {
+          "id": "pedaco",
+          "name": "Pedaço",
           "priceCents": 4490
         }
       ],
@@ -249,8 +237,8 @@
     {
       "id": "3126253",
       "categoryId": "105176",
-      "name": "File mignon (peça) - valor kg",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1,6kg \r\nRaça: Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Filé-mignon",
+      "description": "Peça resfriada de origem brasileira, com peso médio de 1,6 kg. Escolha o subcorte para o seu preparo.",
       "priceCents": 13590,
       "unit": "kg",
       "saleMode": "piece",
@@ -258,27 +246,27 @@
       "variants": [
         {
           "id": "0",
-          "name": "Bifinho deitado /",
+          "name": "Bifes finos",
           "priceCents": 13590
         },
         {
           "id": "1",
-          "name": "Medalhao (2 dedos)",
+          "name": "Medalhão de 2 dedos",
           "priceCents": 13590
         },
         {
           "id": "2",
-          "name": "Medalhao (1dedo)",
+          "name": "Medalhão de 1 dedo",
           "priceCents": 13590
         },
         {
           "id": "3",
-          "name": "Estrogonofe (peca toda)",
+          "name": "Estrogonofe — peça inteira",
           "priceCents": 13590
         },
         {
           "id": "4",
-          "name": "Inteiro e limpo",
+          "name": "Peça inteira e limpa",
           "priceCents": 13590
         }
       ],
@@ -292,15 +280,20 @@
       "id": "5494672",
       "categoryId": "105176",
       "name": "Bombom da alcatra",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,700kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
-      "priceCents": 10990,
+      "description": "Peça resfriada de novilho Nelore, com peso médio de 700 g. Escolha inteira ou preparada no corte que preferir.",
+      "priceCents": 10790,
       "unit": "kg",
       "saleMode": "piece",
       "weightGrams": 700,
       "variants": [
         {
+          "id": "inteira",
+          "name": "Peça inteira",
+          "priceCents": 10790
+        },
+        {
           "id": "0",
-          "name": "Bifinho",
+          "name": "Bifes finos",
           "priceCents": 10990
         },
         {
@@ -320,7 +313,7 @@
         },
         {
           "id": "4",
-          "name": "Medalhao",
+          "name": "Medalhões",
           "priceCents": 10990
         }
       ],
@@ -333,8 +326,8 @@
     {
       "id": "5060180",
       "categoryId": "105176",
-      "name": "Lagarto red angus",
-      "description": "",
+      "name": "Lagarto Red Angus",
+      "description": "Vendido por peso. Informe nas observações como prefere o preparo.",
       "priceCents": 6990,
       "unit": "kg",
       "saleMode": "weight",
@@ -342,7 +335,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 6990
         }
       ],
@@ -354,9 +347,9 @@
     },
     {
       "id": "5998005",
-      "categoryId": "105176",
+      "categoryId": "1047543",
       "name": "Medalhão de sobrecoxa com bacon",
-      "description": "BANDEJA SAINDO NA FAIXA DE $25,00 COM MEDIA DE 0,500GR - VALOR REFERENTE AO KG $49,90",
+      "description": "Sobrecoxa envolvida em bacon. Bandeja com aproximadamente 500 g.",
       "priceCents": 5790,
       "unit": "kg",
       "saleMode": "weight",
@@ -378,7 +371,7 @@
       "id": "544253",
       "categoryId": "91324",
       "name": "Hambúrgueres artesanais",
-      "description": "VENDIDO A CADA 2 UNIDADES - 180GR CADA\r\n\r\nPARA FINALIZAR EM CASA",
+      "description": "Duas unidades de 180 g cada, para preparar em casa. Escolha o seu blend favorito.",
       "priceCents": 2780,
       "unit": "un",
       "saleMode": "unit",
@@ -386,22 +379,22 @@
       "variants": [
         {
           "id": "0",
-          "name": "Picanha 2 unidades",
+          "name": "Picanha — 2 unidades",
           "priceCents": 2980
         },
         {
           "id": "1",
-          "name": "Fraldinha 2 unidades",
+          "name": "Fraldinha — 2 unidades",
           "priceCents": 2780
         },
         {
           "id": "2",
-          "name": "Fraldinha c/ bacon 2 unidades",
+          "name": "Fraldinha com bacon — 2 unidades",
           "priceCents": 2780
         },
         {
           "id": "3",
-          "name": "Costela angus 2 unidades",
+          "name": "Costela Angus — 2 unidades",
           "priceCents": 2780
         }
       ],
@@ -415,7 +408,7 @@
       "id": "544291",
       "categoryId": "91324",
       "name": "Pão de hambúrguer",
-      "description": "",
+      "description": "Duas unidades para completar seu hambúrguer. Escolha brioche ou australiano.",
       "priceCents": 680,
       "unit": "un",
       "saleMode": "unit",
@@ -423,12 +416,12 @@
       "variants": [
         {
           "id": "0",
-          "name": "Brioche 2 unidades",
+          "name": "Brioche — 2 unidades",
           "priceCents": 680
         },
         {
           "id": "1",
-          "name": "Australiano 2 unidades",
+          "name": "Australiano — 2 unidades",
           "priceCents": 680
         }
       ],
@@ -441,8 +434,8 @@
     {
       "id": "544314",
       "categoryId": "91324",
-      "name": "Cheddar",
-      "description": "BANDEJA COM 8 FATIAS, 0,120 GR  $6,90 EM MEDIA",
+      "name": "Cheddar fatiado",
+      "description": "Bandeja com 8 fatias e aproximadamente 120 g. Valor calculado pelo peso.",
       "priceCents": 8990,
       "unit": "kg",
       "saleMode": "weight",
@@ -450,7 +443,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 8990
         }
       ],
@@ -463,8 +456,8 @@
     {
       "id": "6603712",
       "categoryId": "91324",
-      "name": "Queijo mussarela fatiado",
-      "description": "BANDEJA COM 8 FATIAS 0,120 GR $9,50 EM MEDIA",
+      "name": "Muçarela fatiada",
+      "description": "Bandeja com 8 fatias e aproximadamente 120 g. Valor calculado pelo peso.",
       "priceCents": 7900,
       "unit": "kg",
       "saleMode": "weight",
@@ -472,7 +465,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 7900
         }
       ],
@@ -486,7 +479,7 @@
       "id": "544354",
       "categoryId": "91324",
       "name": "Bacon fatiado",
-      "description": "VENDA POR KG\r\nPREÇO MEDIO $9,00 BDJ 0,150 GR",
+      "description": "Bandeja com aproximadamente 150 g. Valor calculado pelo peso.",
       "priceCents": 5590,
       "unit": "kg",
       "saleMode": "weight",
@@ -494,7 +487,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 5590
         }
       ],
@@ -507,8 +500,8 @@
     {
       "id": "5064972",
       "categoryId": "91324",
-      "name": "Hamburguer de pernil cordeiro vpj",
-      "description": "CX COM 2 UN DE 150 GR",
+      "name": "Hambúrguer de pernil de cordeiro VPJ",
+      "description": "Caixa com duas unidades de 150 g cada, para preparar em casa.",
       "priceCents": 3590,
       "unit": "un",
       "saleMode": "unit",
@@ -527,37 +520,10 @@
       "reviewRequired": false
     },
     {
-      "id": "6603747",
-      "categoryId": "91324",
-      "name": "Maionese do rei",
-      "description": "DEFUMADA OU COM BACON",
-      "priceCents": 2490,
-      "unit": "un",
-      "saleMode": "unit",
-      "weightGrams": 0,
-      "variants": [
-        {
-          "id": "0",
-          "name": "Defumada",
-          "priceCents": 2990
-        },
-        {
-          "id": "1",
-          "name": "Com bacon",
-          "priceCents": 2490
-        }
-      ],
-      "image": "assets/products/6603747.jpg",
-      "imagePath": "",
-      "active": true,
-      "sort": 16,
-      "reviewRequired": false
-    },
-    {
       "id": "3363425",
-      "categoryId": "91324",
-      "name": "Molhos",
-      "description": "MOSTARDA E MEL / BARBECUE",
+      "categoryId": "293336",
+      "name": "Molhos da casa",
+      "description": "Mostarda e mel, barbecue ou dijonese. Escolha o sabor para acompanhar seu pedido.",
       "priceCents": 2490,
       "unit": "un",
       "saleMode": "unit",
@@ -588,8 +554,8 @@
     {
       "id": "746827",
       "categoryId": "88433",
-      "name": "Picanha pull gril",
-      "description": "Categoria: Resfriado\r\nPaís: Paraguai \r\nPeso médio: 1,4kg \r\nRaça: Britânicas\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Picanha Pull Grill",
+      "description": "Peça resfriada de origem paraguaia, de raças britânicas. Peso médio de 1,4 kg.",
       "priceCents": 10490,
       "unit": "kg",
       "saleMode": "piece",
@@ -597,7 +563,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 10490
         }
       ],
@@ -610,8 +576,8 @@
     {
       "id": "1235984",
       "categoryId": "88433",
-      "name": "Picanha estância 92",
-      "description": "Categoria: Resfriado \r\nPaís: Brasil\r\nPeso médio: 1,2kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Picanha Estância 92",
+      "description": "Peça resfriada de novilho Nelore, de origem brasileira. Peso médio de 1,2 kg.",
       "priceCents": 14900,
       "unit": "kg",
       "saleMode": "piece",
@@ -619,7 +585,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 14900
         }
       ],
@@ -632,8 +598,8 @@
     {
       "id": "746818",
       "categoryId": "88433",
-      "name": "Picanha estancia angus",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1,1kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Picanha Estância Angus",
+      "description": "Peça resfriada de origem brasileira, da raça Angus. Peso médio de 1,1 kg.",
       "priceCents": 16990,
       "unit": "kg",
       "saleMode": "piece",
@@ -641,7 +607,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 16990
         }
       ],
@@ -654,8 +620,8 @@
     {
       "id": "542612",
       "categoryId": "88484",
-      "name": "Contra filé grill",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1kg \r\n\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Contrafilé Grill",
+      "description": "Peça resfriada de origem brasileira. Peso médio de 1 kg.",
       "priceCents": 7550,
       "unit": "kg",
       "saleMode": "piece",
@@ -663,7 +629,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 7550
         }
       ],
@@ -676,8 +642,8 @@
     {
       "id": "542498",
       "categoryId": "88484",
-      "name": "Chorizo angus",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1kg - Fracionado\r\nRaça: Angus\r\nValor por kg*",
+      "name": "Chorizo Angus",
+      "description": "Corte resfriado de origem brasileira. Vendido por peso, na quantidade que você escolher.",
       "priceCents": 11990,
       "unit": "kg",
       "saleMode": "weight",
@@ -685,7 +651,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 11990
         }
       ],
@@ -698,8 +664,8 @@
     {
       "id": "6876194",
       "categoryId": "88484",
-      "name": "Ancho bassi peça",
-      "description": "",
+      "name": "Ancho Bassi",
+      "description": "Corte vendido por peso. O valor final é confirmado após a pesagem.",
       "priceCents": 8590,
       "unit": "kg",
       "saleMode": "weight",
@@ -707,7 +673,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 8590
         }
       ],
@@ -720,8 +686,8 @@
     {
       "id": "5462803",
       "categoryId": "88484",
-      "name": "Filé de costela angus",
-      "description": "",
+      "name": "Filé de costela Angus",
+      "description": "Corte Angus vendido por peso. Escolha a quantidade para seu pedido.",
       "priceCents": 11990,
       "unit": "kg",
       "saleMode": "weight",
@@ -729,7 +695,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 11990
         }
       ],
@@ -742,8 +708,8 @@
     {
       "id": "1501821",
       "categoryId": "88484",
-      "name": "Baby beef estancia angus",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1,4kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Baby beef Estância Angus",
+      "description": "Peça resfriada de origem brasileira. Peso médio de 1,4 kg.",
       "priceCents": 10990,
       "unit": "kg",
       "saleMode": "piece",
@@ -751,7 +717,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 10990
         }
       ],
@@ -762,32 +728,10 @@
       "reviewRequired": false
     },
     {
-      "id": "542575",
-      "categoryId": "88484",
-      "name": "Bombom da alcatra",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,700kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
-      "priceCents": 10790,
-      "unit": "kg",
-      "saleMode": "piece",
-      "weightGrams": 700,
-      "variants": [
-        {
-          "id": "0",
-          "name": "Kg",
-          "priceCents": 10790
-        }
-      ],
-      "image": "assets/products/542575.jpg",
-      "imagePath": "",
-      "active": true,
-      "sort": 26,
-      "reviewRequired": false
-    },
-    {
       "id": "542587",
       "categoryId": "88484",
-      "name": "Shoulder  angus",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 1kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Shoulder Angus",
+      "description": "Peça resfriada de origem brasileira. Peso médio de 1 kg.",
       "priceCents": 10990,
       "unit": "kg",
       "saleMode": "piece",
@@ -795,7 +739,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 10990
         }
       ],
@@ -808,8 +752,8 @@
     {
       "id": "5368082",
       "categoryId": "88484",
-      "name": "Shoulder estancia 92",
-      "description": "Raça: Novilho de Nelore\r\nPais: Brasil",
+      "name": "Shoulder Estância 92",
+      "description": "Corte de novilho Nelore, de origem brasileira. Vendido por peso.",
       "priceCents": 12990,
       "unit": "kg",
       "saleMode": "weight",
@@ -817,7 +761,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 12990
         }
       ],
@@ -830,8 +774,8 @@
     {
       "id": "2685033",
       "categoryId": "88484",
-      "name": "Chuck eye roll  angus",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,550kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Chuck eye roll Angus",
+      "description": "Peça resfriada de origem brasileira. Peso médio de 550 g.",
       "priceCents": 9990,
       "unit": "kg",
       "saleMode": "piece",
@@ -839,7 +783,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 9990
         }
       ],
@@ -852,8 +796,8 @@
     {
       "id": "2685026",
       "categoryId": "88484",
-      "name": "Denver angus",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,500kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Denver Angus",
+      "description": "Peça resfriada de origem brasileira. Peso médio de 500 g.",
       "priceCents": 23990,
       "unit": "kg",
       "saleMode": "piece",
@@ -861,7 +805,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 23990
         }
       ],
@@ -874,8 +818,8 @@
     {
       "id": "542681",
       "categoryId": "88484",
-      "name": "Fraldinha red",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,700kg \r\nRaça: Novilho Nelore\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Fraldinha Red",
+      "description": "Peça resfriada de novilho Nelore, de origem brasileira. Peso médio de 700 g.",
       "priceCents": 14990,
       "unit": "kg",
       "saleMode": "piece",
@@ -883,7 +827,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 14990
         }
       ],
@@ -896,8 +840,8 @@
     {
       "id": "542677",
       "categoryId": "88484",
-      "name": "Maminha  angus",
-      "description": "Categoria: Resfriado\r\nPaís: Brasil \r\nPeso médio: 0,900kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Maminha Angus",
+      "description": "Peça resfriada de origem brasileira. Peso médio de 900 g.",
       "priceCents": 10900,
       "unit": "kg",
       "saleMode": "piece",
@@ -905,7 +849,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 10900
         }
       ],
@@ -918,8 +862,8 @@
     {
       "id": "5368073",
       "categoryId": "88484",
-      "name": "Cupim novilho",
-      "description": "Raça: Novilho de Nelore \r\nPais: Brasil",
+      "name": "Cupim de novilho",
+      "description": "Corte de novilho Nelore, de origem brasileira. Vendido por peso.",
       "priceCents": 10590,
       "unit": "kg",
       "saleMode": "weight",
@@ -927,7 +871,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 10590
         }
       ],
@@ -940,8 +884,8 @@
     {
       "id": "543453",
       "categoryId": "91016",
-      "name": "Assado de tiras angus",
-      "description": "Categoria: Congelado\r\nPaís: Brasil \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Assado de tiras Angus",
+      "description": "Corte congelado de origem brasileira, vendido por peso.",
       "priceCents": 12990,
       "unit": "kg",
       "saleMode": "weight",
@@ -949,7 +893,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 12990
         }
       ],
@@ -962,16 +906,16 @@
     {
       "id": "5192767",
       "categoryId": "91016",
-      "name": "Denver vpj black angus",
-      "description": "Raça: Angus \r\nLinha: Black Angus \r\nPEÇA COM MEDIA DE 1 KG",
+      "name": "Denver VPJ Black Angus",
+      "description": "Peça da linha Black Angus, com aproximadamente 1 kg. Valor calculado pelo peso.",
       "priceCents": 35990,
       "unit": "kg",
-      "saleMode": "weight",
-      "weightGrams": 500,
+      "saleMode": "piece",
+      "weightGrams": 1000,
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 35990
         }
       ],
@@ -984,8 +928,8 @@
     {
       "id": "3363350",
       "categoryId": "91016",
-      "name": "Bananinha angus",
-      "description": "Categoria: Congelado\r\nPaís: Brasil \r\nPeso médio: 1,000kg \r\nRaça: Angus\r\nValor por kg*\r\n*Valor pode variar devido ao peso da peça",
+      "name": "Bananinha Angus",
+      "description": "Peça congelada de origem brasileira. Peso médio de 1 kg.",
       "priceCents": 9990,
       "unit": "kg",
       "saleMode": "piece",
@@ -993,7 +937,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 9990
         }
       ],
@@ -1007,7 +951,7 @@
       "id": "8810771",
       "categoryId": "1047543",
       "name": "Peito de frango extra limpo",
-      "description": "PCT FILEZINHO/STROGONOFF COM MEDIA DE 500 GR\r\nPCT PEITO COM MEDIA DE 700 GR",
+      "description": "Escolha peito, filezinho ou estrogonofe. Pacotes de filezinho e estrogonofe com aproximadamente 500 g; peito com aproximadamente 700 g.",
       "priceCents": 2990,
       "unit": "kg",
       "saleMode": "piece",
@@ -1025,7 +969,7 @@
         },
         {
           "id": "2",
-          "name": "Strogonoff",
+          "name": "Estrogonofe",
           "priceCents": 2990
         }
       ],
@@ -1038,8 +982,8 @@
     {
       "id": "6380467",
       "categoryId": "1047543",
-      "name": "Filé de coxa e sobrecoxa dessosada temperada",
-      "description": "PACOTE COM 700GR -  VALOR ANUNCIADO DO KG",
+      "name": "Filé de coxa e sobrecoxa desossada temperada",
+      "description": "Pacote de 700 g, já temperado. Preço anunciado por kg; total conforme a pesagem.",
       "priceCents": 4490,
       "unit": "kg",
       "saleMode": "piece",
@@ -1047,7 +991,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 4490
         }
       ],
@@ -1060,8 +1004,8 @@
     {
       "id": "6380466",
       "categoryId": "1047543",
-      "name": "Coxinha temperada",
-      "description": "PACOTE COM 700GR - VALOR ANUNCIADO DO KG",
+      "name": "Coxinha de frango temperada",
+      "description": "Pacote de 700 g, já temperado. Preço anunciado por kg; total conforme a pesagem.",
       "priceCents": 3450,
       "unit": "kg",
       "saleMode": "piece",
@@ -1069,7 +1013,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 3450
         }
       ],
@@ -1082,8 +1026,8 @@
     {
       "id": "6380464",
       "categoryId": "1047543",
-      "name": "Tulipa temperada",
-      "description": "PACOTE COM 700GR - VALOR ANUNCIADO DO KG",
+      "name": "Tulipa de frango temperada",
+      "description": "Pacote de 700 g, já temperado. Preço anunciado por kg; total conforme a pesagem.",
       "priceCents": 4490,
       "unit": "kg",
       "saleMode": "piece",
@@ -1091,7 +1035,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 4490
         }
       ],
@@ -1105,7 +1049,7 @@
       "id": "539779",
       "categoryId": "88808",
       "name": "Paleta de cordeiro",
-      "description": "",
+      "description": "Corte de cordeiro vendido por peso. Escolha a quantidade para o seu preparo.",
       "priceCents": 9990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1113,7 +1057,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 9990
         }
       ],
@@ -1127,7 +1071,7 @@
       "id": "539820",
       "categoryId": "88808",
       "name": "Pernil de cordeiro",
-      "description": "",
+      "description": "Corte de cordeiro vendido por peso. Escolha a quantidade para o seu preparo.",
       "priceCents": 9990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1135,7 +1079,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 9990
         }
       ],
@@ -1149,7 +1093,7 @@
       "id": "8437052",
       "categoryId": "88808",
       "name": "Carré de cordeiro porcionado",
-      "description": "PACOTE COM MEDIA 0,400 GR",
+      "description": "Pacote com aproximadamente 400 g. Valor calculado pelo peso.",
       "priceCents": 21990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1157,7 +1101,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 21990
         }
       ],
@@ -1170,8 +1114,8 @@
     {
       "id": "5818523",
       "categoryId": "88808",
-      "name": "Fraldinha de cordeiro vpj",
-      "description": "",
+      "name": "Fraldinha de cordeiro VPJ",
+      "description": "Corte de cordeiro VPJ vendido por peso.",
       "priceCents": 14990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1179,7 +1123,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 14990
         }
       ],
@@ -1193,7 +1137,7 @@
       "id": "8814683",
       "categoryId": "88808",
       "name": "Costela de cordeiro",
-      "description": "PCT COM MEDIA  1 KG",
+      "description": "Pacote com aproximadamente 1 kg. Confirme o peso final com a loja.",
       "priceCents": 12990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1214,8 +1158,8 @@
     {
       "id": "5818512",
       "categoryId": "88808",
-      "name": "Picanha de cordeiro vpj",
-      "description": "",
+      "name": "Picanha de cordeiro VPJ",
+      "description": "Corte de cordeiro VPJ vendido por peso.",
       "priceCents": 16550,
       "unit": "kg",
       "saleMode": "weight",
@@ -1223,7 +1167,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 16550
         }
       ],
@@ -1236,8 +1180,8 @@
     {
       "id": "543838",
       "categoryId": "91248",
-      "name": "Picanha duroc",
-      "description": "LINHA DUROC VPJ",
+      "name": "Picanha Duroc VPJ",
+      "description": "Picanha suína da linha Duroc VPJ. Vendida por peso.",
       "priceCents": 13990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1245,7 +1189,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 13990
         }
       ],
@@ -1258,8 +1202,8 @@
     {
       "id": "543883",
       "categoryId": "91248",
-      "name": "Prime rib duroc",
-      "description": "",
+      "name": "Prime rib Duroc",
+      "description": "Corte suíno Duroc vendido por peso.",
       "priceCents": 12990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1267,7 +1211,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 12990
         }
       ],
@@ -1280,8 +1224,8 @@
     {
       "id": "543850",
       "categoryId": "91248",
-      "name": "Assado de tiras duroc",
-      "description": "",
+      "name": "Assado de tiras Duroc",
+      "description": "Corte suíno Duroc vendido por peso.",
       "priceCents": 12990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1289,7 +1233,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 12990
         }
       ],
@@ -1302,8 +1246,8 @@
     {
       "id": "5818929",
       "categoryId": "91248",
-      "name": "Copa lombo duroc vpj",
-      "description": "",
+      "name": "Copa-lombo Duroc VPJ",
+      "description": "Corte suíno da linha Duroc VPJ, vendido por peso.",
       "priceCents": 8990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1311,7 +1255,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 8990
         }
       ],
@@ -1324,8 +1268,8 @@
     {
       "id": "543863",
       "categoryId": "91248",
-      "name": "File mignon suino duroc",
-      "description": "",
+      "name": "Filé-mignon suíno Duroc",
+      "description": "Corte suíno Duroc vendido por peso.",
       "priceCents": 7890,
       "unit": "kg",
       "saleMode": "weight",
@@ -1333,7 +1277,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 7890
         }
       ],
@@ -1346,8 +1290,8 @@
     {
       "id": "543996",
       "categoryId": "91248",
-      "name": "Lombo duroc",
-      "description": "BIFE 2 DEDOS RECOMENDADO P/ CHURRASCO",
+      "name": "Lombo Duroc",
+      "description": "Bifes para churrasco, com espessura de aproximadamente dois dedos.",
       "priceCents": 8990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1355,7 +1299,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 8990
         }
       ],
@@ -1368,8 +1312,8 @@
     {
       "id": "8098376",
       "categoryId": "91248",
-      "name": "Panceta suina nabrasa temperada",
-      "description": "AO TOQUE DE LIMÃO",
+      "name": "Panceta suína NaBrasa temperada",
+      "description": "Panceta temperada com toque de limão. Vendida por peso.",
       "priceCents": 7490,
       "unit": "kg",
       "saleMode": "weight",
@@ -1377,7 +1321,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 7490
         }
       ],
@@ -1390,8 +1334,8 @@
     {
       "id": "8098480",
       "categoryId": "91248",
-      "name": "Costela suina nabrasa",
-      "description": "SABOR BARBECUE",
+      "name": "Costela suína NaBrasa",
+      "description": "Costela suína sabor barbecue. Vendida por peso.",
       "priceCents": 6560,
       "unit": "kg",
       "saleMode": "weight",
@@ -1399,7 +1343,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 6560
         }
       ],
@@ -1412,8 +1356,8 @@
     {
       "id": "8810927",
       "categoryId": "91248",
-      "name": "Copa lombo dia a dia",
-      "description": "BIFE FININHO DIA A DIA",
+      "name": "Copa-lombo do dia a dia",
+      "description": "Bifes finos para o preparo do dia a dia. Vendidos por peso.",
       "priceCents": 4990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1421,7 +1365,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 4990
         }
       ],
@@ -1434,8 +1378,8 @@
     {
       "id": "8810932",
       "categoryId": "91248",
-      "name": "Lombo suino dia a dia",
-      "description": "BIFE FININHO DIA A DIA",
+      "name": "Lombo suíno do dia a dia",
+      "description": "Bifes finos para o preparo do dia a dia. Vendidos por peso.",
       "priceCents": 4990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1443,7 +1387,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 4990
         }
       ],
@@ -1456,8 +1400,8 @@
     {
       "id": "12734661",
       "categoryId": "91248",
-      "name": "Filé mignon suíno dia a dia",
-      "description": "PACOTE COM 4 MEDALHÕES APROXIMADAMENTE 400GR",
+      "name": "Filé-mignon suíno do dia a dia",
+      "description": "Pacote com 4 medalhões e aproximadamente 400 g.",
       "priceCents": 4990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1479,7 +1423,7 @@
       "id": "544054",
       "categoryId": "90468",
       "name": "Linguiça de pernil",
-      "description": "EMBALAGEM COM  1KG",
+      "description": "Embalagem de 1 kg para completar seu churrasco.",
       "priceCents": 3690,
       "unit": "un",
       "saleMode": "unit",
@@ -1500,8 +1444,8 @@
     {
       "id": "544067",
       "categoryId": "90468",
-      "name": "Linguiça nabrasa recheada",
-      "description": "QUEIJO COALHO, PIMENTA BIQUINHO, ALHO E ERVAS E FRANGO COM BACON\r\n\r\nEMBALAGEM COM 600GR",
+      "name": "Linguiça NaBrasa recheada",
+      "description": "Embalagem de 600 g. Escolha entre queijo coalho, pimenta-biquinho, alho e ervas ou frango com bacon.",
       "priceCents": 2990,
       "unit": "un",
       "saleMode": "unit",
@@ -1509,7 +1453,22 @@
       "variants": [
         {
           "id": "0",
-          "name": "Padrão",
+          "name": "Queijo coalho",
+          "priceCents": 2990
+        },
+        {
+          "id": "pimenta",
+          "name": "Pimenta-biquinho",
+          "priceCents": 2990
+        },
+        {
+          "id": "ervas",
+          "name": "Alho e ervas",
+          "priceCents": 2990
+        },
+        {
+          "id": "frango",
+          "name": "Frango com bacon",
           "priceCents": 2990
         }
       ],
@@ -1522,8 +1481,8 @@
     {
       "id": "5060048",
       "categoryId": "90468",
-      "name": "Linguiça de costela - vpj",
-      "description": "CAIXA COM 500GR",
+      "name": "Linguiça de costela VPJ",
+      "description": "Caixa com 500 g.",
       "priceCents": 4990,
       "unit": "un",
       "saleMode": "unit",
@@ -1544,8 +1503,8 @@
     {
       "id": "544004",
       "categoryId": "90468",
-      "name": "Linguiça de cordeiro - vpj",
-      "description": "CAIXA COM 500GR",
+      "name": "Linguiça de cordeiro VPJ",
+      "description": "Caixa com 500 g.",
       "priceCents": 4290,
       "unit": "un",
       "saleMode": "unit",
@@ -1553,7 +1512,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Unid",
+          "name": "Padrão",
           "priceCents": 4290
         }
       ],
@@ -1566,8 +1525,8 @@
     {
       "id": "12734670",
       "categoryId": "90468",
-      "name": "Linguiça de pernil romana vpj",
-      "description": "EMBALAGEM COM 500GR",
+      "name": "Linguiça de pernil Romana VPJ",
+      "description": "Embalagem com 500 g.",
       "priceCents": 1895,
       "unit": "un",
       "saleMode": "unit",
@@ -1588,8 +1547,8 @@
     {
       "id": "544211",
       "categoryId": "88807",
-      "name": "Pão de alho tradicional unid",
-      "description": "TRADICIONAL / BOLINHA / APIMENTADO",
+      "name": "Pão de alho",
+      "description": "Escolha tradicional, bolinha ou apimentado para acompanhar o churrasco.",
       "priceCents": 1790,
       "unit": "un",
       "saleMode": "unit",
@@ -1597,7 +1556,17 @@
       "variants": [
         {
           "id": "0",
-          "name": "Padrão",
+          "name": "Tradicional",
+          "priceCents": 1790
+        },
+        {
+          "id": "bolinha",
+          "name": "Bolinha",
+          "priceCents": 1790
+        },
+        {
+          "id": "apimentado",
+          "name": "Apimentado",
           "priceCents": 1790
         }
       ],
@@ -1610,8 +1579,8 @@
     {
       "id": "544105",
       "categoryId": "88807",
-      "name": "Espeto de coração temperado",
-      "description": "EMBALAGEM COM 4 A 5 ESPETINHOS /  / VALOR POR KG\r\n\r\nEMBALAGEM COM MEDIA DE 0,370GR",
+      "name": "Espetinho de coração temperado",
+      "description": "Embalagem com 4 a 5 espetinhos e aproximadamente 370 g. Valor calculado pelo peso.",
       "priceCents": 6890,
       "unit": "kg",
       "saleMode": "weight",
@@ -1619,7 +1588,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 6890
         }
       ],
@@ -1633,7 +1602,7 @@
       "id": "544121",
       "categoryId": "88807",
       "name": "Espetinho de kafta temperado",
-      "description": "EMBALAGEM COM 4 A 5 ESPETINHOS /  / VALOR POR KG\r\n\r\nEMBALAGEM COM MEDIA DE 0,400GR",
+      "description": "Embalagem com 4 a 5 espetinhos e aproximadamente 400 g. Valor calculado pelo peso.",
       "priceCents": 6990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1641,7 +1610,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 6990
         }
       ],
@@ -1654,8 +1623,8 @@
     {
       "id": "11817278",
       "categoryId": "88807",
-      "name": "Medalhao de queijo coalho com bacon",
-      "description": "PACOTE COM 2 ESPETOS MEDIA DE $24,00",
+      "name": "Medalhão de queijo coalho com bacon",
+      "description": "Pacote com 2 espetinhos. Valor calculado pelo peso.",
       "priceCents": 7990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1663,7 +1632,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 7990
         }
       ],
@@ -1676,8 +1645,8 @@
     {
       "id": "544095",
       "categoryId": "88807",
-      "name": "Queijo coalho  / valor por kg",
-      "description": "EMBALAGEM COM 4 ESPETOS  / VALOR POR KG\r\n\r\nEMBALAGEM COM MEDIA DE 0,400GR",
+      "name": "Queijo coalho no espeto",
+      "description": "Embalagem com 4 espetinhos e aproximadamente 400 g. Valor calculado pelo peso.",
       "priceCents": 7990,
       "unit": "kg",
       "saleMode": "weight",
@@ -1685,7 +1654,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 7990
         }
       ],
@@ -1699,7 +1668,7 @@
       "id": "3808651",
       "categoryId": "88807",
       "name": "Queijo bolinha",
-      "description": "Valor por Kg\r\n\r\nEMBALAGEM COM MEDIA DE 0,250GR",
+      "description": "Embalagem com aproximadamente 250 g. Valor calculado pelo peso.",
       "priceCents": 9490,
       "unit": "kg",
       "saleMode": "weight",
@@ -1707,7 +1676,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 9490
         }
       ],
@@ -1720,8 +1689,8 @@
     {
       "id": "3093454",
       "categoryId": "91383",
-      "name": "Salmao porcionado",
-      "description": "PACOTE COM MEDIA DE 230GR",
+      "name": "Salmão porcionado",
+      "description": "Pacote com aproximadamente 230 g. Valor calculado pelo peso.",
       "priceCents": 12990,
       "unit": "kg",
       "saleMode": "piece",
@@ -1729,7 +1698,7 @@
       "variants": [
         {
           "id": "0",
-          "name": "Kg",
+          "name": "Padrão",
           "priceCents": 12990
         }
       ],
@@ -1742,8 +1711,8 @@
     {
       "id": "3811152",
       "categoryId": "662714",
-      "name": "Sal de parrilla cantagallo 500gr",
-      "description": "",
+      "name": "Sal de parrilla Cantagallo — 500 g",
+      "description": "Sal de parrilla para o preparo dos seus cortes.",
       "priceCents": 2290,
       "unit": "un",
       "saleMode": "unit",
@@ -1764,8 +1733,8 @@
     {
       "id": "5082979",
       "categoryId": "662714",
-      "name": "Pedra de sal rosa do himalaia",
-      "description": "",
+      "name": "Pedra de sal rosa do Himalaia",
+      "description": "Acessório para o preparo dos seus cortes.",
       "priceCents": 9990,
       "unit": "un",
       "saleMode": "unit",
@@ -1786,8 +1755,8 @@
     {
       "id": "5230844",
       "categoryId": "662714",
-      "name": "Dry rub cantagallo",
-      "description": "",
+      "name": "Dry rub Cantagallo",
+      "description": "Tempero para completar o preparo da carne.",
       "priceCents": 3490,
       "unit": "un",
       "saleMode": "unit",
@@ -1808,8 +1777,8 @@
     {
       "id": "5064977",
       "categoryId": "663231",
-      "name": "Palmito pupunha grill",
-      "description": "",
+      "name": "Palmito pupunha Grill",
+      "description": "Um acompanhamento para completar o seu pedido.",
       "priceCents": 3990,
       "unit": "un",
       "saleMode": "unit",
@@ -1830,8 +1799,8 @@
     {
       "id": "6603797",
       "categoryId": "293336",
-      "name": "Maionese do rei",
-      "description": "DEFUMADA OU COM BACON",
+      "name": "Maionese do Rei",
+      "description": "Escolha defumada ou com bacon para acompanhar seu hambúrguer.",
       "priceCents": 2990,
       "unit": "un",
       "saleMode": "unit",
@@ -1855,37 +1824,10 @@
       "reviewRequired": false
     },
     {
-      "id": "5645375",
-      "categoryId": "293336",
-      "name": "Molhos",
-      "description": "MOSTARDA E MEL /  BARBECUE",
-      "priceCents": 2490,
-      "unit": "un",
-      "saleMode": "unit",
-      "weightGrams": 0,
-      "variants": [
-        {
-          "id": "0",
-          "name": "Mostarda e mel",
-          "priceCents": 2690
-        },
-        {
-          "id": "1",
-          "name": "Barbecue",
-          "priceCents": 2490
-        }
-      ],
-      "image": "assets/products/5645375.jpg",
-      "imagePath": "",
-      "active": true,
-      "sort": 75,
-      "reviewRequired": false
-    },
-    {
       "id": "3812110",
       "categoryId": "293336",
-      "name": "Geleia agridoce queensberry",
-      "description": "Sabores: \r\nMenta com Hortelã\r\nPimenta Vermelha",
+      "name": "Geleia agridoce Queensberry",
+      "description": "Escolha menta com hortelã ou pimenta vermelha.",
       "priceCents": 3590,
       "unit": "un",
       "saleMode": "unit",
@@ -1893,7 +1835,12 @@
       "variants": [
         {
           "id": "0",
-          "name": "Padrão",
+          "name": "Menta com hortelã",
+          "priceCents": 3590
+        },
+        {
+          "id": "pimenta",
+          "name": "Pimenta vermelha",
           "priceCents": 3590
         }
       ],
@@ -1906,8 +1853,8 @@
     {
       "id": "3830691",
       "categoryId": "293336",
-      "name": "Fumaça liquida cantagallo",
-      "description": "",
+      "name": "Fumaça líquida Cantagallo",
+      "description": "Para dar um toque defumado ao seu preparo.",
       "priceCents": 1990,
       "unit": "un",
       "saleMode": "unit",
@@ -1928,8 +1875,8 @@
     {
       "id": "5362832",
       "categoryId": "293336",
-      "name": "Molhos de cabron",
-      "description": "",
+      "name": "Molhos De Cabrón",
+      "description": "Escolha seu sabor de molho De Cabrón.",
       "priceCents": 2490,
       "unit": "un",
       "saleMode": "unit",
@@ -1937,22 +1884,22 @@
       "variants": [
         {
           "id": "0",
-          "name": "Sweet chilli decabron",
+          "name": "Sweet chilli",
           "priceCents": 2690
         },
         {
           "id": "1",
-          "name": "Sriracha bacon decabron",
+          "name": "Sriracha com bacon",
           "priceCents": 2890
         },
         {
           "id": "2",
-          "name": "Sweet chilli goiabada decabron",
+          "name": "Sweet chilli com goiabada",
           "priceCents": 2890
         },
         {
           "id": "3",
-          "name": "Cebola caramelizada decabron",
+          "name": "Cebola caramelizada",
           "priceCents": 2890
         },
         {
@@ -1970,8 +1917,8 @@
     {
       "id": "5732285",
       "categoryId": "88425",
-      "name": "Barril 5l heineken - gelado",
-      "description": "GELADO",
+      "name": "Heineken — barril de 5 L",
+      "description": "Barril gelado. Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 11990,
       "unit": "un",
       "saleMode": "unit",
@@ -1992,8 +1939,8 @@
     {
       "id": "530097",
       "categoryId": "88425",
-      "name": "Heineken 330ml - gelada",
-      "description": "Venda e consumo proibido para menores de 18 anos. Beba com moderação.",
+      "name": "Heineken — 330 ml",
+      "description": "Long neck gelada. Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 749,
       "unit": "un",
       "saleMode": "unit",
@@ -2014,8 +1961,8 @@
     {
       "id": "532588",
       "categoryId": "88425",
-      "name": "Stella 330ml - gelada",
-      "description": "",
+      "name": "Stella Artois — 330 ml",
+      "description": "Long neck gelada. Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 749,
       "unit": "un",
       "saleMode": "unit",
@@ -2036,8 +1983,8 @@
     {
       "id": "5496151",
       "categoryId": "88425",
-      "name": "Stella 330ml sem gluten",
-      "description": "",
+      "name": "Stella Artois sem glúten — 330 ml",
+      "description": "Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 799,
       "unit": "un",
       "saleMode": "unit",
@@ -2058,8 +2005,8 @@
     {
       "id": "532601",
       "categoryId": "88425",
-      "name": "Corona 330ml - gelada",
-      "description": "",
+      "name": "Corona",
+      "description": "Escolha a versão e o tamanho. Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 799,
       "unit": "un",
       "saleMode": "unit",
@@ -2067,17 +2014,17 @@
       "variants": [
         {
           "id": "0",
-          "name": "Comum",
+          "name": "Corona Extra — 330 ml",
           "priceCents": 799
         },
         {
           "id": "1",
-          "name": "Cero",
+          "name": "Corona Cero — 330 ml",
           "priceCents": 799
         },
         {
           "id": "2",
-          "name": "600 ml",
+          "name": "Corona Extra — 600 ml",
           "priceCents": 1590
         }
       ],
@@ -2090,8 +2037,8 @@
     {
       "id": "5223445",
       "categoryId": "88425",
-      "name": "Coca cola comum 2l - gelada",
-      "description": "",
+      "name": "Coca-Cola Original — 2 L",
+      "description": "Refrigerante gelado para acompanhar seu pedido.",
       "priceCents": 1490,
       "unit": "un",
       "saleMode": "unit",
@@ -2112,8 +2059,8 @@
     {
       "id": "5223460",
       "categoryId": "88425",
-      "name": "Coca cola zero 1,5l",
-      "description": "",
+      "name": "Coca-Cola Zero — 1,5 L",
+      "description": "Refrigerante sem açúcar para acompanhar seu pedido.",
       "priceCents": 1490,
       "unit": "un",
       "saleMode": "unit",
@@ -2134,8 +2081,8 @@
     {
       "id": "5223425",
       "categoryId": "88425",
-      "name": "Agua mineral",
-      "description": "",
+      "name": "Água mineral",
+      "description": "Para acompanhar seu pedido.",
       "priceCents": 400,
       "unit": "un",
       "saleMode": "unit",
@@ -2156,8 +2103,8 @@
     {
       "id": "12414119",
       "categoryId": "88425",
-      "name": "Amstel ultra 275ml",
-      "description": "LONG-NECK",
+      "name": "Amstel Ultra — 275 ml",
+      "description": "Long neck. Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 699,
       "unit": "un",
       "saleMode": "unit",
@@ -2178,8 +2125,8 @@
     {
       "id": "12414120",
       "categoryId": "88425",
-      "name": "Lagunitas day time  350 ml",
-      "description": "LATA",
+      "name": "Lagunitas DayTime — 350 ml",
+      "description": "Lata. Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 990,
       "unit": "un",
       "saleMode": "unit",
@@ -2200,8 +2147,8 @@
     {
       "id": "12414122",
       "categoryId": "88425",
-      "name": "Cerveja quilmes 340ml",
-      "description": "LONG-NECK",
+      "name": "Quilmes — 340 ml",
+      "description": "Long neck. Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 749,
       "unit": "un",
       "saleMode": "unit",
@@ -2222,8 +2169,8 @@
     {
       "id": "12734635",
       "categoryId": "88425",
-      "name": "Blue moon",
-      "description": "",
+      "name": "Blue Moon",
+      "description": "Venda exclusiva para maiores de 18 anos. Beba com moderação.",
       "priceCents": 999,
       "unit": "un",
       "saleMode": "unit",
@@ -2244,8 +2191,8 @@
     {
       "id": "5082799",
       "categoryId": "662713",
-      "name": "Butcher tramontina",
-      "description": "",
+      "name": "Butcher Tramontina",
+      "description": "Acessório Tramontina para o preparo dos seus cortes.",
       "priceCents": 21990,
       "unit": "un",
       "saleMode": "unit",
@@ -2267,7 +2214,7 @@
       "id": "5082817",
       "categoryId": "662713",
       "name": "Jogo trinchante",
-      "description": "",
+      "description": "Para servir os cortes à mesa.",
       "priceCents": 11790,
       "unit": "un",
       "saleMode": "unit",
@@ -2288,8 +2235,8 @@
     {
       "id": "3812401",
       "categoryId": "662713",
-      "name": "Churrasqueira apollo parrilla mini",
-      "description": "",
+      "name": "Churrasqueira Apollo Parrilla Mini",
+      "description": "Churrasqueira modelo Apollo Parrilla Mini.",
       "priceCents": 48000,
       "unit": "un",
       "saleMode": "unit",
@@ -2310,8 +2257,8 @@
     {
       "id": "5495979",
       "categoryId": "662713",
-      "name": "Limpa grelhas",
-      "description": "",
+      "name": "Limpa-grelhas",
+      "description": "Acessório para a limpeza da grelha.",
       "priceCents": 3490,
       "unit": "un",
       "saleMode": "unit",
@@ -2332,8 +2279,8 @@
     {
       "id": "5495999",
       "categoryId": "662713",
-      "name": "Filme de polister para churrasco",
-      "description": "ASSAFORT",
+      "name": "Filme de poliéster para churrasco Assafort",
+      "description": "Filme Assafort para o preparo do churrasco.",
       "priceCents": 1490,
       "unit": "un",
       "saleMode": "unit",
@@ -2354,8 +2301,8 @@
     {
       "id": "8814650",
       "categoryId": "662713",
-      "name": "Tabua rei do gado grande",
-      "description": "TABUA MADEIRA ARTESANAL CANELA GARUVA",
+      "name": "Tábua Rei do Gado — grande",
+      "description": "Tábua artesanal em madeira canela-garuva, com a marca Rei do Gado.",
       "priceCents": 19990,
       "unit": "un",
       "saleMode": "unit",
@@ -2377,7 +2324,7 @@
       "id": "5998409",
       "categoryId": "989899",
       "name": "Acendedores",
-      "description": "ELETRICO\r\nPASTILHA\r\nALCOOL GEL\r\nALCOOL LIQUIDO",
+      "description": "Escolha o tipo de acendedor para o seu churrasco.",
       "priceCents": 1000,
       "unit": "un",
       "saleMode": "unit",
@@ -2390,17 +2337,17 @@
         },
         {
           "id": "1",
-          "name": "Acendedor fosforo pequeno",
+          "name": "Acendedor fósforo pequeno",
           "priceCents": 1050
         },
         {
           "id": "2",
-          "name": "Alcool gel",
+          "name": "Álcool em gel",
           "priceCents": 1490
         },
         {
           "id": "3",
-          "name": "Acendedor eletrico",
+          "name": "Acendedor elétrico",
           "priceCents": 10590
         }
       ],
@@ -2413,8 +2360,8 @@
     {
       "id": "6604003",
       "categoryId": "989899",
-      "name": "Maçarico",
-      "description": "MAÇARICO\r\nREFIL GAS",
+      "name": "Maçarico e refil de gás",
+      "description": "Escolha o maçarico ou o refil de gás.",
       "priceCents": 1990,
       "unit": "un",
       "saleMode": "unit",
@@ -2427,7 +2374,7 @@
         },
         {
           "id": "1",
-          "name": "Refil gas",
+          "name": "Refil de gás",
           "priceCents": 1990
         }
       ],
@@ -2437,5 +2384,22 @@
       "sort": 98,
       "reviewRequired": false
     }
-  ]
+  ],
+  "reviewedAt": "2026-09-18",
+  "deduplicatedIds": {
+    "542575": "5494672",
+    "543971": "8810771",
+    "6603747": "6603797",
+    "5645375": "3363425"
+  },
+  "variantRedirects": {
+    "542575": {
+      "0": "inteira"
+    },
+    "543971": {
+      "0": "1",
+      "1": "2",
+      "2": "0"
+    }
+  }
 }

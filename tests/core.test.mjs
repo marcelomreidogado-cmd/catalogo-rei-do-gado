@@ -7,6 +7,8 @@ import {
   whatsappMessage,
   groupCustomers,
   phoneBR,
+  mergeCatalogs,
+  priceCartForBranch,
 } from "../js/core.js";
 const p = {
   id: "p",
@@ -50,6 +52,21 @@ assert.equal(customers.length, 1);
 assert.equal(customers[0].orders.length, 2);
 assert.equal(customers[0].totalCents, 58744);
 assert.equal(customers[0].name, "João atualizado");
+const beef = { ...p, id: 'beef', active: true, sort: 0, saleMode: 'weight', categoryId: 'meat', priceCents: 5000, variants: [{id:'bife',name:'Bife',priceCents:5000}] };
+const storeA = {categories:[{id:'meat',name:'Carnes',sort:0}],products:[beef]};
+const storeB = {categories:storeA.categories,products:[{...beef,priceCents:6000,variants:[{id:'bife',name:'Bife',priceCents:6000},{id:'cubos',name:'Cubos',priceCents:6500}]}]};
+const storefront = mergeCatalogs([storeA,storeB]);
+assert.equal(storefront.products.length,1);
+assert.equal(storefront.products[0].priceVariesByStore,true);
+assert.equal(storefront.products[0].variants.length,2);
+assert.equal(storefront.products[0].priceCents,5000);
+const basket=[makeLine(storefront.products[0],'bife',750)];
+assert.equal(priceCartForBranch(basket,storeA).totalCents,3750);
+assert.equal(priceCartForBranch(basket,storeB).totalCents,4500);
+assert.equal(priceCartForBranch([makeLine(storefront.products[0],'cubos',500)],storeA).unavailable.length,1);
+assert.equal(priceCartForBranch(basket,{...storeA,products:[{...beef,active:false}]}).unavailable.length,1);
+assert.equal(priceCartForBranch(basket,{...storeA,products:[{...beef,saleMode:'piece'}]}).unavailable.length,1);
+assert.equal(storeA.products[0].variants[0].priceCents,5000);
 console.log(
   "PASS: centavo rounding, whole-piece weight, fractions, sum, phone normalization, encoded WhatsApp and customer grouping.",
 );

@@ -1,15 +1,22 @@
-@import url("https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;650;700&family=Oswald:wght@500;600;700&display=swap");
+/* Original files recovered from the brand package supplied with the 2019 manual. */
+@font-face { font-family: "Corona RDG"; src: url("assets/fonts/corona.woff2") format("woff2"); font-weight: 400 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Clarendon RDG"; src: url("assets/fonts/clarendon-roman.woff2") format("woff2"); font-weight: 400 500; font-style: normal; font-display: swap; }
+@font-face { font-family: "Clarendon RDG"; src: url("assets/fonts/clarendon-bold.woff2") format("woff2"); font-weight: 600 700; font-style: normal; font-display: swap; }
+@font-face { font-family: "Clarendon RDG"; src: url("assets/fonts/clarendon-black.woff2") format("woff2"); font-weight: 800 900; font-style: normal; font-display: swap; }
+@font-face { font-family: "Dallas RDG"; src: url("assets/fonts/dallas-sans.woff2") format("woff2"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Dallas RDG"; src: url("assets/fonts/dallas-sans-bold.woff2") format("woff2"); font-weight: 700; font-style: normal; font-display: swap; }
 :root {
   --wine: #5a0b14;
   --red: #ae0114;
-  --ink: #191919;
-  --muted: #717171;
+  --ink: #000000;
+  --muted: #626262;
   --line: #e6e3e1;
-  --paper: #f7f6f4;
+  --paper: #ffffff;
   --gold: #ffd583;
   --white: #fff;
   --radius: 16px;
-  font-family: "DM Sans", sans-serif;
+  font-family: "Clarendon RDG", Georgia, serif;
+  line-height: 1.55;
   color: var(--ink);
   background: var(--paper);
   font-synthesis: none;
@@ -108,7 +115,7 @@ textarea:focus {
   padding: 4px;
 }
 .brand strong {
-  font-family: Oswald, sans-serif;
+  font-family: "Corona RDG", Georgia, serif;
   font-size: 24px;
   letter-spacing: 1px;
 }
@@ -198,7 +205,7 @@ textarea:focus {
   margin-bottom: 14px;
 }
 .intro h1 {
-  font-family: Oswald, sans-serif;
+  font-family: "Corona RDG", Georgia, serif;
   font-size: 46px;
   line-height: 1.12;
   letter-spacing: -0.4px;
@@ -240,7 +247,7 @@ textarea:focus {
   gap: 20px;
 }
 .section-title {
-  font-family: Oswald, sans-serif;
+  font-family: "Corona RDG", Georgia, serif;
   font-size: 27px;
   font-weight: 500;
 }
@@ -837,7 +844,7 @@ dialog::backdrop {
   margin-bottom: 28px;
 }
 .admin-top h1 {
-  font-family: Oswald, sans-serif;
+  font-family: "Corona RDG", Georgia, serif;
   font-weight: 500;
   font-size: 34px;
 }
@@ -983,7 +990,7 @@ td small {
   margin-bottom: 30px;
 }
 .login-brand h1 {
-  font-family: Oswald, sans-serif;
+  font-family: "Corona RDG", Georgia, serif;
   font-size: 56px;
   font-weight: 500;
   margin-bottom: 20px;
@@ -1443,3 +1450,200 @@ td small {
   .brand { flex-shrink: 0; }
   .brand strong, .brand small { white-space: nowrap; }
 }
+
+/* Brand applications: original mark, Corona display, Clarendon text and manual palette. */
+html { scroll-behavior: smooth; scroll-padding-top: 16px; }
+.topbar { background: #fff; color: #000; border-bottom: 4px solid var(--wine); }
+.header { height: 142px; gap: 26px; }
+.brand img { width: 106px; height: 118px; padding: 0; border-radius: 0; background: #fff; }
+.header-note { border-left: 1px solid var(--wine); padding-left: 25px; }
+.header-note span { font-family: "Dallas RDG", sans-serif; font-size: 19px; letter-spacing: 1.5px; display: block; }
+.header-note small { color: var(--wine); font-size: 12px; }
+.header > .cart-top { margin-left: auto; color: var(--wine); }
+.intro { background: var(--wine); border-bottom: 1px solid #000; }
+.intro-inner { min-height: 328px; padding-top: 38px; padding-bottom: 38px; gap: 40px; }
+.hero-copy { flex: 1; }
+.intro h1 { font-family: "Corona RDG", Georgia, serif; font-size: clamp(42px,5vw,70px); line-height: .98; letter-spacing: 0; font-weight: 400; }
+.intro h1 span { display: inline-block; margin-top: 9px; }
+.intro p { color: #fff; font-size: 14px; line-height: 1.65; margin: 20px 0; }
+.eyebrow { letter-spacing: 1.5px; font-size: 10px; line-height: 1.6; }
+.hero-cta { background: var(--gold); color: #000; min-height: 46px; padding: 12px 18px; display: inline-flex; align-items: center; gap: 18px; text-decoration: none; font-size: 13px; font-weight: 700; border-radius: 3px; }
+.hero-photo { width: 360px; position: relative; padding: 10px; border: 1px solid var(--gold); transform: rotate(2deg); margin-right: 12px; }
+.hero-photo img { width: 100%; height: 222px; object-fit: cover; display: block; }
+.hero-photo span { display: block; background: var(--gold); color: #000; font-family: "Dallas RDG", sans-serif; font-size: 14px; text-align: center; letter-spacing: 1px; padding: 10px 4px; }
+.service-ribbon { display: flex; justify-content: center; gap: 55px; padding: 15px 20px; background: #000; color: #fff; font-size: 12px; }
+.service-ribbon span { display: inline-flex; align-items: center; gap: 9px; }
+.service-ribbon .icon { color: var(--gold); width: 17px; height: 17px; }
+.catalog-toolbar { padding-top: 35px; align-items: flex-end; gap: 30px; }
+.catalog-toolbar .eyebrow { color: var(--wine); display: block; margin-bottom: 6px; }
+.section-title { font-family: "Corona RDG", Georgia, serif; font-size: 35px; letter-spacing: .2px; }
+.catalog-toolbar .subtle { max-width: 460px; font-size: 12px; line-height: 1.6; margin-top: 5px; }
+.catalog-toolbar .search { min-width: 290px; width: 355px; border-radius: 3px; }
+.search input { font-size: 12px; }
+.chip { border-radius: 3px; font-size: 12px; font-weight: 400; }
+.product-heading { border-bottom: 2px solid var(--wine); padding-bottom: 10px; justify-content: space-between; }
+.product-heading h2 { font-family: "Corona RDG", Georgia, serif; font-size: 29px; color: var(--wine); font-weight: 400; }
+.product-heading span { font-size: 11px; }
+.product { border-radius: 4px; border-color: #e2d6d8; }
+.product-photo { width: 100%; padding: 0; text-align: left; min-height: 170px; height: 180px; }
+.product-photo .tag { background: var(--wine); border: 0; color: #fff; top: auto; bottom: 0; left: 0; border-radius: 0 3px 0 0; padding: 6px 9px; font-family: "Clarendon RDG",serif; font-size: 9px; font-weight: 400; }
+.product-photo.placeholder { background: #fff; }
+.product-photo.placeholder img { opacity: 1; padding: 18px; }
+.product h3 { font-size: 15px; font-weight: 700; line-height: 1.45; }
+.product h3 button { text-align: left; font-weight: inherit; padding: 0; width: 100%; }
+.product-desc { font-size: 11px; line-height: 1.7; -webkit-line-clamp: 3; margin-bottom: 13px; }
+.product-body { padding: 16px; }
+.product-bottom { margin-top: auto; }
+.price { font-size: 23px; letter-spacing: -1px; }
+.price-label { font-size: 10px; }
+.add { display: flex; align-items: center; justify-content: space-between; width: 100%; height: auto; min-height: 42px; margin-top: 13px; border-radius: 3px; padding: 9px 11px; font-size: 11px; font-weight: 700; }
+.add:hover, .btn:hover:not(:disabled) { background: #000; color: var(--gold); }
+.cart-panel { border-radius: 4px; border-top: 5px solid var(--wine); padding: 20px; }
+.cart-title h2 { font-family: "Corona RDG",Georgia,serif; font-size: 26px; font-weight: 400; }
+.cart-empty strong { font-size: 13px; }
+.cart-empty p, .cart-line strong { font-size: 12px; }
+.total-row { gap: 12px; }
+.total-row strong { font-size: 23px; white-space: nowrap; }
+.btn { border-radius: 3px; font-size: 12px; }
+.fine { font-size: 11px; line-height: 1.65; }
+.cart-line small { line-height: 1.6; }
+.foot { border-top: 3px solid var(--wine); color: #000; font-size: 12px; }
+.foot p { font-size: 11px; margin: 8px 0; line-height: 1.7; }
+.foot a { color: var(--wine); }
+.modal-head h2 { font-family: "Clarendon RDG",Georgia,serif; font-size: 23px; line-height: 1.35; }
+.modal-head { align-items: flex-start; }
+.modal-head .icon-btn { flex-shrink: 0; }
+.modal-body { font-size: 13px; }
+.field { font-size: 12px; }
+.field input, .field select, .field textarea { font-family: "Clarendon RDG",Georgia,serif; font-size: 16px; border-radius: 3px; }
+.product-detail-desc { white-space: pre-line; font-size: 13px; line-height: 1.7; }
+.variant-options { padding: 0; margin: 22px 0; border: 0; }
+.variant-options legend, .variant-admin legend { font-size: 14px; font-weight: 700; margin-bottom: 10px; }
+.variant-choice { display: flex; align-items: center; gap: 10px; padding: 13px 12px; border: 1px solid var(--line); margin-bottom: 8px; border-radius: 4px; cursor: pointer; min-height: 53px; }
+.variant-choice:has(input:checked) { background: #fff8eb; border: 2px solid var(--wine); padding: 12px 11px; }
+.variant-choice input { accent-color: var(--wine); width: 18px; height: 18px; flex-shrink: 0; }
+.variant-choice span { flex: 1; font-size: 12px; }
+.variant-choice b { color: var(--wine); white-space: nowrap; font-size: 13px; }
+.variant-choice small { font-size: 10px; font-weight: 400; }
+.branch-list { margin: 20px 0; }
+.branch-option { border: 2px solid var(--wine); border-radius: 4px; background: #fff; gap: 14px; margin-bottom: 12px; padding: 18px 15px; }
+.branch-option:not(:disabled):hover { background: var(--wine); color: #fff; }
+.branch-option strong { font-family: "Corona RDG",Georgia,serif; font-size: 27px; font-weight: 400; }
+.branch-option span > b { display: block; margin-top: 9px; color: var(--wine); font-size: 18px; }
+.branch-option span > b small { display: inline; font-size: 10px; }
+.branch-option:hover:not(:disabled) small, .branch-option:hover:not(:disabled) span > b { color: #fff; }
+.branch-option:disabled { opacity: .65; border-color: #828282; cursor: not-allowed; }
+.branch-option .unavailable-items { color: var(--red); }
+.success-mark { color: var(--wine); display: grid; justify-items: center; gap: 10px; padding: 12px 0 24px; font-size: 26px; }
+.row-actions { flex-wrap: wrap; }
+.row-actions button { width: auto; height: auto; min-height: 40px; display: inline-flex; align-items: center; padding: 8px; gap: 6px; border: 1px solid var(--line); font-size: 11px; border-radius: 3px; }
+.row-actions button[data-delete-product] { color: var(--red); }
+.row-actions .icon { width: 16px; height: 16px; }
+.variant-admin { border: 1px solid var(--line); border-radius: 4px; margin: 15px 0 25px; padding: 15px; }
+.variant-editor { display: grid; grid-template-columns: minmax(0,1fr) 105px 35px; gap: 10px; align-items: center; }
+.variant-editor .field { margin: 0 0 12px; }
+.variant-editor .icon-btn { margin-top: 10px; }
+.delete-product-in-form { margin-top: 14px; }
+.admin-side .brand { justify-content: center; }
+.admin-side .brand img { width: 105px; height: 120px; padding: 8px; }
+.admin-main { font-size: 13px; }
+@media (max-width:1100px) {
+  .hero-photo { width: 290px; margin-right: 0; }
+  .hero-photo img { height: 193px; }
+  .service-ribbon { gap: 25px; }
+  .catalog-toolbar { align-items: stretch; flex-direction: column; gap: 18px; }
+  .catalog-toolbar .search { width: 100%; }
+}
+@media (max-width:700px) {
+  .header { height: 113px; gap: 15px; }
+  .brand img { width: 81px; height: 94px; }
+  .header-note { padding-left: 13px; }
+  .header-note span { font-size: 13px; letter-spacing: .5px; }
+  .header-note small { font-size: 9px; display: block; max-width: 105px; line-height: 1.5; }
+  .header > .cart-top { display: flex; font-size: 0; gap: 5px; }
+  .header > .cart-top .icon { width: 22px; }
+  .intro-inner { min-height: 0; padding-top: 25px; padding-bottom: 27px; gap: 15px; }
+  .intro h1 { font-size: 44px; line-height: 1; }
+  .intro p { font-size: 11px; line-height: 1.65; margin: 15px 0; }
+  .hero-photo { display: none; }
+  .hero-cta { font-size: 11px; min-height: 42px; padding: 10px 13px; }
+  .intro .eyebrow { font-size: 8px; margin-bottom: 15px; letter-spacing: 1px; }
+  .service-ribbon { font-size: 9px; gap: 13px; padding: 12px 13px; justify-content: space-between; }
+  .service-ribbon span { gap: 5px; }
+  .service-ribbon span:last-child { display: none; }
+  .service-ribbon .icon { width: 14px; height: 14px; }
+  .section-title { font-size: 29px; }
+  .catalog-toolbar { padding-top: 26px; gap: 14px; }
+  .catalog-toolbar .eyebrow { font-size: 8px; }
+  .catalog-toolbar .subtle { font-size: 10px; line-height: 1.6; }
+  .catalog-toolbar .search { min-width: 0; }
+  .chip { font-size: 10px; padding: 10px 12px; }
+  .product-grid { gap: 12px; }
+  .product-photo { min-height: 124px; height: 130px; }
+  .product-photo .tag { font-size: 7px; padding: 5px 6px; max-width: 100%; }
+  .product-body { padding: 11px; }
+  .product h3 { font-size: 12px; line-height: 1.5; }
+  .product-desc { font-size: 10px; line-height: 1.55; -webkit-line-clamp: 2; margin-bottom: 12px; }
+  .product-bottom .price { font-size: 20px; }
+  .price small { font-size: 9px; }
+  .price-label { font-size: 8px; }
+  .product-heading h2 { font-size: 25px; }
+  .product-heading span { font-size: 9px; }
+  .add { width: 100%; min-height: 40px; font-size: 9px; margin-top: 10px; padding: 8px; }
+  .add .icon { width: 15px; height: 15px; }
+  .mobile-cart { border-radius: 4px; font-size: 11px; min-height: 54px; bottom: calc(10px + env(safe-area-inset-bottom)); }
+  .modal-head, .modal-body { padding: 18px; }
+  .modal-head h2 { font-size: 20px; }
+  .variant-choice { gap: 8px; }
+  .variant-choice span { font-size: 11px; }
+  .variant-choice b { font-size: 12px; }
+  .branch-option strong { font-size: 25px; }
+  .branch-option small { font-size: 10px; }
+  .variant-admin { padding: 10px; }
+  .variant-editor { grid-template-columns: minmax(0,1fr) 85px 29px; gap: 6px; }
+  .variant-editor input { padding: 10px 7px; }
+  .foot { gap: 20px; }
+  .foot a { font-size: 10px; }
+}
+@media (max-width:360px) {
+  .wrap { padding-left: 12px; padding-right: 12px; }
+  .header-note { display: none; }
+  .product-grid { gap: 8px; }
+  .product-bottom .price { font-size: 18px; }
+  .product-body { padding: 9px; }
+  .variant-editor { grid-template-columns: minmax(0,1fr) 78px 25px; }
+  .fields-row { grid-template-columns: 1fr; }
+}
+@media (prefers-reduced-motion:reduce) { html { scroll-behavior: auto; } }
+
+@media(max-width:700px) {
+  .header { height: 104px; }
+  .brand img { height: 86px; width: 77px; }
+  .intro-inner { padding-top: 20px; padding-bottom: 22px; }
+  .intro h1 { font-size: 35px; line-height: 1.03; }
+  .intro .eyebrow { margin-bottom: 10px; }
+  .intro h1 span { margin-top: 6px; }
+  .intro p { margin: 13px 0; font-size: 11px; }
+  .hero-cta { min-height: 38px; padding: 8px 12px; }
+  .catalog-toolbar .eyebrow { display: none; }
+  .catalog-toolbar { padding-top: 22px; gap: 12px; }
+  .product h3 { font-size: 13px; }
+}
+/* Corona's original file omits accented glyphs. Dynamic Portuguese text uses
+   the original Clarendon family so names such as Corrêas stay correctly written. */
+.product-heading h2 { font-family: "Clarendon RDG", Georgia, serif; font-size: 23px; font-weight: 700; }
+.branch-option strong { font-family: "Clarendon RDG", Georgia, serif; font-size: 22px; font-weight: 700; }
+.login-brand h1, .admin-top h1 { font-family: "Clarendon RDG", Georgia, serif; }
+@media(max-width:700px) {
+  .product-heading h2 { font-size: 19px; }
+  .branch-option strong { font-size: 19px; }
+  .login-brand h1, .admin-top h1 { font-size: 24px; }
+}
+@media(max-width:360px) { .categories { margin-right: -12px; } }
+
+@media(max-width:700px) { .product-photo .tag { font-size: 9px; } }
+.status.pending { background: #fff3db; color: #5a0b14; }
+.status.preparing { background: #5a0b14; color: #fff; }
+.status.delivery { background: #ffd583; color: #000; }
+.status.done { background: #000; color: #ffd583; }
+.status.inactive { background: #eee; color: #626262; }

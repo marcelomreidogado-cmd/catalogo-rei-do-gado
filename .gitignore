@@ -6,3 +6,5 @@ node_modules/
 admin-access*
 service-account*
 work/
+
+.qa/

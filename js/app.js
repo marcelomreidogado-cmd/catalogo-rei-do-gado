@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260918-firebase2";
-import * as data from "./data.js?v=20260918-firebase2";
+import { CONFIG } from "./config.js?v=20260918-brand3";
+import * as data from "./data.js?v=20260918-brand3";
 import {
   money,
   escapeHTML as e,
@@ -12,10 +12,11 @@ import {
   lineTotal,
   lineQuantity,
   cartTotal,
+  priceCartForBranch,
   groupCustomers,
   whatsappMessage,
   whatsappUrl,
-} from "./core.js";
+} from "./core.js?v=20260918-brand3";
 const $ = (s) => document.querySelector(s);
 const paths = {
   plus: "M12 5v14M5 12h14",
@@ -66,14 +67,18 @@ let catalog = { categories: [], products: [] },
   adminSearch = "",
   unsubscribe = null,
   modalReturnFocus = null,
-  pendingProduct = null,
+  checkoutDraft = null,
+  branchChoices = new Map(),
+  submittingOrder = false,
   checkoutId = null,
   lastOrder = null;
 const branch = () => knownBranch(branchId) || CONFIG.branches[0];
 const currentAdminBranch = () => knownBranch(admin?.branchId);
-const cartKey = () => `rdg-cart-v2:${branchId}`;
+const cartKey = () => "rdg-cart-v3";
 function loadCart() {
-  cart = storageRead(cartKey(), []).filter(
+  const legacyUnit = storageRead("rdg-unit", "coronel");
+  const saved = storageRead(cartKey(), null);
+  cart = (saved ?? storageRead(`rdg-cart-v2:${legacyUnit}`, [])).filter(
     (x) =>
       x &&
       x.productId &&
@@ -82,6 +87,10 @@ function loadCart() {
       x.quantity > 0 &&
       x.grams >= 0,
   );
+  const previous = JSON.stringify(cart);
+  cart = data.refreshSavedCart(cart, catalog);
+  if (previous !== JSON.stringify(cart)) toast("Catálogo atualizado. Confira os cortes e os valores da sua sacola.");
+  persistCart();
 }
 function persistCart() {
   try {
@@ -98,6 +107,7 @@ function toast(message) {
 }
 const errorText = (error) =>
   ({
+    "auth/network-request-failed": "Não conseguimos conectar. Confira sua internet e tente novamente.",
     "auth/invalid-credential": "E-mail ou senha incorretos.",
     "auth/too-many-requests":
       "Muitas tentativas. Aguarde um pouco e tente novamente.",
@@ -115,64 +125,63 @@ function modal(title, body) {
   if (!d.open) modalReturnFocus = document.activeElement;
   d.innerHTML = `<div class="modal-head"><h2 id="modal-title">${e(title)}</h2><button class="icon-btn" data-action="close" aria-label="Fechar">${icon("close")}</button></div><div class="modal-body">${body}</div>`;
   if (!d.open) d.showModal();
+  d.scrollTop = 0;
+  const heading = d.querySelector("#modal-title");
+  heading.tabIndex = -1;
+  heading.focus({ preventScroll: true });
 }
 function closeModal() {
+  if (submittingOrder) return;
   $("#modal").close();
   modalReturnFocus?.focus?.();
 }
+$("#modal").addEventListener("cancel", event => { if (submittingOrder) event.preventDefault(); });
 $("#modal").addEventListener("click", (event) => {
   if (event.target === $("#modal")) closeModal();
 });
-const brandHTML = `<a class="brand" href="./"><img src="assets/logo.jpg" alt="Rei do Gado"><div><strong>REI DO GADO</strong><small>CASA DE CARNES</small></div></a>`;
+const brandHTML = `<a class="brand" href="./" aria-label="Rei do Gado — início"><img src="assets/logo.png" alt="Rei do Gado — Casa de Carnes" width="1729" height="1912"></a>`;
 function footer() {
-  return `<footer class="wrap"><div class="foot"><span>© ${new Date().getFullYear()} Rei do Gado • Casa de Carnes<br>Petrópolis, RJ</span><a href="?view=admin">Área da loja ${icon("arrow")}</a></div></footer>`;
+  return `<footer class="wrap"><div class="foot"><div><strong>Rei do Gado · Casa de Carnes</strong><p>Coronel · Bingen · Corrêas<br>Petrópolis, RJ</p><small>© ${new Date().getFullYear()} Rei do Gado</small></div><a href="?view=admin">Área da loja ${icon("arrow")}</a></div></footer>`;
 }
 function renderCatalog() {
-  const b = branch();
   document.title = "Rei do Gado • Casa de Carnes";
-  $("#app").innerHTML =
-    `<div class="topbar"><header class="header wrap">${brandHTML}<div class="header-actions"><button class="location" data-action="branches">${icon("pin")}<span><small>${branchId ? "Você está na unidade" : "Qual é a sua unidade?"}</small><b>${branchId ? e(b.name) : "Escolha uma loja"}</b></span>${icon("down")}</button><button class="cart-top" data-action="cart">${icon("bag")} Minha sacola <span class="count" data-count>0</span></button></div></header></div>${data.isDemo ? '<div class="demo-strip">Demonstração • pedidos de teste, salvos apenas neste navegador</div>' : ""}<section class="intro"><div class="wrap intro-inner"><div><div class="eyebrow">DO NOSSO BALCÃO PARA A SUA MESA</div><h1>Carne de qualidade.<br><span>Do seu jeito.</span></h1><p>Seus cortes favoritos, com o cuidado de sempre.</p></div><div class="intro-note">${icon("bag")}<strong>O ponto de partida<br>de uma boa refeição.</strong>Escolha os cortes.<br>A gente cuida do preparo.</div></div></section><main class="wrap" id="main"><div class="catalog-toolbar"><div><h2 class="section-title">Nosso balcão</h2><p class="subtle">${branchId ? "Unidade " + e(b.name) : "Escolha sua unidade para fazer o pedido."}</p></div><label class="search">${icon("search")}<input id="search" type="search" placeholder="Qual corte você procura?" aria-label="Buscar produtos" value="${e(search)}"></label></div><nav class="categories" aria-label="Categorias"><button class="chip ${category === "all" ? "active" : ""}" data-category="all" aria-pressed="${category === "all"}">Todos os produtos</button>${catalog.categories.map((c) => `<button class="chip ${category === c.id ? "active" : ""}" data-category="${e(c.id)}" aria-pressed="${category === c.id}">${e(c.name)}</button>`).join("")}</nav><div class="catalog-layout"><div id="products"></div><aside class="cart-panel" id="desktop-cart" aria-label="Sua sacola"></aside></div></main>${footer()}<button class="mobile-cart" data-action="cart"><span class="count" data-count>0</span><span>Ver minha sacola</span><span class="mobile-total" data-total>R$ 0,00</span>${icon("arrow")}</button>`;
+  $("#app").innerHTML = `<div class="topbar"><header class="header wrap">${brandHTML}<div class="header-note"><span>CASA DE CARNES</span><small>O seu açougue em Petrópolis</small></div><button class="cart-top" data-action="cart">${icon("bag")} Minha sacola <span class="count" data-count>0</span></button></header></div>${data.isDemo ? '<div class="demo-strip">Demonstração • pedidos de teste, salvos apenas neste navegador</div>' : ""}<section class="intro"><div class="wrap intro-inner"><div class="hero-copy"><div class="eyebrow">DO NOSSO BALCÃO PARA A SUA MESA</div><h1>O melhor corte.<br><span>O seu momento.</span></h1><p>Do almoço de todo dia ao churrasco de domingo.<br>Escolha sua carne e conte com o preparo do Rei.</p><a class="hero-cta" href="#main">Escolher meus cortes ${icon("arrow")}</a></div><div class="hero-photo"><img src="assets/products/1235984.jpg" alt="Picanha Estância 92 no balcão Rei do Gado" width="300" height="200"><span>CHURRASCO COM O REI</span></div></div></section><div class="service-ribbon"><span>${icon("check")} Cortado do seu jeito</span><span>${icon("bag")} Retirada ou entrega</span><span>${icon("pin")} 3 unidades em Petrópolis</span></div><main class="wrap" id="main"><div class="catalog-toolbar"><div><span class="eyebrow">ESCOLHA. COMBINE. APROVEITE.</span><h2 class="section-title">Escolha seu corte</h2><p class="subtle">Monte sua sacola. Você escolhe a unidade ao enviar o pedido.</p></div><label class="search">${icon("search")}<input id="search" type="search" placeholder="Busque por carne, corte ou acompanhamento" aria-label="Buscar produtos" value="${e(search)}"></label></div><nav class="categories" aria-label="Categorias"><button class="chip ${category === "all" ? "active" : ""}" data-category="all" aria-pressed="${category === "all"}">Todos os produtos</button>${catalog.categories.filter(c => catalog.products.some(p => p.active && p.categoryId === c.id)).map(c => `<button class="chip ${category === c.id ? "active" : ""}" data-category="${e(c.id)}" aria-pressed="${category === c.id}">${e(c.name)}</button>`).join("")}</nav><div class="catalog-layout"><div id="products"></div><aside class="cart-panel" id="desktop-cart" aria-label="Sua sacola"></aside></div></main>${footer()}<button class="mobile-cart" data-action="cart"><span class="count" data-count>0</span><span>Ver minha sacola</span><span class="mobile-total" data-total>R$ 0,00</span>${icon("arrow")}</button>`;
   renderProducts();
   renderCart();
 }
 function productCard(p) {
-  const varies = new Set(p.variants.map((v) => v.priceCents)).size > 1;
-  const desc =
-    p.saleMode === "piece"
-      ? `Peça com aprox. ${formatWeight(p.weightGrams)}`
-      : p.unit === "kg"
-        ? "Escolha o corte e a quantidade"
-        : p.description || "Seleção Rei do Gado";
-  return `<article class="product"><div class="product-photo ${p.image ? "" : "placeholder"}"><img src="${safeImage(p.image)}" alt="${e(p.image ? p.name : "Foto ainda não disponível")}" loading="lazy" width="300" height="200">${p.saleMode === "piece" ? '<span class="tag">PEÇA • PESO ESTIMADO</span>' : ""}</div><div class="product-body"><h3>${e(p.name)}</h3><p class="product-desc">${e(desc)}</p><div class="product-bottom"><div><span class="price-label">${varies ? "A partir de" : "Preço por " + (p.unit === "kg" ? "quilo" : "unidade")}</span><span class="price">${money(p.priceCents)} <small>/${p.unit}</small></span></div><button class="add" data-product="${e(p.id)}" aria-label="Adicionar ${e(p.name)}">${icon("plus")}</button></div></div></article>`;
+  const varies = p.priceVariesByStore || new Set(p.variants.map(v => v.priceCents)).size > 1;
+  const desc = p.description || (p.saleMode === "piece" ? `Peça com aproximadamente ${formatWeight(p.weightGrams)}.` : "Escolha a quantidade para o seu pedido.");
+  return `<article class="product"><button class="product-photo ${p.image ? "" : "placeholder"}" data-product="${e(p.id)}" aria-label="Ver detalhes de ${e(p.name)}"><img src="${safeImage(p.image)}" alt="${e(p.image ? p.name : "Rei do Gado — foto em breve")}" loading="lazy" width="300" height="200">${p.variants.length > 1 ? `<span class="tag">${p.variants.length} opções</span>` : p.saleMode === "piece" ? '<span class="tag">Peso aproximado</span>' : ""}</button><div class="product-body"><h3><button data-product="${e(p.id)}">${e(p.name)}</button></h3><p class="product-desc">${e(desc)}</p><div class="product-bottom"><div><span class="price-label">${varies ? "A partir de" : "Preço por " + (p.unit === "kg" ? "quilo" : "unidade")}</span><span class="price">${money(p.priceCents)} <small>/${p.unit}</small></span></div></div><button class="add" data-product="${e(p.id)}" aria-label="Escolher ${e(p.name)}">${p.variants.length > 1 ? "Escolher opções" : "Adicionar"} ${icon("plus")}</button></div></article>`;
 }
 function safeImage(url) {
   return url &&
     /^(assets\/|data:image\/(jpeg|png|webp);base64,|https:\/\/)/.test(url)
     ? e(url)
-    : "assets/logo.jpg";
+    : "assets/logo.png";
 }
 function renderProducts() {
   const visible = catalog.products.filter(
     (p) =>
       p.active &&
       (category === "all" || p.categoryId === category) &&
-      normalize(p.name + " " + p.description).includes(normalize(search)),
+      normalize(p.name + " " + p.description + " " + p.variants.map(v => v.name).join(" ")).includes(normalize(search)),
   );
   $("#products").innerHTML = visible.length
     ? catalog.categories
         .filter((c) => visible.some((p) => p.categoryId === c.id))
         .map(
           (c) =>
-            `<section class="product-section"><div class="product-heading"><h2>${e(c.name)}</h2><span>${visible.filter((p) => p.categoryId === c.id).length} opções</span></div><div class="product-grid">${visible
+            `<section class="product-section"><div class="product-heading"><h2>${e(c.name)}</h2><span>${visible.filter((p) => p.categoryId === c.id).length} ${visible.filter((p) => p.categoryId === c.id).length === 1 ? "produto" : "produtos"}</span></div><div class="product-grid">${visible
               .filter((p) => p.categoryId === c.id)
               .map(productCard)
               .join("")}</div></section>`,
         )
         .join("")
-    : `<div class="empty-state"><h3>${search ? "Não encontramos esse corte." : "O balcão está sendo preparado."}</h3><p class="subtle">${search ? "Tente outro nome ou escolha uma categoria." : "Os produtos desta unidade aparecerão aqui em breve."}</p>${search ? '<button class="btn ghost" data-action="clear-search" style="margin-top:20px">Limpar busca</button>' : ""}</div>`;
+    : `<div class="empty-state"><h3>${search ? "Não encontramos esse corte." : "O balcão está sendo preparado."}</h3><p class="subtle">${search ? "Tente outro nome ou escolha uma categoria." : "Nossos produtos aparecerão aqui em breve."}</p>${search ? '<button class="btn ghost" data-action="clear-search" style="margin-top:20px">Limpar busca</button>' : ""}</div>`;
 }
 function cartContent() {
-  return `<div class="cart-title"><h2>${icon("bag")} Sua sacola</h2><span class="count">${cart.length}</span></div>${cart.length ? `<div>${cart.map((line) => `<div class="cart-line"><div class="cart-line-top"><strong>${e(line.name)}</strong><button data-remove="${e(line.key)}" aria-label="Remover ${e(line.name)}">${icon("close")}</button></div><small>${e(line.variant)}${line.saleMode === "piece" ? " • aprox. " + formatWeight(line.grams) : ""}</small><div class="line-controls"><div class="stepper"><button data-quantity="${e(line.key)}" data-delta="-1" aria-label="Diminuir ${e(line.name)}">${icon("minus")}</button><span>${lineQuantity(line)}</span><button data-quantity="${e(line.key)}" data-delta="1" aria-label="Aumentar ${e(line.name)}">${icon("plus")}</button></div><strong style="font-size:14px">${money(lineTotal(line))}</strong></div></div>`).join("")}</div>` : `<div class="cart-empty">${icon("bag")}<strong>O melhor corte é a sua escolha.</strong><p>Adicione seus favoritos e<br>monte seu pedido.</p></div>`}<div class="cart-footer"><div class="total-row"><span>Total estimado</span><strong>${money(cartTotal(cart))}</strong></div><button class="btn wide" data-action="checkout" ${!cart.length ? "disabled" : ""}>Continuar pedido ${icon("arrow")}</button><p class="fine">O valor dos cortes por kg é confirmado após a pesagem. Entrega a combinar.</p></div>`;
+  return `<div class="cart-title"><h2>${icon("bag")} Sua sacola</h2><span class="count">${cart.length}</span></div>${cart.length ? `<div>${cart.map((line) => `<div class="cart-line"><div class="cart-line-top"><strong>${e(line.name)}</strong><button data-remove="${e(line.key)}" aria-label="Remover ${e(line.name)}">${icon("close")}</button></div><small>${e(line.variant)}${line.saleMode === "piece" ? " • aprox. " + formatWeight(line.grams) : ""}</small><div class="line-controls"><div class="stepper"><button data-quantity="${e(line.key)}" data-delta="-1" aria-label="Diminuir ${e(line.name)}">${icon("minus")}</button><span>${lineQuantity(line)}</span><button data-quantity="${e(line.key)}" data-delta="1" aria-label="Aumentar ${e(line.name)}">${icon("plus")}</button></div><strong style="font-size:14px">${money(lineTotal(line))}</strong></div></div>`).join("")}</div>` : `<div class="cart-empty">${icon("bag")}<strong>Seu próximo bom momento.</strong><p>Adicione seus favoritos e<br>monte seu pedido.</p></div>`}<div class="cart-footer"><div class="total-row"><span>Subtotal estimado</span><strong>${money(cartTotal(cart))}</strong></div><button class="btn wide" data-action="checkout" ${!cart.length ? "disabled" : ""}>Continuar pedido ${icon("arrow")}</button><p class="fine">A unidade será escolhida ao enviar. Preço final após a pesagem; entrega a combinar.</p></div>`;
 }
 function renderCart() {
   if ($("#desktop-cart")) $("#desktop-cart").innerHTML = cartContent();
@@ -184,47 +193,24 @@ function renderCart() {
     .querySelectorAll("[data-total]")
     .forEach((el) => (el.textContent = money(cartTotal(cart))));
 }
-function chooseBranch() {
-  modal(
-    "Qual unidade vai atender você?",
-    `<p class="subtle">Escolha sua loja. Seu pedido vai direto para o WhatsApp dessa unidade.</p>${CONFIG.branches.map((b) => `<button class="branch-option ${b.id === branchId ? "selected" : ""}" data-branch="${b.id}">${icon("pin")}<span><strong>Unidade ${e(b.name)}</strong><small>${e(b.address)}</small></span>${icon(b.id === branchId ? "check" : "chevron")}</button>`).join("")}${cart.length ? '<p class="fine">Sua sacola atual fica guardada nesta unidade.</p>' : ""}`,
-  );
-}
-async function changeBranch(id) {
-  if (!knownBranch(id)) return;
-  const next = await data.getCatalog(id);
-  branchId = id;
-  try {
-    localStorage.setItem("rdg-unit", JSON.stringify(id));
-  } catch {}
-  catalog = next;
-  category = "all";
-  search = "";
-  checkoutId = null;
-  loadCart();
-  closeModal();
-  renderCatalog();
-  if (pendingProduct) {
-    const p = pendingProduct;
-    pendingProduct = null;
-    openProduct(p);
-  }
+async function chooseBranch() {
+  const catalogs = await Promise.all(CONFIG.branches.map(b => data.getCatalog(b.id)));
+  branchChoices = new Map(CONFIG.branches.map((b, i) => [b.id, priceCartForBranch(cart, catalogs[i])]));
+  modal("Quem vai preparar seu pedido?", `<p class="subtle">Toque na unidade para registrar seu pedido e abrir o WhatsApp da loja.</p><div class="branch-list">${CONFIG.branches.map(b => {
+    const choice = branchChoices.get(b.id);
+    return `<button class="branch-option" data-branch="${b.id}" ${choice.unavailable.length ? "disabled" : ""}>${icon("pin")}<span><strong>Unidade ${e(b.name)}</strong><small>${e(b.address)}</small>${choice.unavailable.length ? `<small class="unavailable-items">Indisponível nesta unidade: ${choice.unavailable.map(e).join(", ")}</small>` : `<b>${money(choice.totalCents)} <small>estimados, sem frete</small></b>`}</span>${icon("arrow")}</button>`;
+  }).join("")}</div><p class="fine">Confira o total de cada unidade. A disponibilidade, a pesagem e o frete serão confirmados pela equipe.</p><div id="branch-error" class="login-error" role="alert"></div><button class="btn outline wide" data-action="back-checkout">Voltar aos meus dados</button><button class="btn ghost wide" data-action="cart">Revisar minha sacola</button>`);
 }
 function openProduct(id) {
-  if (!branchId) {
-    pendingProduct = id;
-    chooseBranch();
-    return;
-  }
   const p = catalog.products.find((x) => x.id === id && x.active);
   if (!p) {
-    toast("Este produto não está disponível nesta unidade.");
+    toast("Este produto não está disponível no momento.");
     return;
   }
   let amount = p.saleMode === "weight" ? 500 : 1;
   modal(
     p.name,
-    `<form id="add-product" data-id="${e(p.id)}"><img class="product-detail-img" src="${safeImage(p.image)}" alt="${e(p.name)}"><p class="product-detail-desc">${e(p.description || "Selecione a quantidade desejada.")}</p>${p.variants.length > 1 ? `<label class="field">Como você prefere?<select name="variant">${p.variants.map((v) => `<option value="${e(v.id)}">${e(v.name)} • ${money(v.priceCents)}/${p.unit}</option>`).join("")}</select></label>` : `<input name="variant" type="hidden" value="${e(p.variants[0].id)}">`}<label class="field">${p.saleMode === "weight" ? "Quantidade em kg" : p.saleMode === "piece" ? "Quantidade de peças" : "Quantidade de unidades"}<input name="amount" type="number" inputmode="decimal" min="${p.saleMode === "weight" ? ".25" : "1"}" max="${p.saleMode === "weight" ? "30" : "30"}" step="${p.saleMode === "weight" ? ".25" : "1"}" value="${p.saleMode === "weight" ? ".5" : "1"}" required></label>${p.unit === "kg" ? `<div class="notice">${p.saleMode === "piece" ? `Cada peça pesa aproximadamente ${formatWeight(p.weightGrams)}. ` : ""}O valor final depende da pesagem na loja.</div>` : ""}<div class="total-row"><span>Valor estimado</span><strong id="product-total">${money(makeLine(p, p.variants[0].id, amount).totalCents)}</strong></div><button class="btn wide" type="submit">${icon("plus")} Adicionar à sacola</button></form>`,
+    `<form id="add-product" data-id="${e(p.id)}"><img class="product-detail-img" src="${safeImage(p.image)}" alt="${e(p.name)}"><p class="product-detail-desc">${e(p.description || "Selecione a quantidade desejada.")}</p>${p.variants.length > 1 ? `<fieldset class="variant-options"><legend>${p.unit === "kg" ? "Como você quer o seu corte?" : "Escolha sua opção"}</legend>${p.variants.map((v, i) => `<label class="variant-choice"><input type="radio" name="variant" value="${e(v.id)}" ${i === 0 ? "checked" : ""} required><span>${e(v.name)}</span><b>${money(v.priceCents)}<small>/${p.unit}</small></b></label>`).join("")}</fieldset>` : `<input name="variant" type="hidden" value="${e(p.variants[0].id)}">`}<label class="field">${p.saleMode === "weight" ? "Quantidade em kg" : p.saleMode === "piece" ? "Quantidade de peças" : "Quantidade de unidades"}<input name="amount" type="number" inputmode="decimal" min="${p.saleMode === "weight" ? ".25" : "1"}" max="${p.saleMode === "weight" ? "30" : "30"}" step="${p.saleMode === "weight" ? ".25" : "1"}" value="${p.saleMode === "weight" ? ".5" : "1"}" required></label>${p.unit === "kg" ? `<div class="notice">${p.saleMode === "piece" ? `Cada peça pesa aproximadamente ${formatWeight(p.weightGrams)}. ` : ""}O valor final depende da pesagem na loja.</div>` : ""}<div class="total-row"><span>Valor estimado</span><strong id="product-total">${money(makeLine(p, p.variants[0].id, amount).totalCents)}</strong></div><button class="btn wide" type="submit">${icon("plus")} Adicionar à sacola</button></form>`,
   );
 }
 function addProduct(form) {
@@ -278,70 +264,84 @@ function adjustQuantity(key, delta) {
 }
 function checkout() {
   if (!cart.length) return;
-  if (!branchId) return chooseBranch();
   modal(
     "Vamos fechar seu pedido",
-    `<p class="subtle" style="margin-bottom:20px">Unidade ${e(branch().name)} • ${cart.length} opções na sacola</p>${data.isDemo ? '<div class="notice">Demonstração: use dados fictícios. O pedido ficará apenas neste navegador e nenhuma mensagem será enviada.</div>' : ""}<form id="checkout-form"><label class="field">Seu nome<input name="name" autocomplete="name" minlength="2" maxlength="80" placeholder="Como podemos chamar você?" required></label><label class="field">Telefone com DDD<input name="phone" type="tel" autocomplete="tel-national" maxlength="20" placeholder="(24) 99999-9999" required></label><div class="fields-row"><label class="field">Como deseja receber?<select name="fulfillment"><option value="pickup">Retirar na loja</option><option value="delivery">Entrega em domicílio</option></select></label><label class="field">Pagamento<select name="payment"><option>Pix</option><option>Cartão de crédito</option><option>Cartão de débito</option><option>Dinheiro</option></select></label></div><div id="address-field" class="hidden"><label class="field">Endereço completo<textarea name="address" maxlength="400" placeholder="Rua, número, bairro e complemento"></textarea></label><p class="fine" style="margin-top:-8px;margin-bottom:18px">Taxa e prazo de entrega serão confirmados pelo WhatsApp.</p></div><div id="change-field" class="hidden"><label class="field">Precisa de troco para quanto?<input name="changeFor" maxlength="40" placeholder="Ex.: R$ 200,00 ou sem troco"></label></div><label class="field">Observações <span class="subtle">(opcional)</span><textarea name="notes" maxlength="500" placeholder="Espessura do corte, ponto de referência…"></textarea></label><p class="fine">Seu nome, telefone e endereço serão usados pela unidade escolhida para atender este pedido e manter seu histórico de compras.</p><div class="divider"></div><div class="total-row"><span>Total estimado, sem frete</span><strong>${money(cartTotal(cart))}</strong></div><p class="fine" style="margin:-8px 0 20px">O pagamento é combinado com a loja. Não cobramos pelo site.</p><div id="checkout-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">${data.isDemo ? "Salvar pedido de teste" : "Finalizar e abrir WhatsApp"} ${icon("arrow")}</button></form>`,
+    `<p class="subtle" style="margin-bottom:20px">Seus dados primeiro. A unidade, no próximo passo.</p>${data.isDemo ? '<div class="notice">Demonstração: use dados fictícios. O pedido ficará apenas neste navegador e nenhuma mensagem será enviada.</div>' : ""}<form id="checkout-form"><label class="field">Seu nome<input name="name" autocomplete="name" minlength="2" maxlength="80" placeholder="Como podemos chamar você?" required></label><label class="field">Telefone com DDD<input name="phone" type="tel" autocomplete="tel-national" maxlength="20" placeholder="(24) 99999-9999" required></label><div class="fields-row"><label class="field">Como deseja receber?<select name="fulfillment"><option value="pickup">Retirar na loja</option><option value="delivery">Entrega em domicílio</option></select></label><label class="field">Pagamento<select name="payment"><option>Pix</option><option>Cartão de crédito</option><option>Cartão de débito</option><option>Dinheiro</option></select></label></div><div id="address-field" class="hidden"><label class="field">Endereço completo<textarea name="address" maxlength="400" placeholder="Rua, número, bairro e complemento"></textarea></label><p class="fine" style="margin-top:-8px;margin-bottom:18px">Taxa e prazo de entrega serão confirmados pelo WhatsApp.</p></div><div id="change-field" class="hidden"><label class="field">Precisa de troco para quanto?<input name="changeFor" maxlength="40" placeholder="Ex.: R$ 200,00 ou sem troco"></label></div><label class="field">Observações <span class="subtle">(opcional)</span><textarea name="notes" maxlength="500" placeholder="Espessura do corte, ponto de referência…"></textarea></label><p class="fine">Seu nome, telefone e endereço serão usados pela unidade escolhida para atender este pedido e manter seu histórico de compras.</p><div class="divider"></div><div class="total-row"><span>Total estimado, sem frete</span><strong>${money(cartTotal(cart))}</strong></div><p class="fine" style="margin:-8px 0 20px">O pagamento é combinado com a loja. Não cobramos pelo site.</p><div id="checkout-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Enviar pedido ${icon("arrow")}</button></form>`,
   );
+  if (checkoutDraft) {
+    const form = $("#checkout-form");
+    for (const [name, value] of Object.entries(checkoutDraft)) if (form.elements[name]) form.elements[name].value = value;
+    $("#address-field").classList.toggle("hidden", checkoutDraft.fulfillment !== "delivery");
+    form.elements.address.required = checkoutDraft.fulfillment === "delivery";
+    $("#change-field").classList.toggle("hidden", checkoutDraft.payment !== "Dinheiro");
+  }
 }
+
 async function submitCheckout(form) {
   const values = Object.fromEntries(new FormData(form));
-  if (!validatePhone(values.phone))
-    throw new Error("Informe um telefone válido com DDD.");
-  if (values.fulfillment === "delivery" && values.address.trim().length < 10)
-    throw new Error("Informe o endereço completo para entrega.");
-  if (!data.isDemo) whatsappUrl(branch().whatsapp, "");
+  if (values.name.trim().length < 2) throw new Error("Informe seu nome.");
+  if (!validatePhone(values.phone)) throw new Error("Informe um telefone válido com DDD.");
+  if (values.fulfillment === "delivery" && values.address.trim().length < 10) throw new Error("Informe o endereço completo para entrega.");
   const button = form.querySelector("[type=submit]");
   button.disabled = true;
-  button.textContent = "Salvando seu pedido…";
+  button.textContent = "Consultando as unidades…";
+  if (JSON.stringify(checkoutDraft) !== JSON.stringify(values)) checkoutId = null;
+  checkoutDraft = values;
+  try { await chooseBranch(); }
+  finally { if (button.isConnected) { button.disabled = false; button.textContent = "Enviar pedido"; } }
+}
+async function sendToBranch(id) {
+  if (submittingOrder || !checkoutDraft || !cart.length) return;
+  const b = knownBranch(id), choice = branchChoices.get(id);
+  if (!b || !choice || choice.unavailable.length) return;
+  if (branchId !== id) checkoutId = null;
+  branchId = id;
+  const values = checkoutDraft;
+  submittingOrder = true;
+  document.querySelectorAll("[data-branch]").forEach(button => button.disabled = true);
+  $("#branch-error").textContent = "Registrando seu pedido…";
   checkoutId ||= crypto.randomUUID().replaceAll("-", "");
   let popup = null;
-  // Reserve tab during the user gesture, then navigate only after Firestore confirms the save.
+  // Reserve the WhatsApp tab in this click, and navigate only after a confirmed write.
   if (!data.isDemo) {
     popup = window.open("about:blank", "_blank");
     if (popup) {
       popup.opener = null;
       popup.document.title = "Preparando pedido";
-      popup.document.body.textContent = "Salvando seu pedido na loja. Aguarde…";
+      popup.document.body.textContent = "Registrando seu pedido na unidade " + b.name + ". Aguarde…";
     }
   }
   try {
     const payload = {
       customer: { name: values.name.trim(), phone: phoneBR(values.phone) },
-      fulfillment: values.fulfillment,
-      payment: values.payment,
+      fulfillment: values.fulfillment, payment: values.payment,
       address: values.fulfillment === "delivery" ? values.address.trim() : "",
       changeFor: values.payment === "Dinheiro" ? values.changeFor.trim() : "",
       notes: values.notes.trim(),
     };
-    const order = await data.saveOrder(branchId, checkoutId, payload, cart);
+    const order = await data.saveOrder(id, checkoutId, payload, choice.lines);
     lastOrder = order;
     cart = [];
     persistCart();
     checkoutId = null;
+    checkoutDraft = null;
     renderCart();
-    const message = whatsappMessage(order, branch());
-    const url = whatsappUrl(branch().whatsapp, message);
-    modal(
-      data.isDemo ? "Pedido de teste salvo" : "Pedido registrado!",
-      `<div style="text-align:center;padding:5px 0 22px;color:var(--wine)">${icon("check")}<p style="font-size:22px;font-weight:700;margin-top:12px">#${e(order.code)}</p></div><p>${data.isDemo ? "Você pode conferir este pedido na área da loja, neste navegador." : "Seu pedido foi registrado na unidade " + e(branch().name) + ". Envie a mensagem no WhatsApp para confirmar com a equipe."}</p><p class="fine">Registrar o pedido não confirma disponibilidade, pagamento ou envio da mensagem.</p><div class="divider"></div><pre class="review-box">${e(message)}</pre>${data.isDemo ? "" : `<a class="btn wide" style="margin-top:20px" href="${e(url)}" target="_blank" rel="noopener">Abrir WhatsApp novamente ${icon("arrow")}</a>`}<button class="btn outline wide" style="margin-top:10px" data-action="close">Voltar ao catálogo</button>`,
-    );
+    const message = whatsappMessage(order, b), url = whatsappUrl(b.whatsapp, message);
+    modal(data.isDemo ? "Pedido de teste salvo" : "Pedido registrado!", `<div class="success-mark">${icon("check")}<strong>#${e(order.code)}</strong></div><p>${data.isDemo ? "Confira este pedido na área da loja, neste navegador." : "Seu pedido está na unidade " + e(b.name) + ". Envie a mensagem no WhatsApp para combinar os detalhes com a equipe."}</p><p class="fine">A loja confirma a disponibilidade, o valor final e o prazo.</p><div class="divider"></div><pre class="review-box">${e(message)}</pre>${data.isDemo ? "" : `<a class="btn wide" style="margin-top:20px" href="${e(url)}" target="_blank" rel="noopener">Abrir WhatsApp ${icon("arrow")}</a>`}<button class="btn outline wide" style="margin-top:10px" data-action="close">Voltar ao catálogo</button>`);
     if (popup) popup.location.replace(url);
   } catch (error) {
     popup?.close();
-    if ($("#checkout-error"))
-      $("#checkout-error").textContent = errorText(error);
-    button.disabled = false;
-    button.textContent = data.isDemo
-      ? "Salvar pedido de teste"
-      : "Finalizar e abrir WhatsApp";
+    await chooseBranch().catch(() => {
+      document.querySelectorAll("[data-branch]").forEach(button => button.disabled = !!branchChoices.get(button.dataset.branch)?.unavailable.length);
+    });
+    if ($("#branch-error")) $("#branch-error").textContent = errorText(error);
     throw error;
-  }
+  } finally { submittingOrder = false; }
 }
 function loginView() {
   document.title = "Área da loja • Rei do Gado";
   $("#app").innerHTML =
-    `<main class="login-page" id="main"><div class="login-brand"><img src="assets/logo.jpg" alt="Rei do Gado"><div><div class="eyebrow">ÁREA DA LOJA</div><h1>O seu balcão.<br>Sob seu controle.</h1><p>Produtos, pedidos e clientes<br>organizados por unidade.</p></div></div><section class="login-card"><h2>Bem-vindo de volta.</h2><p class="subtle">Entre para gerenciar sua unidade.</p>${data.isDemo ? '<div class="notice">Demonstração local. Senhas: coronel123, bingen123 ou correas123, conforme a unidade.</div>' : ""}<form id="login-form"><label class="field">Unidade<select name="branch">${CONFIG.branches.map((b) => `<option value="${b.id}" ${b.id === branchId ? "selected" : ""}>Unidade ${e(b.name)}</option>`).join("")}</select></label>${data.isDemo || CONFIG.branches.every((b) => b.email) ? "" : `<label class="field">E-mail de acesso<input name="email" type="email" autocomplete="username" value="${e(branch().email)}" placeholder="Seu e-mail da loja" required></label>`}<label class="field">Senha<input name="password" type="password" autocomplete="current-password" minlength="6" placeholder="Sua senha" required></label><div id="login-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Entrar no painel ${icon("arrow")}</button></form><a href="./" class="btn outline wide" style="margin-top:12px">Voltar para o catálogo</a></section></main>`;
+    `<main class="login-page" id="main"><div class="login-brand"><img src="assets/logo.png" alt="Rei do Gado"><div><div class="eyebrow">ÁREA DA LOJA</div><h1>O seu balcão.<br>Sob seu controle.</h1><p>Produtos, pedidos e clientes<br>organizados por unidade.</p></div></div><section class="login-card"><h2>Bem-vindo de volta.</h2><p class="subtle">Entre para gerenciar sua unidade.</p>${data.isDemo ? '<div class="notice">Demonstração local. Senhas: coronel123, bingen123 ou correas123, conforme a unidade.</div>' : ""}<form id="login-form"><label class="field">Unidade<select name="branch">${CONFIG.branches.map((b) => `<option value="${b.id}" ${b.id === branchId ? "selected" : ""}>Unidade ${e(b.name)}</option>`).join("")}</select></label>${data.isDemo || CONFIG.branches.every((b) => b.email) ? "" : `<label class="field">E-mail de acesso<input name="email" type="email" autocomplete="username" value="${e(branch().email)}" placeholder="Seu e-mail da loja" required></label>`}<label class="field">Senha<input name="password" type="password" autocomplete="current-password" minlength="6" placeholder="Sua senha" required></label><div id="login-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Entrar no painel ${icon("arrow")}</button></form><a href="./" class="btn outline wide" style="margin-top:12px">Voltar para o catálogo</a></section></main>`;
 }
 async function startAdmin() {
   catalog = await data.getCatalog(admin.branchId, true);
@@ -383,7 +383,7 @@ function renderAdmin() {
       )
       .join(
         "",
-      )}</nav></div><div class="admin-side-bottom"><a href="?unit=${admin.branchId}">Ver catálogo da unidade ${icon("arrow")}</a><button class="btn ghost" data-action="logout">${icon("logout")} Sair da conta</button></div></aside><main class="admin-main" id="main"><div class="admin-top"><div><div class="eyebrow" style="color:var(--wine)">REI DO GADO / ${e(currentAdminBranch().name)}</div><h1>${{ orders: "Pedidos da unidade", products: "Seu catálogo", categories: "Categorias", customers: "Histórico de clientes" }[adminTab]}</h1><p class="subtle">${{ orders: "Acompanhe cada pedido, do balcão à entrega.", products: "Preços, cortes e fotos do seu balcão.", categories: "Organize os produtos do jeito da sua loja.", customers: "As compras e preferências de quem volta à sua loja." }[adminTab]}</p></div><div style="display:flex;gap:8px">${adminTab === "products" ? '<button class="btn" data-action="new-product">' + icon("plus") + " Novo produto</button>" : adminTab === "categories" ? '<button class="btn" data-action="new-category">' + icon("plus") + " Nova categoria</button>" : ""}<button class="btn outline" data-action="password">Alterar senha</button><button class="icon-btn" data-action="logout" aria-label="Sair">${icon("logout")}</button></div></div>${data.isDemo ? '<div class="notice">Modo demonstração • dados salvos apenas neste navegador.</div>' : ""}<div id="admin-content"></div></main></div>`;
+      )}</nav></div><div class="admin-side-bottom"><a href="./">Ver catálogo ${icon("arrow")}</a><button class="btn ghost" data-action="logout">${icon("logout")} Sair da conta</button></div></aside><main class="admin-main" id="main"><div class="admin-top"><div><div class="eyebrow" style="color:var(--wine)">REI DO GADO / ${e(currentAdminBranch().name)}</div><h1>${{ orders: "Pedidos da unidade", products: "Seu catálogo", categories: "Categorias", customers: "Histórico de clientes" }[adminTab]}</h1><p class="subtle">${{ orders: "Acompanhe cada pedido, do balcão à entrega.", products: "Preços, cortes e fotos do seu balcão.", categories: "Organize os produtos do jeito da sua loja.", customers: "As compras e preferências de quem volta à sua loja." }[adminTab]}</p></div><div style="display:flex;gap:8px">${adminTab === "products" ? '<button class="btn" data-action="new-product">' + icon("plus") + " Novo produto</button>" : adminTab === "categories" ? '<button class="btn" data-action="new-category">' + icon("plus") + " Nova categoria</button>" : ""}<button class="btn outline" data-action="password">Alterar senha</button><button class="icon-btn" data-action="logout" aria-label="Sair">${icon("logout")}</button></div></div>${data.isDemo ? '<div class="notice">Modo demonstração • dados salvos apenas neste navegador.</div>' : ""}<div id="admin-content"></div></main></div>`;
   renderAdminContent();
 }
 function statsHTML() {
@@ -430,7 +430,7 @@ function renderAdminContent() {
     const list = catalog.products.filter((p) =>
       normalize(p.name).includes(normalize(adminSearch)),
     );
-    target.innerHTML = `<div class="list-toolbar"><label class="search">${icon("search")}<input id="admin-search" value="${e(adminSearch)}" placeholder="Buscar no catálogo" aria-label="Buscar produtos"></label><button class="btn outline" data-action="import">Importar catálogo Goomer</button></div>${catalog.products.some((p) => p.reviewRequired) ? `<div class="notice">${catalog.products.filter((p) => p.reviewRequired).length} produtos importados precisam de revisão de preço, peso ou unidade. Estão pausados até você revisar e ativar.</div>` : ""}${list.length ? `<div class="table-wrap"><table><thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Disponibilidade</th><th>Ações</th></tr></thead><tbody>${list.map((p) => `<tr><td><div class="item-name"><img class="table-img" src="${safeImage(p.image)}" alt=""><span><strong>${e(p.name)}</strong><small>${p.saleMode === "piece" ? "Peça • " + formatWeight(p.weightGrams) : p.unit === "kg" ? "Por peso" : "Por unidade"}</small></span></div></td><td>${e(catalog.categories.find((c) => c.id === p.categoryId)?.name || "Sem categoria")}</td><td><strong>${money(p.priceCents)}/${p.unit}</strong><small>${p.variants.length > 1 ? p.variants.length + " opções" : ""}</small></td><td><span class="status ${p.active ? "done" : "inactive"}">${p.active ? "Disponível" : p.reviewRequired ? "Revisar" : "Pausado"}</span></td><td><div class="row-actions"><button data-edit-product="${e(p.id)}" aria-label="Editar ${e(p.name)}">${icon("edit")}</button><button data-delete-product="${e(p.id)}" aria-label="Excluir ${e(p.name)}">${icon("trash")}</button></div></td></tr>`).join("")}</tbody></table></div>` : '<div class="empty-state"><h3>Seu balcão está vazio.</h3><p class="subtle">Adicione um produto ou importe o catálogo inicial.</p></div>'}`;
+    target.innerHTML = `<div class="list-toolbar"><label class="search">${icon("search")}<input id="admin-search" value="${e(adminSearch)}" placeholder="Buscar no catálogo" aria-label="Buscar produtos"></label><button class="btn outline" data-action="import">Importar catálogo Goomer</button></div>${catalog.products.some((p) => p.reviewRequired) ? `<div class="notice">${catalog.products.filter((p) => p.reviewRequired).length} produtos importados precisam de revisão de preço, peso ou unidade. Estão pausados até você revisar e ativar.</div>` : ""}${list.length ? `<div class="table-wrap"><table><thead><tr><th>Produto</th><th>Categoria</th><th>Preço</th><th>Disponibilidade</th><th>Ações</th></tr></thead><tbody>${list.map((p) => `<tr><td><div class="item-name"><img class="table-img" src="${safeImage(p.image)}" alt=""><span><strong>${e(p.name)}</strong><small>${p.saleMode === "piece" ? "Peça • " + formatWeight(p.weightGrams) : p.unit === "kg" ? "Por peso" : "Por unidade"}</small></span></div></td><td>${e(catalog.categories.find((c) => c.id === p.categoryId)?.name || "Sem categoria")}</td><td><strong>${money(p.priceCents)}/${p.unit}</strong><small>${p.variants.length > 1 ? p.variants.length + " opções" : ""}</small></td><td><span class="status ${p.active ? "done" : "inactive"}">${p.active ? "Disponível" : p.reviewRequired ? "Revisar" : "Pausado"}</span></td><td><div class="row-actions"><button data-edit-product="${e(p.id)}" aria-label="Editar ${e(p.name)}">${icon("edit")}<span>Editar</span></button><button data-delete-product="${e(p.id)}" aria-label="Excluir ${e(p.name)}">${icon("trash")}<span>Excluir</span></button></div></td></tr>`).join("")}</tbody></table></div>` : '<div class="empty-state"><h3>Seu balcão está vazio.</h3><p class="subtle">Adicione um produto ou importe o catálogo inicial.</p></div>'}`;
   }
   if (adminTab === "categories") {
     target.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Categoria</th><th>Produtos</th><th>Ordem</th><th>Ações</th></tr></thead><tbody>${catalog.categories.map((c) => `<tr><td><strong>${e(c.name)}</strong></td><td>${catalog.products.filter((p) => p.categoryId === c.id).length}</td><td>${c.sort + 1}</td><td><div class="row-actions"><button data-edit-category="${e(c.id)}" aria-label="Editar ${e(c.name)}">${icon("edit")}</button><button data-delete-category="${e(c.id)}" aria-label="Excluir ${e(c.name)}">${icon("trash")}</button></div></td></tr>`).join("")}</tbody></table></div>${!catalog.categories.length ? '<div class="empty-state">Crie a primeira categoria para organizar seus produtos.</div>' : ""}`;
@@ -484,6 +484,9 @@ function editCategory(id) {
     `<form id="category-form" data-id="${e(c.id)}"><label class="field">Nome da categoria<input name="name" maxlength="60" value="${e(c.name)}" required></label><label class="field">Posição no catálogo<input name="sort" type="number" min="1" max="1000" value="${c.sort + 1}" required></label><button class="btn wide" type="submit">Salvar categoria</button></form>`,
   );
 }
+function variantEditor(v) {
+  return `<div class="variant-editor" data-variant-id="${e(v.id)}"><label class="field">Corte / opção<input name="variantName" value="${e(v.name)}" maxlength="80" placeholder="Ex.: Bife" required></label><label class="field">Preço (R$)<input name="variantPrice" type="number" min="0.01" max="100000" step="0.01" value="${v.priceCents ? (v.priceCents / 100).toFixed(2) : ""}" required></label><button type="button" class="icon-btn" data-action="remove-variant" aria-label="Remover esta variação">${icon("trash")}</button></div>`;
+}
 function editProduct(id) {
   if (!catalog.categories.length)
     return toast("Crie uma categoria antes de adicionar produtos.");
@@ -505,45 +508,21 @@ function editProduct(id) {
   };
   modal(
     id ? "Editar produto" : "Novo produto",
-    `<form id="product-form" data-id="${e(p.id)}">${p.reviewRequired ? '<div class="notice">Confira preço, unidade e peso importados antes de disponibilizar este produto.</div>' : ""}<label class="field">Nome<input name="name" value="${e(p.name)}" maxlength="100" required></label><div class="fields-row"><label class="field">Categoria<select name="categoryId">${catalog.categories.map((c) => `<option value="${e(c.id)}" ${c.id === p.categoryId ? "selected" : ""}>${e(c.name)}</option>`).join("")}</select></label><label class="field">Venda<select name="saleMode"><option value="weight" ${p.saleMode === "weight" ? "selected" : ""}>Por kg (fracionado)</option><option value="piece" ${p.saleMode === "piece" ? "selected" : ""}>Peça (preço por kg)</option><option value="unit" ${p.saleMode === "unit" ? "selected" : ""}>Por unidade</option></select></label></div><div class="fields-row"><label class="field">Preço base (R$)<input name="price" type="number" min="0.01" max="100000" step="0.01" value="${(p.priceCents / 100).toFixed(2)}" required></label><label class="field">Peso médio da peça (kg)<input name="weight" type="number" min="0.001" max="30" step="0.001" value="${p.weightGrams ? p.weightGrams / 1000 : 1}" required></label></div><label class="field">Descrição<textarea name="description" maxlength="2000">${e(p.description)}</textarea></label><label class="field">Opções e preços <span class="subtle">(opcional)</span><textarea name="variants" placeholder="Bife | 69.90&#10;Estrogonofe | 72.90">${p.variants.length > 1 ? p.variants.map((v) => `${e(v.name)} | ${(v.priceCents / 100).toFixed(2)}`).join("\n") : ""}</textarea></label><p class="fine" style="margin-top:-8px;margin-bottom:18px">Uma opção por linha: nome | preço. Deixe vazio para usar somente o preço base.</p><img id="upload-preview" class="upload-preview" src="${safeImage(p.image)}" alt="Foto atual do produto"><label class="field">${icon("upload")} Carregar foto<input name="photo" type="file" accept="image/jpeg,image/png,image/webp"></label><label class="check"><input type="checkbox" name="removeImage">Remover foto atual</label><label class="check"><input name="active" type="checkbox" ${p.active ? "checked" : ""}>Disponível para pedidos</label>${p.reviewRequired ? '<label class="check"><input name="reviewed" type="checkbox" required>Conferi preço, unidade e peso deste produto.</label>' : ""}<div id="product-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Salvar produto</button></form>`,
+    `<form id="product-form" data-id="${e(p.id)}">${p.reviewRequired ? '<div class="notice">Confira preço, unidade e peso importados antes de disponibilizar este produto.</div>' : ""}<label class="field">Nome<input name="name" value="${e(p.name)}" maxlength="100" required></label><div class="fields-row"><label class="field">Categoria<select name="categoryId">${catalog.categories.map((c) => `<option value="${e(c.id)}" ${c.id === p.categoryId ? "selected" : ""}>${e(c.name)}</option>`).join("")}</select></label><label class="field">Venda<select name="saleMode"><option value="weight" ${p.saleMode === "weight" ? "selected" : ""}>Por kg (fracionado)</option><option value="piece" ${p.saleMode === "piece" ? "selected" : ""}>Peça (preço por kg)</option><option value="unit" ${p.saleMode === "unit" ? "selected" : ""}>Por unidade</option></select></label></div><label class="field weight-field">Peso médio da peça ou embalagem (kg)<input name="weight" type="number" min="0.001" max="30" step="0.001" value="${p.weightGrams ? p.weightGrams / 1000 : 1}" required></label><label class="field">Descrição<textarea name="description" maxlength="2000">${e(p.description)}</textarea></label><fieldset class="variant-admin"><legend>Subcortes, sabores e preços</legend><p class="fine">Cadastre cada opção que o cliente pode escolher. O preço é por kg ou unidade, conforme a venda acima.</p><div id="variant-editors">${p.variants.map(variantEditor).join("")}</div><button class="btn outline" type="button" data-action="add-variant">${icon("plus")} Adicionar variação</button></fieldset><img id="upload-preview" class="upload-preview" src="${safeImage(p.image)}" alt="Foto atual do produto"><label class="field">${icon("upload")} Carregar foto<input name="photo" type="file" accept="image/jpeg,image/png,image/webp"></label><label class="check"><input type="checkbox" name="removeImage">Remover foto atual</label><label class="check"><input name="active" type="checkbox" ${p.active ? "checked" : ""}>Disponível para pedidos</label>${p.reviewRequired ? '<label class="check"><input name="reviewed" type="checkbox" required>Conferi preço, unidade e peso deste produto.</label>' : ""}<div id="product-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Salvar produto</button>${id ? `<button class="btn danger outline wide delete-product-in-form" type="button" data-delete-product="${e(id)}">${icon("trash")} Excluir produto</button>` : ""}</form>`,
   );
 }
 async function submitProduct(form) {
   const fd = new FormData(form);
   const old = catalog.products.find((p) => p.id === form.dataset.id);
-  let priceCents = Math.round(Number(fd.get("price")) * 100);
-  let variants = String(fd.get("variants"))
-    .trim()
-    .split("\n")
-    .filter(Boolean)
-    .map((line, i) => {
-      const parts = line.split("|");
-      const value = Number(parts[1]?.trim().replace(",", "."));
-      if (
-        parts.length !== 2 ||
-        !parts[0].trim() ||
-        !Number.isFinite(value) ||
-        value <= 0 ||
-        value > 100000
-      )
-        throw new Error("Use uma opção por linha no formato: Bife | 69.90");
-      return {
-        id: String(i),
-        name: parts[0].trim(),
-        priceCents: Math.round(value * 100),
-      };
-    });
-  if (variants.length > 20)
-    throw new Error("Use no máximo 20 opções por produto.");
-  if (!variants.length)
-    variants = [
-      {
-        id: old?.variants.length === 1 ? old.variants[0].id : "0",
-        name: old?.variants.length === 1 ? old.variants[0].name : "Padrão",
-        priceCents,
-      },
-    ];
-  else priceCents = Math.min(...variants.map((v) => v.priceCents));
+  const variants = [...form.querySelectorAll(".variant-editor")].map(row => {
+    const name = row.querySelector('[name="variantName"]').value.trim();
+    const price = Number(row.querySelector('[name="variantPrice"]').value);
+    if (!name || !Number.isFinite(price) || price <= 0 || price > 100000) throw new Error("Preencha o nome e um preço válido para cada variação.");
+    return { id: row.dataset.variantId, name, priceCents: Math.round(price * 100) };
+  });
+  if (!variants.length || variants.length > 20) throw new Error("Cadastre entre 1 e 20 opções por produto.");
+  if (new Set(variants.map(v => normalize(v.name))).size !== variants.length) throw new Error("Há variações com o mesmo nome. Diferencie ou remova a repetição.");
+  const priceCents = Math.min(...variants.map(v => v.priceCents));
   const mode = fd.get("saleMode");
   const record = {
     id: form.dataset.id,
@@ -654,7 +633,7 @@ document.addEventListener("change", (event) => {
 });
 document.addEventListener("click", async (event) => {
   const target = event.target.closest("button,[data-action]");
-  if (!target || target.disabled) return;
+  if (!target || target.disabled || submittingOrder) return;
   try {
     const d = target.dataset;
     if (d.category) {
@@ -667,7 +646,7 @@ document.addEventListener("click", async (event) => {
     }
     if (d.branch) {
       target.disabled = true;
-      await changeBranch(d.branch);
+      await sendToBranch(d.branch);
     }
     if (d.product) openProduct(d.product);
     if (d.remove) {
@@ -702,16 +681,25 @@ document.addEventListener("click", async (event) => {
       toast("Excluído do catálogo.");
     }
     switch (d.action) {
+      case "add-variant":
+        if ($("#variant-editors").children.length >= 20) throw new Error("Máximo de 20 opções por produto.");
+        $("#variant-editors").insertAdjacentHTML("beforeend", variantEditor({id:crypto.randomUUID(),name:"",priceCents:0}));
+        $("#variant-editors").lastElementChild.querySelector("input").focus();
+        break;
+      case "remove-variant":
+        if ($("#variant-editors").children.length === 1) throw new Error("Mantenha ao menos uma opção e seu preço.");
+        target.closest(".variant-editor").remove();
+        break;
       case "close":
         closeModal();
         break;
-      case "branches":
-        chooseBranch();
+      case "back-checkout":
+        checkout();
         break;
       case "cart":
         modal(
           "Seu pedido",
-          `<p class="subtle" style="margin-bottom:20px">Unidade ${e(branch().name)}</p><div id="modal-cart">${cartContent()}</div>`,
+          `<p class="subtle" style="margin-bottom:20px">Sua seleção, preparada do seu jeito.</p><div id="modal-cart">${cartContent()}</div>`,
         );
         break;
       case "checkout":
@@ -823,13 +811,13 @@ async function boot() {
       if (admin) await startAdmin();
       else loginView();
     } else {
-      catalog = await data.getCatalog(branch().id);
+      catalog = await data.getStorefrontCatalog();
       loadCart();
       renderCatalog();
     }
   } catch (error) {
     $("#app").innerHTML =
-      `<div class="boot" style="padding:30px;text-align:center"><img src="assets/logo.jpg" alt="Rei do Gado"><h1 style="font-size:24px">O balcão está temporariamente indisponível.</h1><p class="subtle">${e(errorText(error))}</p><button class="btn" id="retry">Tentar novamente</button></div>`;
+      `<div class="boot" style="padding:30px;text-align:center"><img src="assets/logo.png" alt="Rei do Gado"><h1 style="font-size:24px">O balcão está temporariamente indisponível.</h1><p class="subtle">${e(errorText(error))}</p><button class="btn" id="retry">Tentar novamente</button></div>`;
     $("#retry").onclick = () => location.reload();
   }
 }

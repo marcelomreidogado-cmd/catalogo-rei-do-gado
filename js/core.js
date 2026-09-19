@@ -71,6 +71,47 @@ export function lineQuantity(line) {
 export function cartTotal(lines) {
   return lines.reduce((total, line) => total + lineTotal(line), 0);
 }
+// One storefront; each unit keeps its own prices and availability in Firestore.
+export function mergeCatalogs(catalogs) {
+  const categories = new Map(), products = new Map();
+  for (const catalog of catalogs) {
+    for (const c of catalog.categories) if (!categories.has(c.id)) categories.set(c.id, c);
+    for (const p of catalog.products.filter(p => p.active)) {
+      const previous = products.get(p.id);
+      if (!previous) {
+        products.set(p.id, { ...p, variants: p.variants.map(v => ({ ...v })), priceVariesByStore: false });
+        continue;
+      }
+      if (previous.saleMode !== p.saleMode || previous.unit !== p.unit || previous.weightGrams !== p.weightGrams) {
+        previous.priceVariesByStore = true;
+        continue;
+      }
+      for (const v of p.variants) {
+        const existing = previous.variants.find(x => x.id === v.id);
+        if (!existing) previous.variants.push({ ...v });
+        else {
+          if (existing.priceCents !== v.priceCents) previous.priceVariesByStore = true;
+          existing.priceCents = Math.min(existing.priceCents, v.priceCents);
+        }
+      }
+      previous.priceCents = Math.min(...previous.variants.map(v => v.priceCents));
+    }
+  }
+  return { categories: [...categories.values()].sort((a,b) => a.sort-b.sort), products: [...products.values()].sort((a,b) => a.sort-b.sort) };
+}
+export function priceCartForBranch(cart, catalog) {
+  const lines = [], unavailable = [];
+  for (const line of cart) {
+    const p = catalog.products.find(p => p.id === line.productId && p.active);
+    const v = p?.variants.find(v => v.id === line.variantId);
+    if (!p || !v || normalize(v.name) !== normalize(line.variant) || p.saleMode !== line.saleMode || p.unit !== line.unit) {
+      unavailable.push(`${line.name}${line.variant && line.variant !== 'Padrão' ? ' — ' + line.variant : ''}`);
+      continue;
+    }
+    lines.push(makeLine(p, v.id, p.saleMode === 'weight' ? line.grams : line.quantity));
+  }
+  return { lines, unavailable, totalCents: cartTotal(lines) };
+}
 export function groupCustomers(orders) {
   const grouped = new Map();
   for (const order of orders) {

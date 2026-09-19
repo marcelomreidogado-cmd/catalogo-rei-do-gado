@@ -6,13 +6,19 @@
 ## Antes de divulgar
 
 1. Confira os preços de cada unidade. A base inicial veio do Goomer da Coronel e foi copiada para Bingen e Corrêas.
-2. Em **Produtos**, revise os seis itens pausados com indicação **Revisar**. Confira se são vendidos por kg, pacote/unidade ou peça e ajuste o peso médio. Marque **Disponível para pedidos** para publicá-los.
+2. Em **Produtos**, revise os cinco itens pausados com indicação **Revisar**. Confira se são vendidos por kg, pacote/unidade ou peça e ajuste o peso médio. Marque **Disponível para pedidos** para publicá-los.
 3. Confira a descrição e o endereço de Bingen e Corrêas em `js/config.js`: somente o bairro e a cidade estão preenchidos, porque os endereços completos não foram informados.
 4. Faça um pedido pequeno de teste em cada unidade e confirme que o WhatsApp aberto pertence à loja. O site monta a mensagem; o cliente precisa tocar em enviar no WhatsApp.
 
+## Como o cliente compra
+
+O cliente escolhe produtos, subcortes e quantidades sem informar a loja. Preenche seus dados e toca em **Enviar pedido**. Só então aparecem os botões **Unidade Coronel**, **Unidade Bingen** e **Unidade Corrêas**, cada um com seu total. Ao tocar na unidade, o pedido é registrado e o WhatsApp correspondente é aberto.
+
 ## Rotina
 
-- **Alterar preço ou foto:** Painel → Produtos → lápis do produto → salvar.
+- **Alterar preço ou foto:** Painel → Produtos → Editar → salvar.
+- **Editar subcortes:** no produto, use os campos de nome e preço em **Subcortes, sabores e preços**.
+- **Excluir um produto:** use **Excluir** na lista ou **Excluir produto** dentro da edição e confirme. O histórico permanece.
 - **Tirar um item de venda:** desmarque Disponível para pedidos.
 - **Organizar o balcão:** Painel → Categorias → nome e posição no catálogo.
 - **Atender pedido:** Painel → Pedidos → Ver pedido → conferir sacola e peso → atualizar status.

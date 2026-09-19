@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260918-firebase2";
-import { cartTotal, makeLine } from "./core.js";
+import { CONFIG } from "./config.js?v=20260918-brand3";
+import { cartTotal, makeLine, mergeCatalogs } from "./core.js?v=20260918-brand3";
 export const isDemo = CONFIG.demo && !CONFIG.firebase.projectId;
 const prefix = "rdg-demo-v1:";
 let sdk, db, auth, adminAuth, storage;
@@ -44,7 +44,7 @@ const toRecord = (doc) => {
   return record;
 };
 export async function initialize() {
-  const response = await fetch("data/catalog.json");
+  const response = await fetch("data/catalog.json", { cache: "no-cache" });
   if (!response.ok)
     throw new Error("Não foi possível carregar o catálogo inicial.");
   seed = await response.json();
@@ -69,7 +69,6 @@ export async function initialize() {
   adminAuth = a.getAuth(adminApp);
   await a.setPersistence(adminAuth, a.browserSessionPersistence);
   await auth.authStateReady();
-  if (!auth.currentUser) await a.signInAnonymously(auth);
   if (CONFIG.imageMode === "storage") {
     const s = await import(`${base}/firebase-storage.js`);
     sdk = { ...sdk, ...s };
@@ -107,6 +106,23 @@ export async function getCatalog(branch, admin = false) {
     categories: categories.docs.map(toRecord).sort((a, b) => a.sort - b.sort),
     products: products.docs.map(toRecord).sort((a, b) => a.sort - b.sort),
   };
+}
+export async function getStorefrontCatalog() {
+  return mergeCatalogs(await Promise.all(CONFIG.branches.map(b => getCatalog(b.id))));
+}
+export function refreshSavedCart(lines, catalog) {
+  const restored = new Map();
+  for (const line of lines) {
+    const productId = seed.deduplicatedIds?.[line.productId] || line.productId;
+    const variantId = seed.variantRedirects?.[line.productId]?.[line.variantId] || line.variantId;
+    const p = catalog.products.find(p => p.id === productId && p.active);
+    const next = p && p.saleMode === line.saleMode && p.unit === line.unit && p.variants.some(v => v.id === variantId)
+      ? makeLine(p, variantId, line.saleMode === 'weight' ? line.grams : line.quantity) : line;
+    const prior = restored.get(next.key);
+    if (prior && p) restored.set(next.key, makeLine(p, variantId, next.saleMode === 'weight' ? prior.grams + next.grams : prior.quantity + next.quantity));
+    else restored.set(next.key, next);
+  }
+  return [...restored.values()];
 }
 export async function login(branch, email, password) {
   if (isDemo) {
@@ -227,6 +243,7 @@ export async function updateStatus(branch, id, status) {
 }
 export async function saveOrder(branch, id, checkout, lines) {
   if (!lines.length) throw new Error("Sua sacola está vazia.");
+  if (!isDemo && !auth.currentUser) await sdk.signInAnonymously(auth);
   // Reload authoritative prices immediately before creating the immutable snapshot.
   const catalog = await getCatalog(branch);
   const items = lines.map((line) => {
@@ -245,7 +262,10 @@ export async function saveOrder(branch, id, checkout, lines) {
     if (
       current.unit !== line.unit ||
       current.saleMode !== line.saleMode ||
-      current.totalCents !== line.totalCents
+      current.totalCents !== line.totalCents ||
+      current.unitPriceCents !== line.unitPriceCents ||
+      current.grams !== line.grams ||
+      current.variant !== line.variant
     )
       throw new Error(
         `O preço ou peso de ${p.name} mudou. Remova o item e adicione novamente para conferir.`,

@@ -6,7 +6,7 @@ Catálogo móvel em HTML, CSS e JavaScript puro. Hospedagem estática no GitHub 
 
 - Catálogo: `index.html`
 - Administração: `index.html?view=admin`
-- Unidade direta: `index.html?unit=coronel`, `?unit=bingen` ou `?unit=correas`
+- A loja é escolhida exclusivamente no último passo do pedido, nos botões Coronel, Bingen e Corrêas.
 
 Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra `http://localhost:4173`. Abrir o HTML diretamente como `file://` não permite carregar os módulos e o catálogo.
 
@@ -15,8 +15,8 @@ Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra 
 - Três unidades, cada uma com seu catálogo, login, pedidos e clientes.
 - Cadastro, edição e exclusão de produtos e categorias; pausa de produtos e upload de fotos.
 - Variações de corte com preços diferentes; venda em kg, por unidade ou peça com peso médio.
-- Sacola separada por unidade, preservada neste navegador. Quantidades em kg variam de 250 g em 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
-- Checkout com nome, telefone, retirada/entrega, endereço, forma de pagamento, troco e observações.
+- Vitrine e sacola únicas, com os produtos ativos das três unidades, preservadas neste navegador. Quantidades em kg variam de 250 g em 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
+- Checkout com nome, telefone, retirada/entrega, endereço, forma de pagamento, troco e observações. Ao clicar em **Enviar pedido**, aparecem os três botões de unidade, com o total correspondente. Cada total é recalculado com os preços daquela loja; unidades sem algum item ou subcorte ficam indisponíveis para aquela sacola.
 - Pedido gravado antes de abrir o WhatsApp. Se a gravação falhar, a sacola permanece. Repetir a tentativa usa o mesmo identificador para evitar duplicação.
 - Link de WhatsApp disponível na confirmação caso o navegador bloqueie a nova aba. A mensagem precisa ser enviada pelo cliente no WhatsApp.
 - Pedidos em tempo real, mudança de status e histórico agrupado por telefone normalizado: número de pedidos, soma dos valores estimados, último pedido e todas as sacolas.
@@ -42,11 +42,11 @@ Os acessos iniciais ficam em arquivo privado entregue separadamente, fora deste 
 ## Operação da loja
 
 1. Abra a área administrativa, escolha a unidade e entre com a senha correspondente.
-2. Em **Produtos**, edite nomes, preços, fotos, categorias e disponibilidade. Em opções, use uma linha por variação, por exemplo `Bife | 69.90`.
+2. Em **Produtos**, edite nomes, preços, fotos, categorias e disponibilidade. Em **Subcortes, sabores e preços**, edite o nome e o preço de cada opção. Use **Adicionar variação** para criar outra opção. Os identificadores das opções existentes são preservados ao editar.
 3. Para peça, informe o preço por kg e o peso médio em kg. O site calcula a estimativa por peça; o peso real é confirmado pela loja.
 4. Em **Pedidos**, abra a sacola e mude o status: Pendente → Em preparação → Saiu para entrega → Finalizado. Uma retirada pode passar diretamente para Finalizado.
 5. Em **Clientes**, consulte compras anteriores, valores estimados e o último pedido.
-6. Para excluir uma categoria, mova ou exclua seus produtos primeiro. Excluir um produto preserva as fotos textuais dos pedidos antigos (nome, preço e quantidade naquele momento).
+6. O botão **Excluir** aparece ao lado do produto e dentro da edição. A confirmação informa o nome do item; o histórico dos pedidos permanece. Para excluir uma categoria, mova ou exclua seus produtos primeiro. Excluir um produto preserva os registros dos pedidos antigos (nome, preço e quantidade naquele momento).
 
 O botão **Importar catálogo Goomer** adiciona somente os registros ausentes. Ele não atualiza nem sobrescreve os produtos existentes. Não existe sincronização contínua com o Goomer.
 
@@ -54,9 +54,13 @@ O botão **Importar catálogo Goomer** adiciona somente os registros ausentes. E
 
 Importação inicial do [cardápio Goomer fornecido](https://cardapio-rei-do-gado.goomer.app), consultado em 17/09/2026: 99 produtos, 17 categorias e 89 fotos. Opções e preços são preservados. Os 10 produtos sem foto usam uma indicação visual de ausência de foto.
 
-Seis produtos com unidade, peso ou preço ambíguo foram importados pausados. Veja `data/import-review.json` e revise no painel antes de ativá-los. Os demais preços também devem ser conferidos pelo responsável antes de divulgar o catálogo. A mesma base inicial foi copiada para as três unidades; alterações posteriores são independentes.
+A revisão editorial de setembro de 2026 reuniu quatro cadastros repetidos: Bombom da alcatra, Peito de frango extra limpo, Maionese do Rei e Molhos da casa. A base revisada tem **95 produtos únicos, 90 ativos e 5 pausados**, distribuídos em 17 categorias. Foram corrigidos nomes, acentos, descrições, marcas, unidades escritas e opções. A maionese com bacon ficou em R$ 29,90, conforme confirmação do proprietário. O bombom preserva o preço da peça inteira e os preços dos cortes preparados.
 
-Logo original fornecida pelo proprietário. A cor primária #5A0B14, o preto e o amarelo #FFD583 seguem o manual fornecido. Oswald e DM Sans são alternativas web; não são as fontes proprietárias do manual. As fotos pertencem ao catálogo fornecido pelo proprietário.
+Cinco produtos com unidade, peso ou preço ambíguo permanecem pausados. Veja `data/import-review.json` e revise no painel antes de ativá-los. Os demais preços também devem ser conferidos pelo responsável antes de divulgar o catálogo. A mesma base inicial foi copiada para as três unidades; alterações posteriores são independentes.
+
+A logo PNG original, sem redesenho ou distorção, e as fontes foram recuperadas do arquivo **Rei do Gado - Marca.rar** do proprietário. São usados **Corona**, **Clarendon BT** (Roman, Bold e Black) e **Dallas Print Shop Sans**, convertidos para WOFF2 e hospedados junto ao site. Não há fontes genéricas carregadas por CDN. A paleta segue os valores RGB do manual: vinho `#5A0B14`, preto `#000000`, branco `#FFFFFF` e amarelo `#FFD583`; o vermelho secundário é `#AE0114`.
+
+O arquivo Corona original mapeia letras acentuadas para letras sem acento. Por isso a fonte é reservada a chamadas fixas sem acentos; nomes e títulos dinâmicos usam Clarendon original, preservando a grafia correta. Veja `IDENTIDADE-E-REVISAO.md`. As fotos são do catálogo fornecido pelo proprietário.
 
 ## Fotos e plano gratuito
 
@@ -103,7 +107,9 @@ Não publique arquivos de acessos, contas de serviço, logs, pastas de trabalho 
 
 ## Verificação
 
-`tests/core.test.mjs` verifica cálculos em centavos, arredondamento, peças, kg fracionados, mensagens e agrupamento. Rode `node --test tests/core.test.mjs`.
+`npm test` verifica cálculos em centavos, arredondamento, peças, kg fracionados, mensagens, agrupamento, vitrine unificada, diferenças de preço entre unidades e indisponibilidade de subcortes. Também confere os 95 produtos, duplicações, descrições, categorias, fotos e preços de todas as variações.
+
+Para regressão da interface: `npm install`, `npx playwright install chromium`, inicie o site com `npm start` e, em outro terminal, rode `npm run test:ui`. O teste usa demonstração isolada por interceptação da configuração e não grava no Firebase nem abre WhatsApp. Cobre os três destinos, retorno no checkout, carrinho persistido, upload, variações, edição/exclusão e categorias. Capturas ficam em `.qa/`. Defina `RDG_BROWSER_CHANNEL=chrome` para usar Chrome instalado.
 
 `tests/firestore.rules.test.mjs` verifica leituras públicas/privadas, isolamento de unidades, alterações de status, bloqueio de elevação de privilégios, total e limite da sacola. Requer Node, Java 21+, `npm install`, e emuladores. Rode `npm run test:rules`. Nenhum teste envia WhatsApp.
 

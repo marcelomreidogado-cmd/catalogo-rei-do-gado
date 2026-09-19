@@ -1,7 +1,7 @@
 [
   {
     "id": "3808712",
-    "name": "ALMÔNDEGAS TEMPERADAS",
+    "name": "Almôndegas temperadas",
     "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
     "sourcePrices": [
       {
@@ -14,34 +14,8 @@
     "sourceDescription": "Valor por kg -65,90\r\n\r\nEmbalagens com media de 0,400gr"
   },
   {
-    "id": "543971",
-    "name": "PEITO DE FRANGO EXTRA LIMPO",
-    "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
-    "sourcePrices": [
-      {
-        "name": "FILEZINHO",
-        "price": 29.9,
-        "code": "FILEZINHO",
-        "hash": "3eada16b8db0690fbbf8bc12fe68d32b12ddc9760c6254320fa107acdf10e1c4"
-      },
-      {
-        "name": "STROGONOFF",
-        "price": 29.9,
-        "code": "STROGONOFF",
-        "hash": "9199fde567589a3dbabfefa7310ee1b37e5c4cc96fb358163c8a794b0243c046"
-      },
-      {
-        "name": "PEITO",
-        "price": 29.9,
-        "code": "PEITO",
-        "hash": "d02d46760fbf5ac772a509f8e06c85b52cd1dbd65d9c38880de4f6f5c45a623c"
-      }
-    ],
-    "sourceDescription": "PCT FILEZINHO/STROGONOFF COM MEDIA DE 500 GR\r\nPCT PEITO COM MEDIA DE 700 GR"
-  },
-  {
     "id": "5998005",
-    "name": "MEDALHÃO DE SOBRECOXA COM BACON",
+    "name": "Medalhão de sobrecoxa com bacon",
     "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
     "sourcePrices": [
       {
@@ -55,7 +29,7 @@
   },
   {
     "id": "8810771",
-    "name": "PEITO DE FRANGO EXTRA LIMPO",
+    "name": "Peito de frango extra limpo",
     "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
     "sourcePrices": [
       {
@@ -81,7 +55,7 @@
   },
   {
     "id": "8814683",
-    "name": "COSTELA DE CORDEIRO",
+    "name": "Costela de cordeiro",
     "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
     "sourcePrices": [
       {
@@ -95,7 +69,7 @@
   },
   {
     "id": "12734661",
-    "name": "FILÉ MIGNON SUÍNO DIA A DIA",
+    "name": "Filé-mignon suíno do dia a dia",
     "reason": "Confirmar unidade de venda, peso e preço: descrição e variante do Goomer são ambíguas.",
     "sourcePrices": [
       {
