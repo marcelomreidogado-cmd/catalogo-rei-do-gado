@@ -37,6 +37,10 @@ for(const [i,unit] of ['coronel','bingen','correas'].entries()){
  if(i===0){await page.getByRole('button',{name:'Voltar aos meus dados'}).click();assert.equal(await page.locator('[name=name]').inputValue(),'QA REVISAO '+unit);await page.getByRole('button',{name:'Enviar pedido',exact:true}).click();await page.waitForSelector('[data-branch]');await page.screenshot({path:'.qa/revised-choose-store.png',fullPage:false})}
  await page.locator('[data-branch='+unit+']').click();await page.getByRole('heading',{name:live?'Pedido registrado!':'Pedido de teste salvo',exact:true}).waitFor({timeout:40000});
  assert.match(await page.locator('.review-box').innerText(),new RegExp('UNIDADE '+({coronel:'CORONEL',bingen:'BINGEN',correas:'CORRÊAS'}[unit])));
+ const reviewText=await page.locator('.review-box').innerText();
+ assert.match(reviewText,/\*Item - Patinho Angus — Bifes\*/);
+ assert.match(reviewText,/\*Quantidade: 0,750 kg \(750 g\)\*/);
+ assert.doesNotMatch(reviewText,/^\d+\. /m);
  if(live){const url=await page.evaluate(()=>window.__qaWhatsapp);assert.ok(url.startsWith('https://wa.me/'+['5524992177114','552420171476','5524981754161'][i]+'?'));}
  await page.getByRole('button',{name:'Voltar ao catálogo'}).click();assert.equal(await page.locator('.mobile-cart [data-count]').innerText(),'0');console.log('PASS checkout:',unit,'unit only at send, subcut, price, saved cart, final selection, correct destination');
 }

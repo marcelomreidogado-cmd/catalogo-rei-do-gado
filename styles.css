@@ -1647,3 +1647,27 @@ html { scroll-behavior: smooth; scroll-padding-top: 16px; }
 .status.delivery { background: #ffd583; color: #000; }
 .status.done { background: #000; color: #ffd583; }
 .status.inactive { background: #eee; color: #626262; }
+
+/* Quantidades legíveis na escolha e na sacola. */
+.quantity-summary {
+  padding: 12px 14px;
+  margin: 0 0 16px;
+  border-left: 3px solid var(--wine);
+  background: #fff5e4;
+  color: var(--wine);
+  font-weight: 700;
+  line-height: 1.6;
+}
+.cart-weight {
+  margin-top: 6px;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--wine);
+}
+.stepper .quantity-value {
+  padding: 0 6px;
+  font-weight: 700;
+  color: var(--wine);
+  white-space: nowrap;
+}
+.line-controls { gap: 10px; flex-wrap: wrap; }

@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260918-brand3";
-import { cartTotal, makeLine, mergeCatalogs } from "./core.js?v=20260918-brand3";
+import { CONFIG } from "./config.js?v=20260919-quantities";
+import { cartTotal, makeLine, mergeCatalogs } from "./core.js?v=20260919-quantities";
 export const isDemo = CONFIG.demo && !CONFIG.firebase.projectId;
 const prefix = "rdg-demo-v1:";
 let sdk, db, auth, adminAuth, storage;

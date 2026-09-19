@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260918-brand3";
-import * as data from "./data.js?v=20260918-brand3";
+import { CONFIG } from "./config.js?v=20260919-quantities";
+import * as data from "./data.js?v=20260919-quantities";
 import {
   money,
   escapeHTML as e,
@@ -7,6 +7,7 @@ import {
   phoneBR,
   validatePhone,
   formatWeight,
+  formatWeightWithGrams,
   STATUSES,
   makeLine,
   lineTotal,
@@ -16,7 +17,7 @@ import {
   groupCustomers,
   whatsappMessage,
   whatsappUrl,
-} from "./core.js?v=20260918-brand3";
+} from "./core.js?v=20260919-quantities";
 const $ = (s) => document.querySelector(s);
 const paths = {
   plus: "M12 5v14M5 12h14",
@@ -180,8 +181,12 @@ function renderProducts() {
         .join("")
     : `<div class="empty-state"><h3>${search ? "Não encontramos esse corte." : "O balcão está sendo preparado."}</h3><p class="subtle">${search ? "Tente outro nome ou escolha uma categoria." : "Nossos produtos aparecerão aqui em breve."}</p>${search ? '<button class="btn ghost" data-action="clear-search" style="margin-top:20px">Limpar busca</button>' : ""}</div>`;
 }
+function quantitySummary(line) {
+  const quantity = line.saleMode === "weight" ? formatWeightWithGrams(line.grams) : lineQuantity(line);
+  return `Quantidade: ${quantity}${line.saleMode === "piece" ? ` • Peso total estimado: ${formatWeightWithGrams(line.grams)}` : ""}`;
+}
 function cartContent() {
-  return `<div class="cart-title"><h2>${icon("bag")} Sua sacola</h2><span class="count">${cart.length}</span></div>${cart.length ? `<div>${cart.map((line) => `<div class="cart-line"><div class="cart-line-top"><strong>${e(line.name)}</strong><button data-remove="${e(line.key)}" aria-label="Remover ${e(line.name)}">${icon("close")}</button></div><small>${e(line.variant)}${line.saleMode === "piece" ? " • aprox. " + formatWeight(line.grams) : ""}</small><div class="line-controls"><div class="stepper"><button data-quantity="${e(line.key)}" data-delta="-1" aria-label="Diminuir ${e(line.name)}">${icon("minus")}</button><span>${lineQuantity(line)}</span><button data-quantity="${e(line.key)}" data-delta="1" aria-label="Aumentar ${e(line.name)}">${icon("plus")}</button></div><strong style="font-size:14px">${money(lineTotal(line))}</strong></div></div>`).join("")}</div>` : `<div class="cart-empty">${icon("bag")}<strong>Seu próximo bom momento.</strong><p>Adicione seus favoritos e<br>monte seu pedido.</p></div>`}<div class="cart-footer"><div class="total-row"><span>Subtotal estimado</span><strong>${money(cartTotal(cart))}</strong></div><button class="btn wide" data-action="checkout" ${!cart.length ? "disabled" : ""}>Continuar pedido ${icon("arrow")}</button><p class="fine">A unidade será escolhida ao enviar. Preço final após a pesagem; entrega a combinar.</p></div>`;
+  return `<div class="cart-title"><h2>${icon("bag")} Sua sacola</h2><span class="count">${cart.length}</span></div>${cart.length ? `<div>${cart.map((line) => `<div class="cart-line"><div class="cart-line-top"><strong>${e(line.name)}</strong><button data-remove="${e(line.key)}" aria-label="Remover ${e(line.name)}">${icon("close")}</button></div><small>${e(line.variant)}</small>${line.saleMode === "piece" ? `<div class="cart-weight">Peso total estimado: <strong>${formatWeightWithGrams(line.grams)}</strong></div>` : line.saleMode === "weight" && line.grams < 1000 ? `<div class="cart-weight">${Math.round(line.grams)} g</div>` : ""}<div class="line-controls"><div class="stepper"><button data-quantity="${e(line.key)}" data-delta="-1" aria-label="Diminuir ${e(line.name)}">${icon("minus")}</button><span class="quantity-value">${lineQuantity(line)}</span><button data-quantity="${e(line.key)}" data-delta="1" aria-label="Aumentar ${e(line.name)}">${icon("plus")}</button></div><strong style="font-size:14px">${money(lineTotal(line))}</strong></div></div>`).join("")}</div>` : `<div class="cart-empty">${icon("bag")}<strong>Seu próximo bom momento.</strong><p>Adicione seus favoritos e<br>monte seu pedido.</p></div>`}<div class="cart-footer"><div class="total-row"><span>Subtotal estimado</span><strong>${money(cartTotal(cart))}</strong></div><button class="btn wide" data-action="checkout" ${!cart.length ? "disabled" : ""}>Continuar pedido ${icon("arrow")}</button><p class="fine">A unidade será escolhida ao enviar. Preço final após a pesagem; entrega a combinar.</p></div>`;
 }
 function renderCart() {
   if ($("#desktop-cart")) $("#desktop-cart").innerHTML = cartContent();
@@ -210,14 +215,14 @@ function openProduct(id) {
   let amount = p.saleMode === "weight" ? 500 : 1;
   modal(
     p.name,
-    `<form id="add-product" data-id="${e(p.id)}"><img class="product-detail-img" src="${safeImage(p.image)}" alt="${e(p.name)}"><p class="product-detail-desc">${e(p.description || "Selecione a quantidade desejada.")}</p>${p.variants.length > 1 ? `<fieldset class="variant-options"><legend>${p.unit === "kg" ? "Como você quer o seu corte?" : "Escolha sua opção"}</legend>${p.variants.map((v, i) => `<label class="variant-choice"><input type="radio" name="variant" value="${e(v.id)}" ${i === 0 ? "checked" : ""} required><span>${e(v.name)}</span><b>${money(v.priceCents)}<small>/${p.unit}</small></b></label>`).join("")}</fieldset>` : `<input name="variant" type="hidden" value="${e(p.variants[0].id)}">`}<label class="field">${p.saleMode === "weight" ? "Quantidade em kg" : p.saleMode === "piece" ? "Quantidade de peças" : "Quantidade de unidades"}<input name="amount" type="number" inputmode="decimal" min="${p.saleMode === "weight" ? ".25" : "1"}" max="${p.saleMode === "weight" ? "30" : "30"}" step="${p.saleMode === "weight" ? ".25" : "1"}" value="${p.saleMode === "weight" ? ".5" : "1"}" required></label>${p.unit === "kg" ? `<div class="notice">${p.saleMode === "piece" ? `Cada peça pesa aproximadamente ${formatWeight(p.weightGrams)}. ` : ""}O valor final depende da pesagem na loja.</div>` : ""}<div class="total-row"><span>Valor estimado</span><strong id="product-total">${money(makeLine(p, p.variants[0].id, amount).totalCents)}</strong></div><button class="btn wide" type="submit">${icon("plus")} Adicionar à sacola</button></form>`,
+    `<form id="add-product" data-id="${e(p.id)}"><img class="product-detail-img" src="${safeImage(p.image)}" alt="${e(p.name)}"><p class="product-detail-desc">${e(p.description || "Selecione a quantidade desejada.")}</p>${p.variants.length > 1 ? `<fieldset class="variant-options"><legend>${p.unit === "kg" ? "Como você quer o seu corte?" : "Escolha sua opção"}</legend>${p.variants.map((v, i) => `<label class="variant-choice"><input type="radio" name="variant" value="${e(v.id)}" ${i === 0 ? "checked" : ""} required><span>${e(v.name)}</span><b>${money(v.priceCents)}<small>/${p.unit}</small></b></label>`).join("")}</fieldset>` : `<input name="variant" type="hidden" value="${e(p.variants[0].id)}">`}<label class="field">${p.saleMode === "weight" ? "Quantidade em kg" : p.saleMode === "piece" ? "Quantidade de peças" : "Quantidade de unidades"}<input name="amount" type="number" inputmode="decimal" min="${p.saleMode === "weight" ? ".25" : "1"}" max="${p.saleMode === "weight" ? "30" : "30"}" step="${p.saleMode === "weight" ? ".001" : "1"}" value="${p.saleMode === "weight" ? "0.500" : "1"}" required aria-describedby="product-quantity"></label><p id="product-quantity" class="quantity-summary" aria-live="polite">${quantitySummary(makeLine(p, p.variants[0].id, amount))}</p>${p.unit === "kg" ? `<div class="notice">${p.saleMode === "piece" ? `Cada peça pesa aproximadamente ${formatWeight(p.weightGrams)}. ` : ""}O valor final depende da pesagem na loja.</div>` : ""}<div class="total-row"><span>Valor estimado</span><strong id="product-total">${money(makeLine(p, p.variants[0].id, amount).totalCents)}</strong></div><button class="btn wide" type="submit">${icon("plus")} Adicionar à sacola</button></form>`,
   );
 }
 function addProduct(form) {
   const p = catalog.products.find((x) => x.id === form.dataset.id);
   const fd = new FormData(form);
   const amount =
-    Number(fd.get("amount")) * (p.saleMode === "weight" ? 1000 : 1);
+    (p.saleMode === "weight" ? Math.round(Number(fd.get("amount")) * 1000) : Number(fd.get("amount")));
   const line = makeLine(p, fd.get("variant"), amount);
   const existing = cart.find((x) => x.key === line.key);
   if (!existing && cart.length >= CONFIG.maxCartLines)
@@ -600,10 +605,11 @@ document.addEventListener("input", (event) => {
     const p = catalog.products.find((p) => p.id === form.dataset.id);
     const fd = new FormData(form);
     const amount =
-      Number(fd.get("amount")) * (p.saleMode === "weight" ? 1000 : 1);
-    $("#product-total").textContent = money(
-      makeLine(p, fd.get("variant"), amount).totalCents,
-    );
+      (p.saleMode === "weight" ? Math.round(Number(fd.get("amount")) * 1000) : Number(fd.get("amount")));
+    const line = makeLine(p, fd.get("variant"), amount);
+    $("#product-total").textContent = money(line.totalCents);
+    $("#product-quantity").textContent = input.closest("form").querySelector("[name=amount]").validity.valid
+      ? quantitySummary(line) : "Informe uma quantidade válida.";
   }
 });
 document.addEventListener("change", (event) => {

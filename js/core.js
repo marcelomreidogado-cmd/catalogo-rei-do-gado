@@ -25,7 +25,9 @@ export function validatePhone(value) {
   return /^[1-9]{2}\d{8,9}$/.test(phoneBR(value));
 }
 export const formatWeight = (grams) =>
-  `${(grams / 1000).toLocaleString("pt-BR", { maximumFractionDigits: 3 })} kg`;
+  `${(grams / 1000).toLocaleString("pt-BR", { minimumFractionDigits: 3, maximumFractionDigits: 3 })} kg`;
+export const formatWeightWithGrams = (grams) =>
+  `${formatWeight(grams)}${grams > 0 && grams < 1000 ? ` (${Math.round(grams)} g)` : ""}`;
 export const STATUSES = {
   pending: "Pendente",
   preparing: "Em preparação",
@@ -138,8 +140,8 @@ export function groupCustomers(orders) {
 export function whatsappMessage(order, branch) {
   const itemText = order.items
     .map(
-      (item, index) =>
-        `${index + 1}. ${item.name}${item.variant && !["Padrão", "Kg", "KG"].includes(item.variant) ? ` — ${item.variant}` : ""}\n   ${lineQuantity(item)}${item.saleMode === "piece" ? ` (aprox. ${formatWeight(item.grams)})` : ""} × ${money(item.unitPriceCents)}/${item.unit} = ${money(item.totalCents)}`,
+      (item) =>
+        `*Item - ${item.name}${item.variant && !["Padrão", "Kg", "KG"].includes(item.variant) ? ` — ${item.variant}` : ""}*\n*Quantidade: ${item.saleMode === "weight" ? formatWeightWithGrams(item.grams) : lineQuantity(item).toLocaleUpperCase("pt-BR")}*${item.saleMode === "piece" ? `\n*Peso total estimado: ${formatWeightWithGrams(item.grams)}*` : ""}\nPreço: ${money(item.unitPriceCents)}/${item.unit}\nTotal${item.unit === "kg" ? " estimado" : ""}: ${money(item.totalCents)}`,
     )
     .join("\n\n");
   return `*REI DO GADO • UNIDADE ${branch.name.toUpperCase()}*\n*Pedido #${order.code}*\n\n*Cliente:* ${order.customer.name}\n*Telefone:* ${order.customer.phone}\n\n*MINHA SACOLA*\n${itemText}\n\n*Subtotal estimado: ${money(order.totalCents)}*\n${order.fulfillment === "delivery" ? "*Entrega:* Domicílio\n*Endereço:* " + order.address + "\n*Frete:* a confirmar pela unidade" : "*Retirada:* Unidade " + branch.name}\n*Pagamento:* ${order.payment}${order.changeFor ? "\n*Troco para:* " + order.changeFor : ""}${order.notes ? "\n*Observações:* " + order.notes : ""}\n\nO valor final dos itens por kg depende da pesagem. Disponibilidade, frete e prazo serão confirmados pela loja.`;

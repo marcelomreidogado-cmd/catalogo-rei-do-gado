@@ -118,3 +118,7 @@ Fluxos móveis foram verificados também em navegador: seleção da unidade, car
 ## Recuperação administrativa de senha
 
 Para mudar sua própria senha, use **Alterar senha** no painel. Os identificadores `@reidogadocatalogo.invalid` são logins internos e não recebem e-mails. Se esquecer a senha, o proprietário do projeto pode autenticar o ambiente com Application Default Credentials (por exemplo, `gcloud auth application-default login`), instalar as dependências, definir `RDG_NEW_PASSWORD` sem salvar em arquivos públicos e executar `node scripts/reset-password.mjs IDENTIFICADOR_DA_UNIDADE`. A ferramenta recusa contas sem a função de administrador e revoga as sessões anteriores. Esse utilitário nunca é executado no navegador.
+
+## Quantidades no catálogo e no WhatsApp
+
+Pesos usam três casas decimais: **0,500 kg (500 g)** e **1,300 kg**. A escolha do produto aceita incrementos de 1 g, a partir de 250 g; os botões da sacola continuam ajustando 250 g. Peças usam contagem inteira e mostram o peso total estimado em uma linha separada. Na mensagem do WhatsApp, os produtos começam com **Item -**, sem numeração, e a quantidade fica em negrito. Os testes cobrem essa formatação, os totais e a leitura em telas de 320 a 1440 px.
