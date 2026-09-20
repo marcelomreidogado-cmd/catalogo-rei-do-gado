@@ -11,7 +11,14 @@
     "rules": "storage.rules"
   },
   "auth": {
-    "authorizedDomains": ["gen-lang-client-0241129459.firebaseapp.com", "gen-lang-client-0241129459.web.app", "localhost", "marcelomreidogado-cmd.github.io"],
+    "authorizedDomains": [
+      "gen-lang-client-0241129459.firebaseapp.com",
+      "gen-lang-client-0241129459.web.app",
+      "localhost",
+      "marcelomreidogado-cmd.github.io",
+      "reidogadocarnes.com.br",
+      "www.reidogadocarnes.com.br"
+    ],
     "providers": {
       "anonymous": true,
       "emailPassword": true
