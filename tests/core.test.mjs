@@ -1,6 +1,8 @@
 import assert from "node:assert/strict";
 import {
   makeLine,
+  orderKey,
+  ordersForBranch,
   formatWeight,
   formatWeightWithGrams,
   lineTotal,
@@ -84,3 +86,8 @@ assert.equal(storeA.products[0].variants[0].priceCents,5000);
 console.log(
   "PASS: centavo rounding, whole-piece weight, fractions, sum, phone normalization, encoded WhatsApp and customer grouping.",
 );
+
+const sameIds = ["coronel", "bingen", "correas"].map(branchId => ({id:"same-id",branchId}));
+assert.equal(new Set(sameIds.map(orderKey)).size, 3);
+assert.equal(ordersForBranch(sameIds, "all").length, 3);
+assert.deepEqual(ordersForBranch(sameIds, "bingen"), [sameIds[1]]);

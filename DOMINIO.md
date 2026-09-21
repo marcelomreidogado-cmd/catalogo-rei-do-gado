@@ -7,7 +7,7 @@
 
 ## Configuração concluída em 21/09/2026
 
-O domínio está registrado no Registro.br até 20/09/2030. O catálogo continua hospedado no GitHub Pages e usa o mesmo Firebase, banco de dados, produtos e acessos administrativos.
+O domínio está registrado no Registro.br até 20/09/2030. O catálogo continua hospedado no GitHub Pages e usa o mesmo Firebase, banco de dados, produtos e administração. O painel agora usa um único acesso para as três unidades.
 
 O GitHub aprovou o certificado para os endereços com e sem `www`. A opção **Enforce HTTPS** está ativada. O domínio também está verificado na conta `marcelomreidogado-cmd`.
 
@@ -31,7 +31,7 @@ Para a raiz, o campo nome fica vazio: o Registro.br não aceita `@`. Mantenha o 
 - Registros salvos e conferidos nos servidores oficiais do Registro.br e nos resolvedores públicos do Google e Cloudflare.
 - Certificado válido para raiz e `www`, sem ignorar erros de segurança.
 - Catálogo, fotos, fontes, leitura em celular, sacola e escolha final das três unidades conferidos.
-- Login real e leitura de produtos conferidos nas unidades Coronel, Bingen e Corrêas.
+- Login único e leitura de produtos conferidos nas unidades Coronel, Bingen e Corrêas.
 - Redirecionamentos do endereço antigo e de `www` conferidos.
 - Nenhum pedido de teste registrado nem mensagem enviada às lojas.
 

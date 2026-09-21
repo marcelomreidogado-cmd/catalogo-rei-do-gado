@@ -1,7 +1,7 @@
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
-    // admins/{uid}: {branchId, enabled}. Provisioned ONLY via Console/Admin SDK.
+    // admins/{uid}: {role: "owner", enabled}. Provisioned ONLY via Console/Admin SDK.
     // branches/{branch}/categories/{id}: {name, sort} public catalog.
     // branches/{branch}/products/{id}: see data/catalog.json; photo <=180 KB Base64.
     // branches/{branch}/orders/{id}: immutable customer, basket and estimated total;
@@ -10,9 +10,9 @@ service cloud.firestore {
     function signedIn() { return request.auth != null; }
     function validBranch(branch) { return branch in ['coronel', 'bingen', 'correas']; }
     function storeAdmin(branch) {
-      return signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
+      return validBranch(branch) && signedIn() && exists(/databases/$(database)/documents/admins/$(request.auth.uid))
         && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.enabled == true
-        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.branchId == branch;
+        && get(/databases/$(database)/documents/admins/$(request.auth.uid)).data.role == "owner";
     }
     function str(value, min, max) { return value is string && value.size() >= min && value.size() <= max; }
     function validCategory(d) {

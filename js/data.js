@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260919-quantities";
-import { cartTotal, makeLine, mergeCatalogs } from "./core.js?v=20260919-quantities";
+import { CONFIG } from "./config.js?v=20260921-admin-unico";
+import { cartTotal, makeLine, mergeCatalogs } from "./core.js?v=20260921-admin-unico";
 export const isDemo = CONFIG.demo && !CONFIG.firebase.projectId;
 const prefix = "rdg-demo-v1:";
 let sdk, db, auth, adminAuth, storage;
@@ -124,38 +124,31 @@ export function refreshSavedCart(lines, catalog) {
   }
   return [...restored.values()];
 }
-export async function login(branch, email, password) {
+export async function login(password) {
   if (isDemo) {
-    if (password !== CONFIG.branches.find((b) => b.id === branch)?.demoPassword)
-      throw new Error("Senha incorreta.");
-    sessionStorage.setItem(prefix + "admin", branch);
-    return { branchId: branch };
+    if (password !== CONFIG.demoPassword) throw new Error("Senha incorreta.");
+    sessionStorage.setItem(prefix + "admin", "owner");
+    return { role: "owner", enabled: true };
   }
-  const user = (
-    await sdk.signInWithEmailAndPassword(adminAuth, email, password)
-  ).user;
-  const profile = await sdk.getDoc(sdk.doc(sdk.adminDB, "admins", user.uid));
-  if (
-    !profile.exists() ||
-    profile.data().branchId !== branch ||
-    !profile.data().enabled
-  ) {
+  const { user } = await sdk.signInWithEmailAndPassword(adminAuth, CONFIG.adminEmail, password);
+  try {
+    const profile = await sdk.getDoc(sdk.doc(sdk.adminDB, "admins", user.uid));
+    if (!profile.exists() || profile.data().role !== "owner" || !profile.data().enabled)
+      throw new Error("Este acesso não está autorizado para a administração.");
+    return profile.data();
+  } catch (error) {
     await sdk.signOut(adminAuth);
-    throw new Error("Este login não tem acesso à unidade selecionada.");
+    throw error;
   }
-  return profile.data();
 }
 export async function session() {
-  if (isDemo) {
-    const branchId = sessionStorage.getItem(prefix + "admin");
-    return branchId ? { branchId } : null;
-  }
+  if (isDemo) return sessionStorage.getItem(prefix + "admin") === "owner" ? { role: "owner", enabled: true } : null;
   await adminAuth.authStateReady();
   if (!adminAuth.currentUser) return null;
-  const profile = await sdk.getDoc(
-    sdk.doc(sdk.adminDB, "admins", adminAuth.currentUser.uid),
-  );
-  return profile.exists() && profile.data().enabled ? profile.data() : null;
+  const profile = await sdk.getDoc(sdk.doc(sdk.adminDB, "admins", adminAuth.currentUser.uid));
+  if (profile.exists() && profile.data().enabled && profile.data().role === "owner") return profile.data();
+  await sdk.signOut(adminAuth);
+  return null;
 }
 export async function logout() {
   if (isDemo) sessionStorage.removeItem(prefix + "admin");
@@ -226,6 +219,26 @@ export function subscribeOrders(branch, onData, onError) {
     (s) => onData(s.docs.map(toRecord)),
     onError,
   );
+}
+// Each store remains a separate collection; aggregate live snapshots without losing its identity.
+export function subscribeAllOrders(onData, onError) {
+  const snapshots = new Map(), stops = [];
+  let stopped = false;
+  for (const branch of CONFIG.branches) {
+    if (stopped) break;
+    stops.push(subscribeOrders(branch.id, rows => {
+      if (stopped) return;
+      snapshots.set(branch.id, rows.map(order => ({ ...order, branchId: branch.id })));
+      if (snapshots.size === CONFIG.branches.length)
+        onData([...snapshots.values()].flat().sort((a, b) => b.createdAt - a.createdAt));
+    }, error => {
+      if (stopped) return;
+      stopped = true;
+      stops.forEach(stop => stop());
+      onError(error);
+    }));
+  }
+  return () => { stopped = true; stops.forEach(stop => stop()); };
 }
 export async function updateStatus(branch, id, status) {
   if (isDemo) {

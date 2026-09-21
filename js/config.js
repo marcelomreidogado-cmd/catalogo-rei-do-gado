@@ -13,6 +13,8 @@ export const CONFIG = {
   databaseId: "catalogo",
   imageMode: "firestore", // 'firestore' = Base64 comprimido; 'storage' exige plano Blaze.
   firebaseSdkVersion: "12.19.0",
+  adminEmail: "administracao@reidogadocatalogo.invalid",
+  demoPassword: "demo123456", // Somente demonstração; nunca use a senha real aqui.
   branches: [
     {
       id: "coronel",
@@ -20,8 +22,6 @@ export const CONFIG = {
       neighborhood: "Coronel Veiga",
       address: "Rua Coronel Veiga, 298 • Petrópolis",
       whatsapp: "5524992177114",
-      email: "coronel@reidogadocatalogo.invalid",
-      demoPassword: "coronel123",
     },
     {
       id: "bingen",
@@ -29,8 +29,6 @@ export const CONFIG = {
       neighborhood: "Bingen",
       address: "Petrópolis • RJ",
       whatsapp: "552420171476",
-      email: "bingen@reidogadocatalogo.invalid",
-      demoPassword: "bingen123",
     },
     {
       id: "correas",
@@ -38,8 +36,6 @@ export const CONFIG = {
       neighborhood: "Corrêas",
       address: "Petrópolis • RJ",
       whatsapp: "5524981754161",
-      email: "correas@reidogadocatalogo.invalid",
-      demoPassword: "correas123",
     },
   ],
   maxCartLines: 10,

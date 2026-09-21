@@ -14,6 +14,7 @@ import {
   updateDoc,
   serverTimestamp,
   Timestamp,
+  deleteDoc,
 } from "firebase/firestore";
 import fs from "node:fs";
 const root = "./";
@@ -32,13 +33,14 @@ const { id, ...product } = p;
 await env.withSecurityRulesDisabled(async (ctx) => {
   const db = ctx.firestore();
   await setDoc(doc(db, "admins", "admin-coronel"), {
-    branchId: "coronel",
+    role: "owner",
     enabled: true,
   });
   await setDoc(doc(db, "admins", "admin-bingen"), {
     branchId: "bingen",
     enabled: true,
   });
+  await setDoc(doc(db, "admins", "disabled-owner"), {role:"owner",enabled:false});
   await setDoc(doc(db, "branches/coronel/products", id), product);
   await setDoc(doc(db, "branches/coronel/products", "hidden"), {
     ...product,
@@ -49,6 +51,7 @@ const client = env.authenticatedContext("customer-a").firestore();
 const other = env.authenticatedContext("customer-b").firestore();
 const admin = env.authenticatedContext("admin-coronel").firestore();
 const bingen = env.authenticatedContext("admin-bingen").firestore();
+const disabledOwner = env.authenticatedContext("disabled-owner").firestore();
 const guest = env.unauthenticatedContext().firestore();
 const line = {
   key: "a:0",
@@ -163,7 +166,21 @@ await assertFails(
     totalCents: 1,
   }),
 );
-console.log(
-  "PASS 20 rule checks: public active-only catalog, private customer data, owner receipt, anonymous create, branch isolation, immutable orders, role escalation blocked, valid status, malformed data blocked, 10-line order.",
-);
+for (const branch of ["coronel", "bingen", "correas"]) {
+  const orderRef = `branches/${branch}/orders/unified-order`;
+  await assertSucceeds(setDoc(doc(client, orderRef), {...order, branchId: branch}));
+  await assertSucceeds(getDocs(collection(admin, `branches/${branch}/orders`)));
+  await assertSucceeds(updateDoc(doc(admin, orderRef), {status:"done",updatedAt:serverTimestamp()}));
+  await assertFails(getDocs(collection(guest, `branches/${branch}/orders`)));
+  await assertFails(getDocs(collection(disabledOwner, `branches/${branch}/orders`)));
+  await assertFails(getDocs(collection(bingen, `branches/${branch}/orders`)));
+  const productRef = `branches/${branch}/products/unified-product`;
+  await assertSucceeds(setDoc(doc(admin, productRef), product));
+  await assertSucceeds(updateDoc(doc(admin, productRef), {description:"Produto editado pelo painel único"}));
+  await assertSucceeds(deleteDoc(doc(admin, productRef)));
+}
+await assertFails(updateDoc(doc(admin, "admins/admin-coronel"), {role:"owner",enabled:false}));
+await assertFails(setDoc(doc(client, "admins/customer-a"), {role:"owner",enabled:true}));
+await assertFails(setDoc(doc(admin, "branches/desconhecida/products/new-product"), product));
+console.log("PASS rules: owner accesses all 3 stores; legacy/disabled/public accounts denied; private receipts, status-only updates and validation preserved.");
 await env.cleanup();

@@ -152,3 +152,7 @@ export function whatsappUrl(phone, message) {
     throw new Error("O WhatsApp desta unidade ainda não foi configurado.");
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }
+
+// Firestore IDs are unique within a store, not across all store collections.
+export const orderKey = order => `${order.branchId}:${order.id}`;
+export const ordersForBranch = (orders, branchId) => branchId === "all" ? orders : orders.filter(order => order.branchId === branchId);

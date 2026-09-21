@@ -13,7 +13,7 @@ Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra 
 
 ## O que está incluído
 
-- Três unidades, cada uma com seu catálogo, login, pedidos e clientes.
+- Um único login administrativo, com pedidos e clientes consolidados das três unidades e filtros por loja. Cada unidade mantém seus produtos, preços e WhatsApp.
 - Cadastro, edição e exclusão de produtos e categorias; pausa de produtos e upload de fotos.
 - Variações de corte com preços diferentes; venda em kg, por unidade ou peça com peso médio.
 - Vitrine e sacola únicas, com os produtos ativos das três unidades, preservadas neste navegador. Na sacola, os botões ajustam 250 g por toque; o campo de quantidade aceita precisão de 1 g, a partir de 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
@@ -38,12 +38,12 @@ WhatsApps configurados:
 | Bingen  | 552420171476         |
 | Corrêas | 5524981754161        |
 
-Os acessos iniciais ficam em arquivo privado entregue separadamente, fora deste repositório. Cada conta só tem permissão para uma unidade. As contas usam identificadores de login internos, não caixas de e-mail para contato.
+O acesso único fica em arquivo privado entregue separadamente, fora deste repositório. A senha real é validada no Firebase Authentication e nunca é publicada no código. O identificador interno configurado em `adminEmail` não é uma caixa de e-mail para contato. Em 21/09/2026, os antigos acessos individuais foram substituídos pelo administrador geral.
 
 ## Operação da loja
 
-1. Abra a área administrativa, escolha a unidade e entre com a senha correspondente.
-2. Em **Produtos**, edite nomes, preços, fotos, categorias e disponibilidade. Em **Subcortes, sabores e preços**, edite o nome e o preço de cada opção. Use **Adicionar variação** para criar outra opção. Os identificadores das opções existentes são preservados ao editar.
+1. Abra a área administrativa e entre com a senha única. A tela inicial reúne os pedidos das três lojas. Use **Filtrar por unidade** em Pedidos e Clientes.
+2. Em **Produtos** ou **Categorias**, escolha **Unidade que você está editando**. As alterações são aplicadas somente à loja selecionada. Em **Produtos**, edite nomes, preços, fotos, categorias e disponibilidade. Em **Subcortes, sabores e preços**, edite o nome e o preço de cada opção. Use **Adicionar variação** para criar outra opção. Os identificadores das opções existentes são preservados ao editar.
 3. Para peça, informe o preço por kg e o peso médio em kg. O site calcula a estimativa por peça; o peso real é confirmado pela loja.
 4. Em **Pedidos**, abra a sacola e mude o status: Pendente → Em preparação → Saiu para entrega → Finalizado. Uma retirada pode passar diretamente para Finalizado.
 5. Em **Clientes**, consulte compras anteriores, valores estimados e o último pedido.
@@ -67,22 +67,22 @@ O arquivo Corona original mapeia letras acentuadas para letras sem acento. Por i
 
 Padrão: `imageMode: 'firestore'`. A imagem é convertida para JPEG e comprimida no navegador, com lado máximo de 900 px e Base64 de até 180.000 caracteres. O campo não é indexado. Arquivos de entrada: JPEG, PNG ou WebP até 12 MB. Imagens muito detalhadas que não caibam são rejeitadas com uma explicação.
 
-O [Cloud Storage para Firebase exige o plano Blaze](https://firebase.google.com/docs/storage/faqs-storage-changes-announced-sept-2024). Não foi ativado. Para usá-lo voluntariamente: configure seu bucket, publique `storage.rules` e mude `imageMode` para `storage`. As regras do Storage usam os atributos de autenticação `storeAdmin: true` e `branchId`, atribuídos pelo responsável com Admin SDK; usuários não podem atribuí-los a si mesmos.
+O [Cloud Storage para Firebase exige o plano Blaze](https://firebase.google.com/docs/storage/faqs-storage-changes-announced-sept-2024). Não foi ativado. Para usá-lo voluntariamente: configure seu bucket, publique `storage.rules` e mude `imageMode` para `storage`. As regras do Storage usam o atributo de autenticação `catalogAdmin: true`, atribuídos pelo responsável com Admin SDK; usuários não podem atribuí-los a si mesmos.
 
 A cota gratuita do Firestore é finita. Se for excedida, novas operações podem ser interrompidas no plano gratuito. Fotos em Base64 aumentam o volume lido; para um catálogo maior, prefira fotos estáticas em `assets/products` ou avalie Storage conscientemente. [Cotas oficiais](https://firebase.google.com/docs/firestore/enterprise/quotas-native-mode).
 
 ## Modelo e segurança
 
 ```
-admins/{uid}                              { branchId, enabled }
+admins/{uid}                              { role: "owner", enabled }
 branches/{branchId}/categories/{id}       { name, sort }
 branches/{branchId}/products/{id}         nome, categoria, preços, opções, foto, ativo...
 branches/{branchId}/orders/{id}           cliente, sacola, total estimado, status, datas
 ```
 
-Categorias e produtos ativos são públicos. Pedidos não são públicos: clientes anônimos só acessam o recibo de seu próprio pedido e não podem listar históricos. Administradores só leem pedidos e alteram catálogo/status da sua unidade. Os perfis de acesso só podem ser criados pelo Console ou Admin SDK; não há cadastro de administradores na interface. O aplicativo usa sessões Firebase separadas para cliente e administrador, e encerra a assinatura de pedidos ao sair.
+Categorias e produtos ativos são públicos. Pedidos não são públicos: clientes anônimos só acessam o recibo de seu próprio pedido e não podem listar históricos. O administrador geral lê os pedidos das três lojas e altera o catálogo da unidade selecionada; cada atualização de status usa a unidade original do pedido. Os perfis de acesso só podem ser criados pelo Console ou Admin SDK; não há cadastro de administradores na interface. O aplicativo usa sessões Firebase separadas para cliente e administrador, e encerra a assinatura de pedidos ao sair.
 
-**Regras protótipo:** as regras entregues restringem dados pessoais à unidade responsável, impedem elevação de privilégios e tornam o conteúdo recebido do pedido imutável. Foram verificadas no emulador, incluindo isolamento entre unidades. Revise e valide as regras antes de divulgação ampla e sempre que ampliar o modelo de dados.
+**Regras protótipo:** as regras entregues restringem históricos ao administrador geral, preservam o recibo privado do cliente e impedem elevação de privilégios e tornam o conteúdo recebido do pedido imutável. Foram verificadas no emulador, incluindo acesso do administrador às três lojas e bloqueio de contas antigas, desativadas e de clientes. Revise e valide as regras antes de divulgação ampla e sempre que ampliar o modelo de dados.
 
 **Limite do modelo estático:** nome, preço, quantidade e total de um pedido são uma solicitação enviada pelo navegador do cliente. A interface consulta os preços novamente no checkout, as regras validam o envelope e a soma dos valores, mas não certificam cada preço contra o catálogo. Um cliente que ignore a interface pode enviar valores falsos. Por isso todos os valores são estimativas e a equipe precisa conferir os itens e a pesagem antes de confirmar. Não há cobrança online. Para aceitar pagamento automático, adicione um backend que recalcule preços e disponibilidade antes de cobrar. Authentication anônimo não elimina spam; acompanhe as cotas e avalie App Check antes de campanhas de grande alcance.
 
@@ -94,11 +94,11 @@ O agrupamento de clientes usa o telefone informado; o site não verifica a posse
 2. Ative Authentication por E-mail/Senha e Anônimo.
 3. Registre um aplicativo Web e cole o objeto público em `js/config.js`. Ajuste `databaseId`, `demo: false`, unidades e WhatsApps.
 4. Adicione o domínio do GitHub Pages e `localhost` aos domínios autorizados.
-5. Crie três contas de administração. No Firestore, crie `admins/UID_DA_CONTA` com `branchId: 'coronel'` (ou `bingen`/`correas`) e `enabled: true`.
+5. Crie uma conta de administração no Authentication, configure seu e-mail interno em `adminEmail` e crie `admins/UID_DA_CONTA` com `role: "owner"` e `enabled: true`. Para a recuperação administrativa e o Storage opcional, atribua `catalogAdmin: true` via Admin SDK.
 6. Publique somente as regras e índices: `npx -y firebase-tools@latest deploy --only firestore,auth --project SEU_PROJECT_ID`. Para habilitar Storage, faça isso separadamente após configurar conscientemente o plano e o bucket.
-7. Entre em cada unidade e clique em **Importar catálogo Goomer** para carregar a base inicial.
+7. Entre no painel, selecione cada unidade em Produtos e clique em **Importar catálogo Goomer** para carregar a base inicial.
 
-Demonstração completamente local: apague os campos de `firebase` e use `demo: true`. As senhas simples de demonstração ficam em `config.js`. Esse modo é identificado na interface, não envia mensagens, e guarda seus registros somente no navegador. Nunca use senhas embutidas no JavaScript para proteger dados reais. O aplicativo não muda automaticamente para demonstração quando o Firebase falha.
+Demonstração completamente local: apague os campos de `firebase` e use `demo: true`. A senha simples de demonstração fica em `config.js`. Esse modo é identificado na interface, não envia mensagens, e guarda seus registros somente no navegador. Nunca use senhas embutidas no JavaScript para proteger dados reais. O aplicativo não muda automaticamente para demonstração quando o Firebase falha.
 
 ## GitHub Pages
 
@@ -112,14 +112,16 @@ Não publique arquivos de acessos, contas de serviço, logs, pastas de trabalho 
 
 Para regressão da interface: `npm install`, `npx playwright install chromium`, inicie o site com `npm start` e, em outro terminal, rode `npm run test:ui`. O teste usa demonstração isolada por interceptação da configuração e não grava no Firebase nem abre WhatsApp. Cobre os três destinos, retorno no checkout, carrinho persistido, upload, variações, edição/exclusão e categorias. Capturas ficam em `.qa/`. Defina `RDG_BROWSER_CHANNEL=chrome` para usar Chrome instalado.
 
-`tests/firestore.rules.test.mjs` verifica leituras públicas/privadas, isolamento de unidades, alterações de status, bloqueio de elevação de privilégios, total e limite da sacola. Requer Node, Java 21+, `npm install`, e emuladores. Rode `npm run test:rules`. Nenhum teste envia WhatsApp.
+`tests/firestore.rules.test.mjs` verifica leituras públicas/privadas, acesso global e bloqueio das contas antigas, alterações de status, bloqueio de elevação de privilégios, total e limite da sacola. Requer Node, Java 21+, `npm install`, e emuladores. Rode `npm run test:rules`. Nenhum teste envia WhatsApp.
 
 Fluxos móveis foram verificados também em navegador: seleção da unidade, carrinho, checkout, upload de imagem, CRUD, status e histórico. O catálogo usa consultas de coleção tradicionais porque o painel precisa de atualizações em tempo real.
 
 ## Recuperação administrativa de senha
 
-Para mudar sua própria senha, use **Alterar senha** no painel. Os identificadores `@reidogadocatalogo.invalid` são logins internos e não recebem e-mails. Se esquecer a senha, o proprietário do projeto pode autenticar o ambiente com Application Default Credentials (por exemplo, `gcloud auth application-default login`), instalar as dependências, definir `RDG_NEW_PASSWORD` sem salvar em arquivos públicos e executar `node scripts/reset-password.mjs IDENTIFICADOR_DA_UNIDADE`. A ferramenta recusa contas sem a função de administrador e revoga as sessões anteriores. Esse utilitário nunca é executado no navegador.
+Para mudar sua própria senha, use **Alterar senha** no painel. Os identificadores `@reidogadocatalogo.invalid` são logins internos e não recebem e-mails. Se esquecer a senha, o proprietário do projeto pode autenticar o ambiente com Application Default Credentials (por exemplo, `gcloud auth application-default login`), instalar as dependências, definir `RDG_NEW_PASSWORD` sem salvar em arquivos públicos e executar `node scripts/reset-password.mjs`. A ferramenta recusa contas sem a função de administrador e revoga as sessões anteriores. Esse utilitário nunca é executado no navegador.
 
 ## Quantidades no catálogo e no WhatsApp
 
 Pesos usam três casas decimais: **0,500 kg (500 g)** e **1,300 kg**. A escolha do produto aceita incrementos de 1 g, a partir de 250 g; os botões da sacola continuam ajustando 250 g. Peças usam contagem inteira e mostram o peso total estimado em uma linha separada. Na mensagem do WhatsApp, os produtos começam com **Item -**, sem numeração, e a quantidade fica em negrito. Os testes cobrem essa formatação, os totais e a leitura em telas de 320 a 1440 px.
+
+O teste `tests/admin.cjs` cobre pedidos com IDs iguais em lojas diferentes, filtro e totais por unidade, clientes consolidados, atualização em tempo real, sessão, fotos e edição/exclusão nas três lojas. Os listeners de coleção são mantidos porque os pedidos precisam aparecer em tempo real no balcão.

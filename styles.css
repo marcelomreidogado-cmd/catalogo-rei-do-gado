@@ -1671,3 +1671,16 @@ html { scroll-behavior: smooth; scroll-padding-top: 16px; }
   white-space: nowrap;
 }
 .line-controls { gap: 10px; flex-wrap: wrap; }
+
+.admin-scope { display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin:18px 0 24px; padding:18px; border:1px solid var(--line); border-radius:12px; background:#fff; }
+.admin-scope .field { margin:0; min-width:220px; }
+.admin-scope .fine { margin:0; flex:1; min-width:160px; }
+.unit-badge { display:inline-block; background:#fff5e4; color:var(--wine); border-radius:6px; padding:5px 8px; font-size:12px; font-weight:700; white-space:nowrap; }
+@media(max-width:600px) { .admin-scope .field { width:100%; min-width:0; } .admin-top > div:last-child { flex-wrap:wrap; } }
+.admin-side, .admin-side > div, .admin-top > div, .stat { min-width:0; }
+.stat strong { overflow-wrap:anywhere; }
+@media(max-width:850px) { .admin-shell { grid-template-columns:minmax(0,1fr); } }
+@media(max-width:700px) { .stats { grid-template-columns:repeat(2,minmax(0,1fr)); } }
+
+.sale-hint { margin:0 0 10px; color:var(--wine); font-size:11px; font-weight:700; line-height:1.5; }
+@media(max-width:600px) { .admin-nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; } .admin-nav button { justify-content:center; white-space:normal; } }

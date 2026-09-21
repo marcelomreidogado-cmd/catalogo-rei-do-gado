@@ -5,7 +5,7 @@
 import { initializeApp, applicationDefault, deleteApp } from 'firebase-admin/app';
 import { getAuth } from 'firebase-admin/auth';
 import { CONFIG } from '../js/config.js';
-const email = process.argv[2];
+const email = process.argv[2] || CONFIG.adminEmail;
 const password = process.env.RDG_NEW_PASSWORD;
 if (!email || !password || password.length < 10) {
   throw new Error('Informe o e-mail interno como argumento e RDG_NEW_PASSWORD (mínimo 10 caracteres).');
@@ -14,7 +14,7 @@ const app = initializeApp({ projectId: CONFIG.firebase.projectId, credential: ap
 try {
   const auth = getAuth(app);
   const user = await auth.getUserByEmail(email);
-  if (user.customClaims?.storeAdmin !== true) throw new Error('A conta não é administradora da loja.');
+  if (email !== CONFIG.adminEmail || user.customClaims?.catalogAdmin !== true) throw new Error('A conta não é administradora da loja.');
   await auth.updateUser(user.uid, { password });
   await auth.revokeRefreshTokens(user.uid);
   console.log('Senha redefinida e sessões anteriores revogadas.');

@@ -2,7 +2,7 @@
 
 **Catálogo:** https://reidogadocarnes.com.br/
 
-**Painel:** https://reidogadocarnes.com.br/?view=admin. Escolha a unidade e informe a senha do arquivo privado entregue separadamente.
+**Painel:** https://reidogadocarnes.com.br/?view=admin. Informe a senha única do arquivo privado entregue separadamente.
 
 ## Antes de divulgar
 
@@ -17,11 +17,12 @@ O cliente escolhe produtos, subcortes e quantidades sem informar a loja. Preench
 
 ## Rotina
 
-- **Alterar preço ou foto:** Painel → Produtos → Editar → salvar.
+- **Ver tudo:** Pedidos e Clientes iniciam com **Todas as unidades**. Use o filtro para Coronel, Bingen ou Corrêas.
+- **Alterar preço ou foto:** Painel → Produtos → escolha a unidade → Editar → salvar.
 - **Editar subcortes:** no produto, use os campos de nome e preço em **Subcortes, sabores e preços**.
 - **Excluir um produto:** use **Excluir** na lista ou **Excluir produto** dentro da edição e confirme. O histórico permanece.
 - **Tirar um item de venda:** desmarque Disponível para pedidos.
-- **Organizar o balcão:** Painel → Categorias → nome e posição no catálogo.
+- **Organizar o balcão:** Painel → Categorias → escolha a unidade → nome e posição no catálogo.
 - **Atender pedido:** Painel → Pedidos → Ver pedido → conferir sacola e peso → atualizar status.
 - **Ver compras de um cliente:** Painel → Clientes → Ver compras.
 
@@ -29,4 +30,4 @@ Os valores apresentados são estimativas. Confirme o preço final, frete e pagam
 
 O catálogo usa o projeto Firebase que você forneceu, ID `gen-lang-client-0241129459`, e o banco Firestore **catalogo**. No Console Firebase, selecione esse banco para visualizar os produtos e pedidos. A região **São Paulo** é somente a localização dos servidores do Google; não é uma unidade da loja. O projeto do caixa não foi alterado.
 
-Guarde as senhas fora do GitHub e compartilhe cada senha somente com a equipe da unidade correspondente. Para mudar uma senha, use o botão **Alterar senha** no painel. Se perder o acesso, o proprietário do Firebase pode redefinir a conta com o procedimento administrativo descrito no README.
+Guarde a senha única fora do GitHub. Ela permite administrar as três unidades; compartilhe somente com quem deve ter esse acesso. Os antigos logins por unidade foram desativados. Para mudar uma senha, use o botão **Alterar senha** no painel. Se perder o acesso, o proprietário do Firebase pode redefinir a conta com o procedimento administrativo descrito no README.

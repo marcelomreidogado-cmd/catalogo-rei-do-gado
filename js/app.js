@@ -1,7 +1,9 @@
-import { CONFIG } from "./config.js?v=20260919-quantities";
-import * as data from "./data.js?v=20260919-quantities";
+import { CONFIG } from "./config.js?v=20260921-admin-unico";
+import * as data from "./data.js?v=20260921-admin-unico";
 import {
   money,
+  orderKey,
+  ordersForBranch,
   escapeHTML as e,
   normalize,
   phoneBR,
@@ -17,7 +19,7 @@ import {
   groupCustomers,
   whatsappMessage,
   whatsappUrl,
-} from "./core.js?v=20260919-quantities";
+} from "./core.js?v=20260921-admin-unico";
 const $ = (s) => document.querySelector(s);
 const paths = {
   plus: "M12 5v14M5 12h14",
@@ -62,6 +64,11 @@ let catalog = { categories: [], products: [] },
   search = "",
   admin = null,
   adminTab = "orders",
+  adminOrderBranch = "all",
+  adminCatalogBranch = "coronel",
+  catalogLoading = false,
+  adminSaving = false,
+  ordersError = "",
   orders = [],
   ordersLoaded = false,
   orderFilter = "all",
@@ -74,7 +81,9 @@ let catalog = { categories: [], products: [] },
   checkoutId = null,
   lastOrder = null;
 const branch = () => knownBranch(branchId) || CONFIG.branches[0];
-const currentAdminBranch = () => knownBranch(admin?.branchId);
+const currentAdminBranch = () => knownBranch(adminCatalogBranch);
+const visibleOrders = () => ordersForBranch(orders, adminOrderBranch);
+const branchLabel = id => knownBranch(id)?.name || "Unidade não identificada";
 const cartKey = () => "rdg-cart-v3";
 function loadCart() {
   const legacyUnit = storageRead("rdg-unit", "coronel");
@@ -136,9 +145,9 @@ function closeModal() {
   $("#modal").close();
   modalReturnFocus?.focus?.();
 }
-$("#modal").addEventListener("cancel", event => { if (submittingOrder) event.preventDefault(); });
+$("#modal").addEventListener("cancel", event => { if (submittingOrder || adminSaving) event.preventDefault(); });
 $("#modal").addEventListener("click", (event) => {
-  if (event.target === $("#modal")) closeModal();
+  if (event.target === $("#modal") && !adminSaving) closeModal();
 });
 const brandHTML = `<a class="brand" href="./" aria-label="Rei do Gado — início"><img src="assets/logo.png" alt="Rei do Gado — Casa de Carnes" width="1729" height="1912"></a>`;
 function footer() {
@@ -153,7 +162,7 @@ function renderCatalog() {
 function productCard(p) {
   const varies = p.priceVariesByStore || new Set(p.variants.map(v => v.priceCents)).size > 1;
   const desc = p.description || (p.saleMode === "piece" ? `Peça com aproximadamente ${formatWeight(p.weightGrams)}.` : "Escolha a quantidade para o seu pedido.");
-  return `<article class="product"><button class="product-photo ${p.image ? "" : "placeholder"}" data-product="${e(p.id)}" aria-label="Ver detalhes de ${e(p.name)}"><img src="${safeImage(p.image)}" alt="${e(p.image ? p.name : "Rei do Gado — foto em breve")}" loading="lazy" width="300" height="200">${p.variants.length > 1 ? `<span class="tag">${p.variants.length} opções</span>` : p.saleMode === "piece" ? '<span class="tag">Peso aproximado</span>' : ""}</button><div class="product-body"><h3><button data-product="${e(p.id)}">${e(p.name)}</button></h3><p class="product-desc">${e(desc)}</p><div class="product-bottom"><div><span class="price-label">${varies ? "A partir de" : "Preço por " + (p.unit === "kg" ? "quilo" : "unidade")}</span><span class="price">${money(p.priceCents)} <small>/${p.unit}</small></span></div></div><button class="add" data-product="${e(p.id)}" aria-label="Escolher ${e(p.name)}">${p.variants.length > 1 ? "Escolher opções" : "Adicionar"} ${icon("plus")}</button></div></article>`;
+  return `<article class="product"><button class="product-photo ${p.image ? "" : "placeholder"}" data-product="${e(p.id)}" aria-label="Ver detalhes de ${e(p.name)}"><img src="${safeImage(p.image)}" alt="${e(p.image ? p.name : "Rei do Gado — foto em breve")}" loading="lazy" width="300" height="200">${p.variants.length > 1 ? `<span class="tag">${p.variants.length} opções</span>` : p.saleMode === "piece" ? '<span class="tag">Peso aproximado</span>' : ""}</button><div class="product-body"><h3><button data-product="${e(p.id)}">${e(p.name)}</button></h3><p class="product-desc">${e(desc)}</p><p class="sale-hint">${p.saleMode === "piece" ? `Por peça • aprox. ${formatWeight(p.weightGrams)}` : p.unit === "kg" ? "Escolha o peso" : "Por unidade"}</p><div class="product-bottom"><div><span class="price-label">${varies ? "A partir de" : "Preço por " + (p.unit === "kg" ? "quilo" : "unidade")}</span><span class="price">${money(p.priceCents)} <small>/${p.unit}</small></span></div></div><button class="add" data-product="${e(p.id)}" aria-label="Escolher ${e(p.name)}">${p.variants.length > 1 ? "Escolher opções" : "Adicionar"} ${icon("plus")}</button></div></article>`;
 }
 function safeImage(url) {
   return url &&
@@ -344,17 +353,16 @@ async function sendToBranch(id) {
   } finally { submittingOrder = false; }
 }
 function loginView() {
-  document.title = "Área da loja • Rei do Gado";
-  $("#app").innerHTML =
-    `<main class="login-page" id="main"><div class="login-brand"><img src="assets/logo.png" alt="Rei do Gado"><div><div class="eyebrow">ÁREA DA LOJA</div><h1>O seu balcão.<br>Sob seu controle.</h1><p>Produtos, pedidos e clientes<br>organizados por unidade.</p></div></div><section class="login-card"><h2>Bem-vindo de volta.</h2><p class="subtle">Entre para gerenciar sua unidade.</p>${data.isDemo ? '<div class="notice">Demonstração local. Senhas: coronel123, bingen123 ou correas123, conforme a unidade.</div>' : ""}<form id="login-form"><label class="field">Unidade<select name="branch">${CONFIG.branches.map((b) => `<option value="${b.id}" ${b.id === branchId ? "selected" : ""}>Unidade ${e(b.name)}</option>`).join("")}</select></label>${data.isDemo || CONFIG.branches.every((b) => b.email) ? "" : `<label class="field">E-mail de acesso<input name="email" type="email" autocomplete="username" value="${e(branch().email)}" placeholder="Seu e-mail da loja" required></label>`}<label class="field">Senha<input name="password" type="password" autocomplete="current-password" minlength="6" placeholder="Sua senha" required></label><div id="login-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Entrar no painel ${icon("arrow")}</button></form><a href="./" class="btn outline wide" style="margin-top:12px">Voltar para o catálogo</a></section></main>`;
+  document.title = "Administração • Rei do Gado";
+  $("#app").innerHTML = `<main class="login-page" id="main"><div class="login-brand"><img src="assets/logo.png" alt="Rei do Gado"><div><div class="eyebrow">ADMINISTRAÇÃO</div><h1>As três lojas.<br>No mesmo lugar.</h1><p>Pedidos, clientes e produtos<br>em um único painel.</p></div></div><section class="login-card"><h2>Bem-vindo de volta.</h2><p class="subtle">Um único acesso para Coronel, Bingen e Corrêas.</p>${data.isDemo ? '<div class="notice">Demonstração local. Senha: demo123456.</div>' : ""}<form id="login-form"><label class="field">Senha de administração<input name="password" type="password" autocomplete="current-password" minlength="6" placeholder="Sua senha" required></label><div id="login-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Entrar no painel ${icon("arrow")}</button></form><a href="./" class="btn outline wide" style="margin-top:12px">Voltar para o catálogo</a></section></main>`;
 }
 async function startAdmin() {
-  catalog = await data.getCatalog(admin.branchId, true);
+  catalog = await data.getCatalog(adminCatalogBranch, true);
   ordersLoaded = false;
+  ordersError = "";
   renderAdmin();
   unsubscribe?.();
-  unsubscribe = data.subscribeOrders(
-    admin.branchId,
+  unsubscribe = data.subscribeAllOrders(
     (next) => {
       orders = next;
       ordersLoaded = true;
@@ -366,7 +374,8 @@ async function startAdmin() {
     },
     (error) => {
       ordersLoaded = true;
-      toast(errorText(error));
+      ordersError = errorText(error);
+      toast(ordersError);
       if ($("#admin-content"))
         $("#admin-content").innerHTML =
           `<div class="notice error">Não foi possível carregar os pedidos. ${e(errorText(error))}</div>`;
@@ -374,9 +383,9 @@ async function startAdmin() {
   );
 }
 function renderAdmin() {
-  document.title = `Unidade ${currentAdminBranch().name} • Rei do Gado`;
+  document.title = "Administração • Rei do Gado";
   $("#app").innerHTML =
-    `<div class="admin-shell"><aside class="admin-side">${brandHTML}<div><div class="eyebrow" style="margin-left:14px">UNIDADE ${e(currentAdminBranch().name)}</div><nav class="admin-nav" aria-label="Painel da loja">${[
+    `<div class="admin-shell"><aside class="admin-side">${brandHTML}<div><div class="eyebrow" style="margin-left:14px">PAINEL GERAL</div><nav class="admin-nav" aria-label="Painel da loja">${[
       ["orders", "orders", "Pedidos"],
       ["products", "grid", "Produtos"],
       ["categories", "grid", "Categorias"],
@@ -388,11 +397,16 @@ function renderAdmin() {
       )
       .join(
         "",
-      )}</nav></div><div class="admin-side-bottom"><a href="./">Ver catálogo ${icon("arrow")}</a><button class="btn ghost" data-action="logout">${icon("logout")} Sair da conta</button></div></aside><main class="admin-main" id="main"><div class="admin-top"><div><div class="eyebrow" style="color:var(--wine)">REI DO GADO / ${e(currentAdminBranch().name)}</div><h1>${{ orders: "Pedidos da unidade", products: "Seu catálogo", categories: "Categorias", customers: "Histórico de clientes" }[adminTab]}</h1><p class="subtle">${{ orders: "Acompanhe cada pedido, do balcão à entrega.", products: "Preços, cortes e fotos do seu balcão.", categories: "Organize os produtos do jeito da sua loja.", customers: "As compras e preferências de quem volta à sua loja." }[adminTab]}</p></div><div style="display:flex;gap:8px">${adminTab === "products" ? '<button class="btn" data-action="new-product">' + icon("plus") + " Novo produto</button>" : adminTab === "categories" ? '<button class="btn" data-action="new-category">' + icon("plus") + " Nova categoria</button>" : ""}<button class="btn outline" data-action="password">Alterar senha</button><button class="icon-btn" data-action="logout" aria-label="Sair">${icon("logout")}</button></div></div>${data.isDemo ? '<div class="notice">Modo demonstração • dados salvos apenas neste navegador.</div>' : ""}<div id="admin-content"></div></main></div>`;
+      )}</nav></div><div class="admin-side-bottom"><a href="./">Ver catálogo ${icon("arrow")}</a><button class="btn ghost" data-action="logout">${icon("logout")} Sair da conta</button></div></aside><main class="admin-main" id="main"><div class="admin-top"><div><div class="eyebrow" style="color:var(--wine)">REI DO GADO / ADMINISTRAÇÃO</div><h1>${{ orders: "Pedidos das lojas", products: "Seu catálogo", categories: "Categorias", customers: "Histórico de clientes" }[adminTab]}</h1><p class="subtle">${{ orders: "Acompanhe cada pedido, do balcão à entrega.", products: "Preços, cortes e fotos do seu balcão.", categories: "Organize os produtos do jeito da sua loja.", customers: "As compras e preferências de quem volta à sua loja." }[adminTab]}</p></div><div style="display:flex;gap:8px">${adminTab === "products" ? '<button class="btn" data-action="new-product">' + icon("plus") + " Novo produto</button>" : adminTab === "categories" ? '<button class="btn" data-action="new-category">' + icon("plus") + " Nova categoria</button>" : ""}<button class="btn outline" data-action="password">Alterar senha</button><button class="icon-btn" data-action="logout" aria-label="Sair">${icon("logout")}</button></div></div>${data.isDemo ? '<div class="notice">Modo demonstração • dados salvos apenas neste navegador.</div>' : ""}${adminScopeHTML()}<div id="admin-content"></div></main></div>`;
   renderAdminContent();
 }
+function adminScopeHTML() {
+  const isOrders = ["orders", "customers"].includes(adminTab);
+  const selected = isOrders ? adminOrderBranch : adminCatalogBranch;
+  return `<div class="admin-scope"><label class="field">${isOrders ? "Filtrar por unidade" : "Unidade que você está editando"}<select id="${isOrders ? "admin-order-branch" : "admin-catalog-branch"}">${isOrders ? `<option value="all" ${selected === "all" ? "selected" : ""}>Todas as unidades</option>` : ""}${CONFIG.branches.map(b => `<option value="${b.id}" ${selected === b.id ? "selected" : ""}>Unidade ${e(b.name)}</option>`).join("")}</select></label><p class="fine">${isOrders ? "Pedidos e clientes reunidos. Selecione uma loja para ver somente os dados dela." : "Fotos, preços, categorias e exclusões se aplicam à unidade selecionada."}</p></div>`;
+}
 function statsHTML() {
-  return `<div class="stats"><div class="stat"><span>Pedidos recebidos</span><strong>${orders.length}</strong></div><div class="stat"><span>Aguardando preparo</span><strong>${orders.filter((o) => o.status === "pending").length}</strong></div><div class="stat"><span>Valor dos pedidos*</span><strong>${money(orders.reduce((s, o) => s + o.totalCents, 0))}</strong></div><div class="stat"><span>Clientes da unidade</span><strong>${groupCustomers(orders).length}</strong></div></div>`;
+  return `<div class="stats"><div class="stat"><span>Pedidos recebidos</span><strong>${visibleOrders().length}</strong></div><div class="stat"><span>Aguardando preparo</span><strong>${visibleOrders().filter((o) => o.status === "pending").length}</strong></div><div class="stat"><span>Valor dos pedidos*</span><strong>${money(visibleOrders().reduce((s, o) => s + o.totalCents, 0))}</strong></div><div class="stat"><span>Clientes</span><strong>${groupCustomers(visibleOrders()).length}</strong></div></div>`;
 }
 const badge = (status) =>
   `<span class="status ${e(status)}">${e(STATUSES[status] || status)}</span>`;
@@ -406,12 +420,16 @@ const date = (timestamp) =>
 function renderAdminContent() {
   const target = $("#admin-content");
   if (!target) return;
+  if (["orders", "customers"].includes(adminTab) && ordersError) {
+    target.innerHTML = `<div class="notice error">Não foi possível carregar o histórico completo. ${e(ordersError)} Atualize a página para tentar novamente.</div>`;
+    return;
+  }
   if (["orders", "customers"].includes(adminTab) && !ordersLoaded) {
-    target.innerHTML = '<p class="subtle">Carregando histórico da unidade…</p>';
+    target.innerHTML = '<p class="subtle">Carregando histórico das três unidades…</p>';
     return;
   }
   if (adminTab === "orders") {
-    const list = orders.filter(
+    const list = visibleOrders().filter(
       (o) =>
         (orderFilter === "all" || o.status === orderFilter) &&
         normalize(o.customer.name + o.customer.phone + o.code).includes(
@@ -429,7 +447,7 @@ function renderAdminContent() {
         )
         .join(
           "",
-        )}</div><label class="search">${icon("search")}<input id="admin-search" value="${e(adminSearch)}" placeholder="Cliente, telefone ou pedido" aria-label="Buscar pedidos"></label></div>${list.length ? `<div class="table-wrap"><table><thead><tr><th>Pedido / Cliente</th><th>Recebimento</th><th>Valor estimado</th><th>Status</th><th>Detalhes</th></tr></thead><tbody>${list.map((o) => `<tr><td><strong>${e(o.customer.name)}</strong><small>#${e(o.code)} • ${date(o.createdAt)}</small><small>${e(o.customer.phone)}</small></td><td>${o.fulfillment === "delivery" ? "Entrega" : "Retirada"}<small>${e(o.payment)}</small></td><td><strong>${money(o.totalCents)}</strong><small>${o.items.length} opções</small></td><td>${badge(o.status)}</td><td><button class="btn outline" data-order="${e(o.id)}">Ver pedido</button></td></tr>`).join("")}</tbody></table></div>` : `<div class="empty-state">${icon("orders")}<h3 style="margin-top:15px">${orders.length ? "Nenhum pedido com este filtro." : "Seu próximo pedido começa aqui."}</h3><p class="subtle">Os pedidos desta unidade aparecem automaticamente.</p></div>`}<p class="fine">*Valores estimados dos pedidos, sem frete. Não representam pagamentos recebidos.</p>`;
+        )}</div><label class="search">${icon("search")}<input id="admin-search" value="${e(adminSearch)}" placeholder="Cliente, telefone ou pedido" aria-label="Buscar pedidos"></label></div>${list.length ? `<div class="table-wrap"><table><thead><tr><th>Pedido / Cliente</th><th>Unidade</th><th>Recebimento</th><th>Valor estimado</th><th>Status</th><th>Detalhes</th></tr></thead><tbody>${list.map((o) => `<tr><td><strong>${e(o.customer.name)}</strong><small>#${e(o.code)} • ${date(o.createdAt)}</small><small>${e(o.customer.phone)}</small></td><td><span class="unit-badge">${e(branchLabel(o.branchId))}</span></td><td>${o.fulfillment === "delivery" ? "Entrega" : "Retirada"}<small>${e(o.payment)}</small></td><td><strong>${money(o.totalCents)}</strong><small>${o.items.length} opções</small></td><td>${badge(o.status)}</td><td><button class="btn outline" data-order="${e(orderKey(o))}">Ver pedido</button></td></tr>`).join("")}</tbody></table></div>` : `<div class="empty-state">${icon("orders")}<h3 style="margin-top:15px">${orders.length ? "Nenhum pedido com este filtro." : "Seu próximo pedido começa aqui."}</h3><p class="subtle">Os pedidos das três unidades aparecem automaticamente.</p></div>`}<p class="fine">*Valores estimados dos pedidos, sem frete. Não representam pagamentos recebidos.</p>`;
   }
   if (adminTab === "products") {
     const list = catalog.products.filter((p) =>
@@ -441,18 +459,18 @@ function renderAdminContent() {
     target.innerHTML = `<div class="table-wrap"><table><thead><tr><th>Categoria</th><th>Produtos</th><th>Ordem</th><th>Ações</th></tr></thead><tbody>${catalog.categories.map((c) => `<tr><td><strong>${e(c.name)}</strong></td><td>${catalog.products.filter((p) => p.categoryId === c.id).length}</td><td>${c.sort + 1}</td><td><div class="row-actions"><button data-edit-category="${e(c.id)}" aria-label="Editar ${e(c.name)}">${icon("edit")}</button><button data-delete-category="${e(c.id)}" aria-label="Excluir ${e(c.name)}">${icon("trash")}</button></div></td></tr>`).join("")}</tbody></table></div>${!catalog.categories.length ? '<div class="empty-state">Crie a primeira categoria para organizar seus produtos.</div>' : ""}`;
   }
   if (adminTab === "customers") {
-    const customers = groupCustomers(orders).filter((c) =>
+    const customers = groupCustomers(visibleOrders()).filter((c) =>
       normalize(c.name + c.phone).includes(normalize(adminSearch)),
     );
-    target.innerHTML = `<div class="list-toolbar"><p class="subtle">${customers.length} clientes • Unidade ${e(currentAdminBranch().name)}</p><label class="search">${icon("search")}<input id="admin-search" value="${e(adminSearch)}" placeholder="Buscar nome ou telefone" aria-label="Buscar clientes"></label></div>${customers.length ? `<div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Compras</th><th>Valor acumulado*</th><th>Último pedido</th><th>Histórico</th></tr></thead><tbody>${customers.map((c) => `<tr><td><strong>${e(c.name)}</strong><small>${e(c.phone)}</small></td><td>${c.orders.length}</td><td><strong>${money(c.totalCents)}</strong></td><td>${date(c.lastOrder.createdAt)}<small>${money(c.lastOrder.totalCents)}</small></td><td><button class="btn outline" data-customer="${e(c.phone)}">Ver compras</button></td></tr>`).join("")}</tbody></table></div><p class="fine">*Soma estimada dos pedidos, sem frete e sem confirmação de pagamento.</p>` : '<div class="empty-state"><h3>Ainda não há clientes por aqui.</h3><p class="subtle">O histórico é criado quando o primeiro pedido chega.</p></div>'}`;
+    target.innerHTML = `<div class="list-toolbar"><p class="subtle">${customers.length} clientes • ${adminOrderBranch === "all" ? "Todas as unidades" : "Unidade " + e(branchLabel(adminOrderBranch))}</p><label class="search">${icon("search")}<input id="admin-search" value="${e(adminSearch)}" placeholder="Buscar nome ou telefone" aria-label="Buscar clientes"></label></div>${customers.length ? `<div class="table-wrap"><table><thead><tr><th>Cliente</th><th>Compras</th><th>Valor acumulado*</th><th>Último pedido</th><th>Histórico</th></tr></thead><tbody>${customers.map((c) => `<tr><td><strong>${e(c.name)}</strong><small>${e(c.phone)}</small></td><td>${c.orders.length}</td><td><strong>${money(c.totalCents)}</strong></td><td>${date(c.lastOrder.createdAt)}<small>${money(c.lastOrder.totalCents)}</small></td><td><button class="btn outline" data-customer="${e(c.phone)}">Ver compras</button></td></tr>`).join("")}</tbody></table></div><p class="fine">*Soma estimada dos pedidos, sem frete e sem confirmação de pagamento.</p>` : '<div class="empty-state"><h3>Ainda não há clientes por aqui.</h3><p class="subtle">O histórico é criado quando o primeiro pedido chega.</p></div>'}`;
   }
 }
 function orderDetails(id) {
-  const o = orders.find((o) => o.id === id);
+  const o = orders.find((o) => orderKey(o) === id);
   if (!o) return;
   modal(
     `Pedido #${o.code}`,
-    `<div class="order-details"><div>${badge(o.status)}<p class="fine">${date(o.createdAt)} • Unidade ${e(currentAdminBranch().name)}</p></div><div><h3>${e(o.customer.name)}</h3><p class="subtle">${e(o.customer.phone)}</p></div><div><h3>Sacola do cliente</h3><ul class="detail-list">${o.items.map((l) => `<li><span>${e(l.name)}<small>${e(l.variant)} • ${lineQuantity(l)}${l.saleMode === "piece" ? " • aprox. " + formatWeight(l.grams) : ""}</small></span><strong>${money(l.totalCents)}</strong></li>`).join("")}</ul></div><div class="total-row"><span>Total estimado, sem frete</span><strong>${money(o.totalCents)}</strong></div><div><h3>${o.fulfillment === "delivery" ? "Entrega em domicílio" : "Retirada na unidade"}</h3><p class="subtle">${e(o.address || currentAdminBranch().address)}</p><p class="subtle">Pagamento: ${e(o.payment)}${o.changeFor ? " • Troco para " + e(o.changeFor) : ""}</p>${o.notes ? `<p class="subtle" style="margin-top:12px">Observações: ${e(o.notes)}</p>` : ""}</div><div class="notice">Confira os cortes, a pesagem e o valor final antes de confirmar com o cliente.</div><form id="status-form" data-id="${e(o.id)}"><label class="field">Atualizar status<select name="status">${Object.entries(
+    `<div class="order-details"><div>${badge(o.status)}<p class="fine">${date(o.createdAt)} • Unidade ${e(branchLabel(o.branchId))}</p></div><div><h3>${e(o.customer.name)}</h3><p class="subtle">${e(o.customer.phone)}</p></div><div><h3>Sacola do cliente</h3><ul class="detail-list">${o.items.map((l) => `<li><span>${e(l.name)}<small>${e(l.variant)} • ${lineQuantity(l)}${l.saleMode === "piece" ? " • aprox. " + formatWeight(l.grams) : ""}</small></span><strong>${money(l.totalCents)}</strong></li>`).join("")}</ul></div><div class="total-row"><span>Total estimado, sem frete</span><strong>${money(o.totalCents)}</strong></div><div><h3>${o.fulfillment === "delivery" ? "Entrega em domicílio" : "Retirada na unidade"}</h3><p class="subtle">${e(o.address || knownBranch(o.branchId)?.address || "")}</p><p class="subtle">Pagamento: ${e(o.payment)}${o.changeFor ? " • Troco para " + e(o.changeFor) : ""}</p>${o.notes ? `<p class="subtle" style="margin-top:12px">Observações: ${e(o.notes)}</p>` : ""}</div><div class="notice">Confira os cortes, a pesagem e o valor final antes de confirmar com o cliente.</div><form id="status-form" data-id="${e(o.id)}" data-branch="${e(o.branchId)}"><label class="field">Atualizar status<select name="status">${Object.entries(
       STATUSES,
     )
       .map(
@@ -465,7 +483,7 @@ function orderDetails(id) {
   );
 }
 function customerDetails(phone) {
-  const c = groupCustomers(orders).find((c) => c.phone === phone);
+  const c = groupCustomers(visibleOrders()).find((c) => c.phone === phone);
   if (!c) return;
   modal(
     c.name,
@@ -473,7 +491,7 @@ function customerDetails(phone) {
       .sort((a, b) => b.createdAt - a.createdAt)
       .map(
         (o) =>
-          `<li><div><strong>#${e(o.code)} • ${date(o.createdAt)}</strong><small>${o.items.map((l) => e(l.name) + " (" + lineQuantity(l) + ")").join(", ")}</small><small>${STATUSES[o.status]}</small></div><div style="text-align:right"><strong>${money(o.totalCents)}</strong><button class="btn ghost" style="margin-top:8px" data-order="${e(o.id)}">Ver sacola</button></div></li>`,
+          `<li><div><strong>#${e(o.code)} • ${date(o.createdAt)}</strong><small>Unidade ${e(branchLabel(o.branchId))}</small><small>${o.items.map((l) => e(l.name) + " (" + lineQuantity(l) + ")").join(", ")}</small><small>${STATUSES[o.status]}</small></div><div style="text-align:right"><strong>${money(o.totalCents)}</strong><button class="btn ghost" style="margin-top:8px" data-order="${e(orderKey(o))}">Ver sacola</button></div></li>`,
       )
       .join("")}</ul>`,
   );
@@ -553,9 +571,9 @@ async function submitProduct(form) {
   }
   const file = fd.get("photo");
   if (file?.size)
-    Object.assign(record, await data.uploadImage(admin.branchId, file));
+    Object.assign(record, await data.uploadImage(adminCatalogBranch, file));
   try {
-    await data.saveEntity(admin.branchId, "products", record);
+    await data.saveEntity(adminCatalogBranch, "products", record);
   } catch (err) {
     if (record.imagePath && record.imagePath !== old?.imagePath)
       await data.deleteImage(record.imagePath);
@@ -568,7 +586,7 @@ async function submitProduct(form) {
   toast("Produto salvo.");
 }
 async function refreshAdmin() {
-  catalog = await data.getCatalog(admin.branchId, true);
+  catalog = await data.getCatalog(adminCatalogBranch, true);
   renderAdminContent();
 }
 function confirmDelete(type, id) {
@@ -583,7 +601,7 @@ function confirmDelete(type, id) {
     );
   modal(
     "Excluir " + (type === "products" ? "produto" : "categoria"),
-    `<p>Excluir <strong>${e(record.name)}</strong> do catálogo desta unidade?</p><p class="fine">O histórico dos pedidos já recebidos será preservado.</p><div class="modal-actions"><button class="btn outline" data-action="close">Cancelar</button><button class="btn danger" data-confirm-delete="${e(id)}" data-type="${type}">Excluir</button></div>`,
+    `<p>Excluir <strong>${e(record.name)}</strong> do catálogo da unidade <strong>${e(currentAdminBranch().name)}</strong>?</p><p class="fine">O histórico dos pedidos já recebidos será preservado.</p><div class="modal-actions"><button class="btn outline" data-action="close">Cancelar</button><button class="btn danger" data-confirm-delete="${e(id)}" data-type="${type}">Excluir</button></div>`,
   );
 }
 document.addEventListener("input", (event) => {
@@ -612,8 +630,25 @@ document.addEventListener("input", (event) => {
       ? quantitySummary(line) : "Informe uma quantidade válida.";
   }
 });
-document.addEventListener("change", (event) => {
+document.addEventListener("change", async (event) => {
   const input = event.target;
+  if (input.id === "admin-order-branch") {
+    adminOrderBranch = input.value;
+    renderAdminContent();
+  }
+  if (input.id === "admin-catalog-branch") {
+    const next = input.value;
+    input.disabled = true;
+    catalogLoading = true;
+    try {
+      const nextCatalog = await data.getCatalog(next, true);
+      adminCatalogBranch = next;
+      catalog = nextCatalog;
+      adminSearch = "";
+      renderAdmin();
+    } catch (error) { input.value = adminCatalogBranch; toast(errorText(error)); }
+    finally { catalogLoading = false; input.disabled = false; }
+  }
   if (input.closest("#checkout-form")) {
     if (input.name === "fulfillment") {
       $("#address-field").classList.toggle(
@@ -625,12 +660,6 @@ document.addEventListener("change", (event) => {
     if (input.name === "payment")
       $("#change-field").classList.toggle("hidden", input.value !== "Dinheiro");
   }
-  if (
-    input.closest("#login-form") &&
-    input.name === "branch" &&
-    $("[name=email]")
-  )
-    $("[name=email]").value = knownBranch(input.value).email;
   if (input.name === "photo" && input.files[0]) {
     const url = URL.createObjectURL(input.files[0]);
     $("#upload-preview").src = url;
@@ -639,7 +668,7 @@ document.addEventListener("change", (event) => {
 });
 document.addEventListener("click", async (event) => {
   const target = event.target.closest("button,[data-action]");
-  if (!target || target.disabled || submittingOrder) return;
+  if (!target || target.disabled || submittingOrder || catalogLoading || adminSaving) return;
   try {
     const d = target.dataset;
     if (d.category) {
@@ -678,9 +707,10 @@ document.addEventListener("click", async (event) => {
     if (d.deleteProduct) confirmDelete("products", d.deleteProduct);
     if (d.deleteCategory) confirmDelete("categories", d.deleteCategory);
     if (d.confirmDelete) {
+      adminSaving = true;
       target.disabled = true;
       const old = catalog[d.type].find((x) => x.id === d.confirmDelete);
-      await data.deleteEntity(admin.branchId, d.type, d.confirmDelete);
+      await data.deleteEntity(adminCatalogBranch, d.type, d.confirmDelete);
       if (old.imagePath) await data.deleteImage(old.imagePath);
       await refreshAdmin();
       closeModal();
@@ -742,9 +772,10 @@ document.addEventListener("click", async (event) => {
         );
         break;
       case "confirm-import":
+        adminSaving = true;
         target.disabled = true;
         target.textContent = "Importando…";
-        await data.seedCatalog(admin.branchId);
+        await data.seedCatalog(adminCatalogBranch);
         await refreshAdmin();
         closeModal();
         toast("Catálogo importado.");
@@ -753,29 +784,30 @@ document.addEventListener("click", async (event) => {
   } catch (error) {
     toast(errorText(error));
     target.disabled = false;
-  }
+  } finally { adminSaving = false; }
 });
 document.addEventListener("submit", async (event) => {
   event.preventDefault();
   const form = event.target;
+  if (adminSaving || catalogLoading) return;
   const button = form.querySelector("[type=submit]");
   try {
     if (form.id === "add-product") return addProduct(form);
     if (form.id === "checkout-form") return await submitCheckout(form);
+    adminSaving = true;
     button.disabled = true;
     const fd = new FormData(form);
     if (form.id === "login-form") {
-      admin = await data.login(
-        fd.get("branch"),
-        fd.get("email") || knownBranch(fd.get("branch")).email || "",
-        fd.get("password"),
-      );
+      admin = await data.login(fd.get("password"));
+      adminOrderBranch = "all";
+      adminCatalogBranch = "coronel";
+      adminTab = "orders";
       await startAdmin();
     }
     if (form.id === "category-form") {
       const name = String(fd.get("name")).trim();
       if (!name) throw new Error("Informe o nome da categoria.");
-      await data.saveEntity(admin.branchId, "categories", {
+      await data.saveEntity(adminCatalogBranch, "categories", {
         id: form.dataset.id,
         name,
         sort: Number(fd.get("sort")) - 1,
@@ -794,7 +826,7 @@ document.addEventListener("submit", async (event) => {
     if (form.id === "product-form") await submitProduct(form);
     if (form.id === "status-form") {
       await data.updateStatus(
-        admin.branchId,
+        form.dataset.branch,
         form.dataset.id,
         fd.get("status"),
       );
@@ -806,6 +838,7 @@ document.addEventListener("submit", async (event) => {
     if (field) field.textContent = errorText(error);
     else toast(errorText(error));
   } finally {
+    adminSaving = false;
     if (button?.isConnected) button.disabled = false;
   }
 });

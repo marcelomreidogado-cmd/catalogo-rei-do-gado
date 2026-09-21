@@ -46,8 +46,8 @@ for(const [i,unit] of ['coronel','bingen','correas'].entries()){
 }
 await page.goto('http://127.0.0.1:4173/?view=admin');
 const access=live?JSON.parse(fs.readFileSync('.qa/unused-access.json')):null;
-await page.locator('[name=branch]').selectOption('coronel');await page.locator('[name=password]').fill(live?access.find(a=>a.branch==='coronel').password:'coronel123');await page.getByRole('button',{name:'Entrar no painel'}).click();await page.waitForSelector('.admin-shell');
-assert.match(await page.locator('#admin-content').innerText(),/QA REVISAO coronel/);assert.doesNotMatch(await page.locator('#admin-content').innerText(),/QA REVISAO bingen/);
+assert.equal(await page.locator('#login-form [name=branch]').count(),0);await page.locator('[name=password]').fill(live?access.find(a=>a.branch==='coronel').password:'demo123456');await page.getByRole('button',{name:'Entrar no painel'}).click();await page.waitForSelector('.admin-shell');
+assert.match(await page.locator('#admin-content').innerText(),/QA REVISAO bingen/);await page.locator('#admin-order-branch').selectOption('coronel');assert.match(await page.locator('#admin-content').innerText(),/QA REVISAO coronel/);assert.doesNotMatch(await page.locator('#admin-content').innerText(),/QA REVISAO bingen/);
 await page.getByRole('button',{name:'Ver pedido',exact:true}).first().click();await page.locator('[name=status]').selectOption('preparing');await page.getByRole('button',{name:'Salvar status'}).click();await page.waitForSelector('#status-form',{state:'hidden'});await page.locator('[data-admin-tab=customers]').click();assert.match(await page.locator('#admin-content').innerText(),/QA REVISAO coronel/);
 await page.locator('[data-admin-tab=products]').click();await page.getByRole('button',{name:'Novo produto',exact:true}).click();
 await page.locator('#product-form [name=name]').fill(fixtureName);await page.locator('[name=variantName]').fill('Bife');await page.locator('[name=variantPrice]').fill('50.00');
@@ -58,6 +58,6 @@ await page.getByRole('button',{name:'Editar '+fixtureName,exact:true}).click();a
 await page.getByRole('button',{name:'Excluir '+fixtureName,exact:true}).click();await page.getByRole('button',{name:'Cancelar',exact:true}).click();assert.equal(await page.locator('.table-img').count(),1);
 await page.getByRole('button',{name:'Editar '+fixtureName,exact:true}).click();await page.getByRole('button',{name:'Excluir produto',exact:true}).click();await page.locator('[data-confirm-delete]').click();await page.waitForSelector('[data-confirm-delete]',{state:'hidden'});assert.equal(await page.locator('.table-img').count(),0);
 await page.locator('[data-admin-tab=categories]').click();await page.getByRole('button',{name:'Nova categoria'}).click();await page.locator('#category-form [name=name]').fill(categoryName);await page.getByRole('button',{name:'Salvar categoria'}).click();await page.waitForSelector('#category-form',{state:'hidden'});await page.getByRole('button',{name:'Excluir '+categoryName}).click();await page.locator('[data-confirm-delete]').click();await page.waitForSelector('[data-confirm-delete]',{state:'hidden'});
-assert.deepEqual(errors,[]);console.log('PASS admin: unit isolation, status, customer history, photo upload, subcut creation/edit, explicit deletion, cancellation, preserved order history, category create/delete.');
+assert.deepEqual(errors,[]);console.log('PASS admin: single login, global orders, unit filter, status, customer history, photo upload, subcut creation/edit, explicit deletion, cancellation, preserved order history, category create/delete.');
 await b.close();
 })().catch(e=>{console.error(e);process.exit(1)});
