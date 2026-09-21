@@ -4,8 +4,9 @@ Catálogo móvel em HTML, CSS e JavaScript puro. Hospedagem estática no GitHub 
 
 ## Abrir
 
-- Catálogo: `index.html`
-- Administração: `index.html?view=admin`
+- Catálogo publicado: https://reidogadocarnes.com.br/
+- Administração: https://reidogadocarnes.com.br/?view=admin
+- Arquivos locais: `index.html` e `index.html?view=admin`.
 - A loja é escolhida exclusivamente no último passo do pedido, nos botões Coronel, Bingen e Corrêas.
 
 Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra `http://localhost:4173`. Abrir o HTML diretamente como `file://` não permite carregar os módulos e o catálogo.
@@ -15,7 +16,7 @@ Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra 
 - Três unidades, cada uma com seu catálogo, login, pedidos e clientes.
 - Cadastro, edição e exclusão de produtos e categorias; pausa de produtos e upload de fotos.
 - Variações de corte com preços diferentes; venda em kg, por unidade ou peça com peso médio.
-- Vitrine e sacola únicas, com os produtos ativos das três unidades, preservadas neste navegador. Quantidades em kg variam de 250 g em 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
+- Vitrine e sacola únicas, com os produtos ativos das três unidades, preservadas neste navegador. Na sacola, os botões ajustam 250 g por toque; o campo de quantidade aceita precisão de 1 g, a partir de 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
 - Checkout com nome, telefone, retirada/entrega, endereço, forma de pagamento, troco e observações. Ao clicar em **Enviar pedido**, aparecem os três botões de unidade, com o total correspondente. Cada total é recalculado com os preços daquela loja; unidades sem algum item ou subcorte ficam indisponíveis para aquela sacola.
 - Pedido gravado antes de abrir o WhatsApp. Se a gravação falhar, a sacola permanece. Repetir a tentativa usa o mesmo identificador para evitar duplicação.
 - Link de WhatsApp disponível na confirmação caso o navegador bloqueie a nova aba. A mensagem precisa ser enviada pelo cliente no WhatsApp.

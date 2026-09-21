@@ -2,15 +2,16 @@
 
 Endereço escolhido: **reidogadocarnes.com.br** (também com `www`).
 
-## Situação em 20/09/2026
+## Situação em 21/09/2026
 
 - Registro.br: domínio publicado, validade até 20/09/2030.
-- Firebase: os dois endereços foram adicionados aos domínios autorizados e conferidos no servidor. Os acessos anteriores foram preservados.
-- Registro.br: modo avançado ativado. A edição da zona está bloqueada pela mensagem “Domínio em transição. Por favor, aguarde alguns minutos e tente novamente”. O painel também indicou aproximadamente duas horas para liberação de delegação de DNS externo; esse prazo não garante a liberação da zona nem do HTTPS.
-- GitHub Pages: endereço atual mantido, sem redirecionamento para o novo domínio enquanto o DNS não puder ser configurado.
-- Ainda não divulgar o novo endereço como catálogo ativo.
+- Firebase: raiz e `www` autorizados; acessos anteriores preservados.
+- DNS: quatro registros A e um CNAME `www` salvos e conferidos nos servidores oficiais e em resolvedores públicos.
+- GitHub Pages: `reidogadocarnes.com.br` configurado como domínio personalizado e arquivo `CNAME` sincronizado.
+- Propriedade: domínio verificado na conta `marcelomreidogado-cmd`; manter o TXT de verificação.
+- HTTPS: emissão do certificado solicitada pelo GitHub; aguardando conclusão e testes finais.
 
-## Concluir a conexão
+## Referência da configuração
 
 1. No Registro.br, abrir o domínio e **Configurar zona DNS**. Confirmar que a edição foi liberada e conferir quaisquer registros existentes antes de adicionar entradas.
 2. Com o editor disponível, configurar `reidogadocarnes.com.br` como domínio personalizado do repositório `marcelomreidogado-cmd/catalogo-rei-do-gado` no GitHub Pages, antes de salvar os apontamentos no Registro.br. Sincronizar o arquivo `CNAME` criado na raiz do repositório.
@@ -23,6 +24,7 @@ Endereço escolhido: **reidogadocarnes.com.br** (também com `www`).
 | A | vazio (raiz) | 185.199.110.153 |
 | A | vazio (raiz) | 185.199.111.153 |
 | CNAME | www | marcelomreidogado-cmd.github.io |
+| TXT | _github-pages-challenge-marcelomreidogado-cmd | d77a1b0493ddc8d9f4c9bfb21e979b |
 
 4. Aguardar a publicação dos registros e a emissão do certificado do GitHub Pages. Habilitar **Enforce HTTPS** quando disponível.
 5. Testar catálogo, fotos, fontes, carrinho, checkout, entrada no painel e redirecionamentos (endereço antigo e `www`) no novo domínio. Não enviar mensagens reais às unidades durante testes.

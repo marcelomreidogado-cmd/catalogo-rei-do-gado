@@ -1,7 +1,7 @@
 # Guia rápido do proprietário
 
-**Catálogo:** abra o link entregue na conversa.  
-**Painel:** acrescente `?view=admin` ao link. Escolha a unidade e informe a senha do arquivo privado entregue separadamente.
+**Catálogo:** https://reidogadocarnes.com.br/  
+**Painel:** https://reidogadocarnes.com.br/?view=admin. Escolha a unidade e informe a senha do arquivo privado entregue separadamente.
 
 ## Antes de divulgar
 
