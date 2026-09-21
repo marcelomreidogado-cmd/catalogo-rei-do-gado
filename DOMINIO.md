@@ -1,21 +1,19 @@
 # Domínio do catálogo
 
-Endereço escolhido: **reidogadocarnes.com.br** (também com `www`).
+- **Catálogo:** https://reidogadocarnes.com.br/
+- **Administração:** https://reidogadocarnes.com.br/?view=admin
+- **Com www:** https://www.reidogadocarnes.com.br/ redireciona para o endereço principal.
+- O endereço anterior do GitHub Pages também redireciona para o domínio próprio.
 
-## Situação em 21/09/2026
+## Configuração concluída em 21/09/2026
 
-- Registro.br: domínio publicado, validade até 20/09/2030.
-- Firebase: raiz e `www` autorizados; acessos anteriores preservados.
-- DNS: quatro registros A e um CNAME `www` salvos e conferidos nos servidores oficiais e em resolvedores públicos.
-- GitHub Pages: `reidogadocarnes.com.br` configurado como domínio personalizado e arquivo `CNAME` sincronizado.
-- Propriedade: domínio verificado na conta `marcelomreidogado-cmd`; manter o TXT de verificação.
-- HTTPS: emissão do certificado solicitada pelo GitHub; aguardando conclusão e testes finais.
+O domínio está registrado no Registro.br até 20/09/2030. O catálogo continua hospedado no GitHub Pages e usa o mesmo Firebase, banco de dados, produtos e acessos administrativos.
 
-## Referência da configuração
+O GitHub aprovou o certificado para os endereços com e sem `www`. A opção **Enforce HTTPS** está ativada. O domínio também está verificado na conta `marcelomreidogado-cmd`.
 
-1. No Registro.br, abrir o domínio e **Configurar zona DNS**. Confirmar que a edição foi liberada e conferir quaisquer registros existentes antes de adicionar entradas.
-2. Com o editor disponível, configurar `reidogadocarnes.com.br` como domínio personalizado do repositório `marcelomreidogado-cmd/catalogo-rei-do-gado` no GitHub Pages, antes de salvar os apontamentos no Registro.br. Sincronizar o arquivo `CNAME` criado na raiz do repositório.
-3. No Registro.br, adicionar os registros abaixo. Para a raiz, deixar o campo nome vazio: o Registro.br não aceita `@`.
+Os dois endereços foram autorizados no Firebase. Os endereços antigos continuam autorizados. O arquivo `CNAME` na raiz do repositório contém `reidogadocarnes.com.br` e deve ser mantido nas próximas publicações.
+
+## Registros no Registro.br
 
 | Tipo | Nome no Registro.br | Destino |
 |---|---|---|
@@ -26,13 +24,17 @@ Endereço escolhido: **reidogadocarnes.com.br** (também com `www`).
 | CNAME | www | marcelomreidogado-cmd.github.io |
 | TXT | _github-pages-challenge-marcelomreidogado-cmd | d77a1b0493ddc8d9f4c9bfb21e979b |
 
-4. Aguardar a publicação dos registros e a emissão do certificado do GitHub Pages. Habilitar **Enforce HTTPS** quando disponível.
-5. Testar catálogo, fotos, fontes, carrinho, checkout, entrada no painel e redirecionamentos (endereço antigo e `www`) no novo domínio. Não enviar mensagens reais às unidades durante testes.
-6. Atualizar os links deste guia e do README, e gerar novamente o ZIP de entrega.
+Para a raiz, o campo nome fica vazio: o Registro.br não aceita `@`. Mantenha o registro TXT para preservar a verificação de propriedade no GitHub.
 
-Links finais, depois da conexão:
+## Validação
 
-- Catálogo: https://reidogadocarnes.com.br/
-- Administração: https://reidogadocarnes.com.br/?view=admin
+- Registros salvos e conferidos nos servidores oficiais do Registro.br e nos resolvedores públicos do Google e Cloudflare.
+- Certificado válido para raiz e `www`, sem ignorar erros de segurança.
+- Catálogo, fotos, fontes, leitura em celular, sacola e escolha final das três unidades conferidos.
+- Login real e leitura de produtos conferidos nas unidades Coronel, Bingen e Corrêas.
+- Redirecionamentos do endereço antigo e de `www` conferidos.
+- Nenhum pedido de teste registrado nem mensagem enviada às lojas.
+
+Na primeira verificação, o resolvedor da rede local ainda não retornava o novo endereço. Os testes completos de navegador foram executados com o IP oficial do GitHub Pages confirmado pelo DNS, mantendo a validação normal de HTTPS. Algumas redes podem precisar de mais tempo para atualizar suas respostas de DNS.
 
 Fonte técnica: [Configuração de domínio personalizado no GitHub Pages](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site).

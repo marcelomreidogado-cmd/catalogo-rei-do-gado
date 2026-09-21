@@ -1,6 +1,7 @@
 # Guia rápido do proprietário
 
-**Catálogo:** https://reidogadocarnes.com.br/  
+**Catálogo:** https://reidogadocarnes.com.br/
+
 **Painel:** https://reidogadocarnes.com.br/?view=admin. Escolha a unidade e informe a senha do arquivo privado entregue separadamente.
 
 ## Antes de divulgar
