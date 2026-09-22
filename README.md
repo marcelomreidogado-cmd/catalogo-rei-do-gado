@@ -13,14 +13,14 @@ Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra 
 
 ## O que está incluído
 
-- Um único login administrativo, com pedidos e clientes consolidados das três unidades e filtros por loja. Cada unidade mantém seus produtos, preços e WhatsApp.
+- Um único login administrativo, com pedidos e clientes consolidados das três unidades e filtros por loja. Produtos, fotos, categorias e preços são compartilhados. Apenas pedidos e WhatsApps são separados por unidade.
 - Cadastro, edição e exclusão de produtos e categorias; pausa de produtos e upload de fotos.
 - Variações de corte com preços diferentes; venda em kg, por unidade ou peça com peso médio.
-- Vitrine e sacola únicas, com os produtos ativos das três unidades, preservadas neste navegador. Na sacola, os botões ajustam 250 g por toque; o campo de quantidade aceita precisão de 1 g, a partir de 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
-- Checkout com nome, telefone, retirada/entrega, endereço, forma de pagamento, troco e observações. Ao clicar em **Enviar pedido**, aparecem os três botões de unidade, com o total correspondente. Cada total é recalculado com os preços daquela loja; unidades sem algum item ou subcorte ficam indisponíveis para aquela sacola.
+- Vitrine e sacola únicas, com os produtos ativos do cadastro único, preservadas neste navegador. Na sacola, os botões ajustam 250 g por toque; o campo de quantidade aceita precisão de 1 g, a partir de 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
+- Checkout com nome, telefone, retirada/entrega, endereço, forma de pagamento, troco e observações. Ao clicar em **Enviar pedido**, aparecem os três botões de unidade, com o total correspondente. Os três botões usam o mesmo catálogo e preço; a unidade determina o destino do pedido e do WhatsApp.
 - Pedido gravado antes de abrir o WhatsApp. Se a gravação falhar, a sacola permanece. Repetir a tentativa usa o mesmo identificador para evitar duplicação.
 - Link de WhatsApp disponível na confirmação caso o navegador bloqueie a nova aba. A mensagem precisa ser enviada pelo cliente no WhatsApp.
-- Pedidos em tempo real, mudança de status e histórico agrupado por telefone normalizado: número de pedidos, soma dos valores estimados, último pedido e todas as sacolas.
+- Pedidos em tempo real, dois status (Pendente/Finalizado) por ícones e abertura por duplo clique ou botão. Histórico por telefone, total confirmado após pesagem, último pedido e sacolas. Estimativas sem valor final não entram no total confirmado.
 
 ## Configuração central
 
@@ -43,10 +43,10 @@ O acesso único fica em arquivo privado entregue separadamente, fora deste repos
 ## Operação da loja
 
 1. Abra a área administrativa e entre com a senha única. A tela inicial reúne os pedidos das três lojas. Use **Filtrar por unidade** em Pedidos e Clientes.
-2. Em **Produtos** ou **Categorias**, escolha **Unidade que você está editando**. As alterações são aplicadas somente à loja selecionada. Em **Produtos**, edite nomes, preços, fotos, categorias e disponibilidade. Em **Subcortes, sabores e preços**, edite o nome e o preço de cada opção. Use **Adicionar variação** para criar outra opção. Os identificadores das opções existentes são preservados ao editar.
+2. Em **Produtos** ou **Categorias**, as alterações são aplicadas às três lojas. Não há seleção de unidade nessas telas. Em **Produtos**, edite nomes, preços, fotos, categorias e disponibilidade. Em **Subcortes, sabores e preços**, edite o nome e o preço de cada opção. Use **Adicionar variação** para criar outra opção. Os identificadores das opções existentes são preservados ao editar.
 3. Para peça, informe o preço por kg e o peso médio em kg. O site calcula a estimativa por peça; o peso real é confirmado pela loja.
-4. Em **Pedidos**, abra a sacola e mude o status: Pendente → Em preparação → Saiu para entrega → Finalizado. Uma retirada pode passar diretamente para Finalizado.
-5. Em **Clientes**, consulte compras anteriores, valores estimados e o último pedido.
+4. Em **Pedidos**, abra a sacola e mude o status: relógio para Pendente e confirmação para Finalizado. Informe o valor final após a pesagem antes de finalizar.
+5. Em **Clientes**, consulte compras anteriores, valores finais confirmados e o último pedido. Pedidos sem valor final ficam identificados.
 6. O botão **Excluir** aparece ao lado do produto e dentro da edição. A confirmação informa o nome do item; o histórico dos pedidos permanece. Para excluir uma categoria, mova ou exclua seus produtos primeiro. Excluir um produto preserva os registros dos pedidos antigos (nome, preço e quantidade naquele momento).
 
 O botão **Importar catálogo Goomer** adiciona somente os registros ausentes. Ele não atualiza nem sobrescreve os produtos existentes. Não existe sincronização contínua com o Goomer.
@@ -57,7 +57,7 @@ Importação inicial do [cardápio Goomer fornecido](https://cardapio-rei-do-gad
 
 A revisão editorial de setembro de 2026 reuniu quatro cadastros repetidos: Bombom da alcatra, Peito de frango extra limpo, Maionese do Rei e Molhos da casa. A base revisada tem **95 produtos únicos, 90 ativos e 5 pausados**, distribuídos em 17 categorias. Foram corrigidos nomes, acentos, descrições, marcas, unidades escritas e opções. A maionese com bacon ficou em R$ 29,90, conforme confirmação do proprietário. O bombom preserva o preço da peça inteira e os preços dos cortes preparados.
 
-Cinco produtos com unidade, peso ou preço ambíguo permanecem pausados. Veja `data/import-review.json` e revise no painel antes de ativá-los. Os demais preços também devem ser conferidos pelo responsável antes de divulgar o catálogo. A mesma base inicial foi copiada para as três unidades; alterações posteriores são independentes.
+Cinco produtos com unidade, peso ou preço ambíguo permanecem pausados. Veja `data/import-review.json` e revise no painel antes de ativá-los. Os demais preços também devem ser conferidos pelo responsável antes de divulgar o catálogo. Em 22/09/2026, as três bases idênticas foram unificadas. Toda alteração passa a valer para as três lojas.
 
 A logo PNG original, sem redesenho ou distorção, e as fontes foram recuperadas do arquivo **Rei do Gado - Marca.rar** do proprietário. São usados **Corona**, **Clarendon BT** (Roman, Bold e Black) e **Dallas Print Shop Sans**, convertidos para WOFF2 e hospedados junto ao site. Não há fontes genéricas carregadas por CDN. A paleta segue os valores RGB do manual: vinho `#5A0B14`, preto `#000000`, branco `#FFFFFF` e amarelo `#FFD583`; o vermelho secundário é `#AE0114`.
 
@@ -75,12 +75,12 @@ A cota gratuita do Firestore é finita. Se for excedida, novas operações podem
 
 ```
 admins/{uid}                              { role: "owner", enabled }
-branches/{branchId}/categories/{id}       { name, sort }
-branches/{branchId}/products/{id}         nome, categoria, preços, opções, foto, ativo...
-branches/{branchId}/orders/{id}           cliente, sacola, total estimado, status, datas
+catalog/main/categories/{id}       { name, sort }
+catalog/main/products/{id}         nome, categoria, preços, opções, foto, ativo...
+branches/{branchId}/orders/{id}           cliente, sacola, totalCents original, finalTotalCents opcional, status, datas
 ```
 
-Categorias e produtos ativos são públicos. Pedidos não são públicos: clientes anônimos só acessam o recibo de seu próprio pedido e não podem listar históricos. O administrador geral lê os pedidos das três lojas e altera o catálogo da unidade selecionada; cada atualização de status usa a unidade original do pedido. Os perfis de acesso só podem ser criados pelo Console ou Admin SDK; não há cadastro de administradores na interface. O aplicativo usa sessões Firebase separadas para cliente e administrador, e encerra a assinatura de pedidos ao sair.
+Categorias e produtos ativos são públicos. Pedidos não são públicos: clientes anônimos só acessam o recibo de seu próprio pedido e não podem listar históricos. O administrador geral lê os pedidos das três lojas e altera o catálogo compartilhado; cada atualização de status usa a unidade original do pedido. Os perfis de acesso só podem ser criados pelo Console ou Admin SDK; não há cadastro de administradores na interface. O aplicativo usa sessões Firebase separadas para cliente e administrador, e encerra a assinatura de pedidos ao sair.
 
 **Regras protótipo:** as regras entregues restringem históricos ao administrador geral, preservam o recibo privado do cliente e impedem elevação de privilégios e tornam o conteúdo recebido do pedido imutável. Foram verificadas no emulador, incluindo acesso do administrador às três lojas e bloqueio de contas antigas, desativadas e de clientes. Revise e valide as regras antes de divulgação ampla e sempre que ampliar o modelo de dados.
 
@@ -96,7 +96,7 @@ O agrupamento de clientes usa o telefone informado; o site não verifica a posse
 4. Adicione o domínio do GitHub Pages e `localhost` aos domínios autorizados.
 5. Crie uma conta de administração no Authentication, configure seu e-mail interno em `adminEmail` e crie `admins/UID_DA_CONTA` com `role: "owner"` e `enabled: true`. Para a recuperação administrativa e o Storage opcional, atribua `catalogAdmin: true` via Admin SDK.
 6. Publique somente as regras e índices: `npx -y firebase-tools@latest deploy --only firestore,auth --project SEU_PROJECT_ID`. Para habilitar Storage, faça isso separadamente após configurar conscientemente o plano e o bucket.
-7. Entre no painel, selecione cada unidade em Produtos e clique em **Importar catálogo Goomer** para carregar a base inicial.
+7. Entre no painel e clique uma única vez em **Importar catálogo Goomer** para carregar a base compartilhada.
 
 Demonstração completamente local: apague os campos de `firebase` e use `demo: true`. A senha simples de demonstração fica em `config.js`. Esse modo é identificado na interface, não envia mensagens, e guarda seus registros somente no navegador. Nunca use senhas embutidas no JavaScript para proteger dados reais. O aplicativo não muda automaticamente para demonstração quando o Firebase falha.
 
@@ -108,7 +108,7 @@ Não publique arquivos de acessos, contas de serviço, logs, pastas de trabalho 
 
 ## Verificação
 
-`npm test` verifica cálculos em centavos, arredondamento, peças, kg fracionados, mensagens, agrupamento, vitrine unificada, diferenças de preço entre unidades e indisponibilidade de subcortes. Também confere os 95 produtos, duplicações, descrições, categorias, fotos e preços de todas as variações.
+`npm test` verifica cálculos em centavos, arredondamento, peças, kg fracionados, mensagens, agrupamento, catálogo compartilhado, validação do valor final e indisponibilidade de subcortes. Também confere os 95 produtos, duplicações, descrições, categorias, fotos e preços de todas as variações.
 
 Para regressão da interface: `npm install`, `npx playwright install chromium`, inicie o site com `npm start` e, em outro terminal, rode `npm run test:ui`. O teste usa demonstração isolada por interceptação da configuração e não grava no Firebase nem abre WhatsApp. Cobre os três destinos, retorno no checkout, carrinho persistido, upload, variações, edição/exclusão e categorias. Capturas ficam em `.qa/`. Defina `RDG_BROWSER_CHANNEL=chrome` para usar Chrome instalado.
 
@@ -124,4 +124,10 @@ Para mudar sua própria senha, use **Alterar senha** no painel. Os identificador
 
 Pesos usam três casas decimais: **0,500 kg (500 g)** e **1,300 kg**. A escolha do produto aceita incrementos de 1 g, a partir de 250 g; os botões da sacola continuam ajustando 250 g. Peças usam contagem inteira e mostram o peso total estimado em uma linha separada. Na mensagem do WhatsApp, os produtos começam com **Item -**, sem numeração, e a quantidade fica em negrito. Os testes cobrem essa formatação, os totais e a leitura em telas de 320 a 1440 px.
 
-O teste `tests/admin.cjs` cobre pedidos com IDs iguais em lojas diferentes, filtro e totais por unidade, clientes consolidados, atualização em tempo real, sessão, fotos e edição/exclusão nas três lojas. Os listeners de coleção são mantidos porque os pedidos precisam aparecer em tempo real no balcão.
+O teste `tests/admin.cjs` cobre pedidos com IDs iguais em lojas diferentes, filtro e totais por unidade, clientes consolidados, atualização em tempo real, sessão, fotos e edição/exclusão no catálogo único, preços iguais nos três destinos, duplo clique, dois status por ícones e total final sem alterar a estimativa. Os listeners de coleção são mantidos porque os pedidos precisam aparecer em tempo real no balcão.
+
+## Catálogo único e valor final — 22/09/2026
+
+O cadastro ativo está em `catalog/main/products` e `catalog/main/categories`. As antigas coleções por loja foram preservadas para leitura de versões anteriores e não aceitam mais alterações pelo site. O código atual não consulta essas cópias.
+
+`totalCents` e a sacola original são imutáveis. O proprietário registra `finalTotalCents` após conferir pesagem, frete e descontos. Apenas esse valor integra os totais confirmados do painel e dos clientes. A atualização de valor e a finalização podem acontecer juntas; a regra exige valor final positivo para concluir. Finalizado não significa pagamento recebido. As regras bloqueiam valores finais enviados pelo cliente, preços originais alterados e os status antigos. Registros antigos em preparação/entrega são exibidos como pendentes até atualização.

@@ -30,8 +30,6 @@ export const formatWeightWithGrams = (grams) =>
   `${formatWeight(grams)}${grams > 0 && grams < 1000 ? ` (${Math.round(grams)} g)` : ""}`;
 export const STATUSES = {
   pending: "Pendente",
-  preparing: "Em preparação",
-  delivery: "Saiu para entrega",
   done: "Finalizado",
 };
 export function lineTotal(line) {
@@ -73,35 +71,7 @@ export function lineQuantity(line) {
 export function cartTotal(lines) {
   return lines.reduce((total, line) => total + lineTotal(line), 0);
 }
-// One storefront; each unit keeps its own prices and availability in Firestore.
-export function mergeCatalogs(catalogs) {
-  const categories = new Map(), products = new Map();
-  for (const catalog of catalogs) {
-    for (const c of catalog.categories) if (!categories.has(c.id)) categories.set(c.id, c);
-    for (const p of catalog.products.filter(p => p.active)) {
-      const previous = products.get(p.id);
-      if (!previous) {
-        products.set(p.id, { ...p, variants: p.variants.map(v => ({ ...v })), priceVariesByStore: false });
-        continue;
-      }
-      if (previous.saleMode !== p.saleMode || previous.unit !== p.unit || previous.weightGrams !== p.weightGrams) {
-        previous.priceVariesByStore = true;
-        continue;
-      }
-      for (const v of p.variants) {
-        const existing = previous.variants.find(x => x.id === v.id);
-        if (!existing) previous.variants.push({ ...v });
-        else {
-          if (existing.priceCents !== v.priceCents) previous.priceVariesByStore = true;
-          existing.priceCents = Math.min(existing.priceCents, v.priceCents);
-        }
-      }
-      previous.priceCents = Math.min(...previous.variants.map(v => v.priceCents));
-    }
-  }
-  return { categories: [...categories.values()].sort((a,b) => a.sort-b.sort), products: [...products.values()].sort((a,b) => a.sort-b.sort) };
-}
-export function priceCartForBranch(cart, catalog) {
+export function priceCart(cart, catalog) {
   const lines = [], unavailable = [];
   for (const line of cart) {
     const p = catalog.products.find(p => p.id === line.productId && p.active);
@@ -114,6 +84,16 @@ export function priceCartForBranch(cart, catalog) {
   }
   return { lines, unavailable, totalCents: cartTotal(lines) };
 }
+export const orderStatus = order => order.status === "done" ? "done" : "pending";
+export const hasFinalTotal = order => Number.isSafeInteger(order.finalTotalCents) && order.finalTotalCents > 0;
+export const orderTotalCents = order => hasFinalTotal(order) ? order.finalTotalCents : order.totalCents;
+export function parseFinalTotal(value) {
+  const text = String(value).trim().replace(/\s/g, "");
+  if (!/^\d+(?:[.,]\d{1,2})?$/.test(text)) throw new Error("Informe o valor final em reais, por exemplo 125,90.");
+  const cents = Math.round(Number(text.replace(",", ".")) * 100);
+  if (!Number.isSafeInteger(cents) || cents <= 0 || cents > 1000000000) throw new Error("Informe um valor final maior que zero e até R$ 10.000.000,00.");
+  return cents;
+}
 export function groupCustomers(orders) {
   const grouped = new Map();
   for (const order of orders) {
@@ -123,10 +103,12 @@ export function groupCustomers(orders) {
       name: order.customer.name,
       orders: [],
       totalCents: 0,
+      unconfirmedCount: 0,
       lastOrder: null,
     };
     customer.orders.push(order);
-    customer.totalCents += order.totalCents;
+    if (hasFinalTotal(order)) customer.totalCents += order.finalTotalCents;
+    else customer.unconfirmedCount++;
     if (!customer.lastOrder || order.createdAt > customer.lastOrder.createdAt) {
       customer.lastOrder = order;
       customer.name = order.customer.name;

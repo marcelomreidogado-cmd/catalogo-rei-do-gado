@@ -37,3 +37,7 @@ As quantidades acima foram conferidas na base das três unidades. Preços, dispo
 4. Cadastrar kits, ofertas reais, horários e informações completas de entrega de cada loja.
 
 As sugestões desta seção são próximas etapas, não funcionalidades já implantadas. Não é necessário trocar de plataforma para organizar essas melhorias.
+
+## Atualização em 22/09/2026
+
+O catálogo passou a ser único: preços, fotos, produtos e categorias valem para todas as lojas. A separação por unidade permanece apenas nos pedidos. O painel agora registra o valor final após a pesagem, sem apagar a estimativa original, e usa esse valor nos totais confirmados do histórico. Há apenas Pendente e Finalizado, por ícones; o pedido abre com duplo clique ou pelo botão de abrir. A recomendação anterior sobre registro do **total final** foi implementada; não há registro de peso real individual de cada item nesta etapa. Fotos faltantes e instruções por item continuam pendentes.

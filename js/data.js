@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260921-admin-unico";
-import { cartTotal, makeLine, mergeCatalogs } from "./core.js?v=20260921-admin-unico";
+import { CONFIG } from "./config.js?v=20260922-catalogo-unico";
+import { cartTotal, makeLine } from "./core.js?v=20260922-catalogo-unico";
 export const isDemo = CONFIG.demo && !CONFIG.firebase.projectId;
 const prefix = "rdg-demo-v1:";
 let sdk, db, auth, adminAuth, storage;
@@ -82,24 +82,24 @@ export async function initialize() {
   );
   sdk.adminDB = adminDB;
 }
-function demoCatalog(branch) {
-  const c = read(`catalog:${branch}`, null);
+function demoCatalog() {
+  const c = read("catalog:shared", null);
   return c || clone(seed);
 }
-export async function getCatalog(branch, admin = false) {
-  if (isDemo) return demoCatalog(branch);
+export async function getCatalog(admin = false) {
+  if (isDemo) return demoCatalog();
   const useDB = admin ? sdk.adminDB : db;
   const productCollection = sdk.collection(
     useDB,
-    "branches",
-    branch,
+    "catalog",
+    "main",
     "products",
   );
   const productQuery = admin
     ? productCollection
     : sdk.query(productCollection, sdk.where("active", "==", true));
   const [categories, products] = await Promise.all([
-    sdk.getDocs(sdk.collection(useDB, "branches", branch, "categories")),
+    sdk.getDocs(sdk.collection(useDB, "catalog", "main", "categories")),
     sdk.getDocs(productQuery),
   ]);
   return {
@@ -108,7 +108,7 @@ export async function getCatalog(branch, admin = false) {
   };
 }
 export async function getStorefrontCatalog() {
-  return mergeCatalogs(await Promise.all(CONFIG.branches.map(b => getCatalog(b.id))));
+  return getCatalog();
 }
 export function refreshSavedCart(lines, catalog) {
   const restored = new Map();
@@ -154,38 +154,38 @@ export async function logout() {
   if (isDemo) sessionStorage.removeItem(prefix + "admin");
   else await sdk.signOut(adminAuth);
 }
-export async function saveEntity(branch, type, record) {
+export async function saveEntity(type, record) {
   if (isDemo) {
-    const c = demoCatalog(branch);
+    const c = demoCatalog();
     const index = c[type].findIndex((x) => x.id === record.id);
     index < 0 ? c[type].push(record) : c[type].splice(index, 1, record);
-    write(`catalog:${branch}`, c);
+    write("catalog:shared", c);
     return;
   }
   const { id, ...data } = record;
-  await sdk.setDoc(sdk.doc(sdk.adminDB, "branches", branch, type, id), data);
+  await sdk.setDoc(sdk.doc(sdk.adminDB, "catalog", "main", type, id), data);
 }
-export async function deleteEntity(branch, type, id) {
+export async function deleteEntity(type, id) {
   if (isDemo) {
-    const c = demoCatalog(branch);
+    const c = demoCatalog();
     c[type] = c[type].filter((x) => x.id !== id);
-    write(`catalog:${branch}`, c);
+    write("catalog:shared", c);
     return;
   }
-  await sdk.deleteDoc(sdk.doc(sdk.adminDB, "branches", branch, type, id));
+  await sdk.deleteDoc(sdk.doc(sdk.adminDB, "catalog", "main", type, id));
 }
-export async function seedCatalog(branch) {
+export async function seedCatalog() {
   if (isDemo) {
-    write(`catalog:${branch}`, clone(seed));
+    write("catalog:shared", clone(seed));
     return;
   }
-  const existing = await getCatalog(branch, true);
+  const existing = await getCatalog(true);
   const batch = sdk.writeBatch(sdk.adminDB);
   for (const type of ["categories", "products"])
     for (const record of seed[type])
       if (!existing[type].some((x) => x.id === record.id)) {
         const { id, ...data } = record;
-        batch.set(sdk.doc(sdk.adminDB, "branches", branch, type, id), data);
+        batch.set(sdk.doc(sdk.adminDB, "catalog", "main", type, id), data);
       }
   await batch.commit();
 }
@@ -240,25 +240,30 @@ export function subscribeAllOrders(onData, onError) {
   }
   return () => { stopped = true; stops.forEach(stop => stop()); };
 }
-export async function updateStatus(branch, id, status) {
+export async function updateOrder(branch, id, changes) {
+  if (!CONFIG.branches.some(b => b.id === branch)) throw new Error("Unidade inválida.");
+  if (!Object.keys(changes).every(k => ["status", "finalTotalCents"].includes(k))) throw new Error("Alteração inválida.");
+  if (changes.status && !["pending", "done"].includes(changes.status)) throw new Error("Status inválido.");
+  if ("finalTotalCents" in changes && (!Number.isSafeInteger(changes.finalTotalCents) || changes.finalTotalCents <= 0 || changes.finalTotalCents > 1000000000)) throw new Error("Valor final inválido.");
   if (isDemo) {
     const orders = read(`orders:${branch}`, []);
-    const order = orders.find((x) => x.id === id);
+    const order = orders.find(x => x.id === id);
     if (!order) throw new Error("Pedido não encontrado.");
-    order.status = status;
+    const next = {...order, ...changes, updatedAt: Date.now()};
+    if (next.status === "done" && !next.finalTotalCents) throw new Error("Informe o valor final antes de finalizar.");
+    Object.assign(order, next);
     write(`orders:${branch}`, orders);
     return;
   }
   await sdk.updateDoc(sdk.doc(sdk.adminDB, "branches", branch, "orders", id), {
-    status,
-    updatedAt: sdk.serverTimestamp(),
+    ...changes, updatedAt: sdk.serverTimestamp(),
   });
 }
 export async function saveOrder(branch, id, checkout, lines) {
   if (!lines.length) throw new Error("Sua sacola está vazia.");
   if (!isDemo && !auth.currentUser) await sdk.signInAnonymously(auth);
   // Reload authoritative prices immediately before creating the immutable snapshot.
-  const catalog = await getCatalog(branch);
+  const catalog = await getCatalog();
   const items = lines.map((line) => {
     const p = catalog.products.find((p) => p.id === line.productId && p.active);
     if (!p)
@@ -317,7 +322,7 @@ export async function saveOrder(branch, id, checkout, lines) {
     return order;
   });
 }
-export async function uploadImage(branch, file) {
+export async function uploadImage(file) {
   if (!/^image\/(jpeg|png|webp)$/.test(file.type))
     throw new Error("Escolha uma imagem JPG, PNG ou WebP.");
   if (file.size > 12 * 1024 * 1024)
@@ -340,7 +345,7 @@ export async function uploadImage(branch, file) {
     );
   if (isDemo || CONFIG.imageMode === "firestore")
     return { image: data, imagePath: "" };
-  const imagePath = `branches/${branch}/products/${crypto.randomUUID()}.jpg`;
+  const imagePath = `catalog/products/${crypto.randomUUID()}.jpg`;
   const ref = sdk.ref(storage, imagePath);
   await sdk.uploadString(ref, data, "data_url", { contentType: "image/jpeg" });
   return { image: await sdk.getDownloadURL(ref), imagePath };

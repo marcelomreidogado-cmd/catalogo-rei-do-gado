@@ -41,8 +41,8 @@ await env.withSecurityRulesDisabled(async (ctx) => {
     enabled: true,
   });
   await setDoc(doc(db, "admins", "disabled-owner"), {role:"owner",enabled:false});
-  await setDoc(doc(db, "branches/coronel/products", id), product);
-  await setDoc(doc(db, "branches/coronel/products", "hidden"), {
+  await setDoc(doc(db, "catalog/main/products", id), product);
+  await setDoc(doc(db, "catalog/main/products", "hidden"), {
     ...product,
     active: false,
   });
@@ -86,12 +86,12 @@ const order = {
 await assertSucceeds(
   getDocs(
     query(
-      collection(guest, "branches/coronel/products"),
+      collection(guest, "catalog/main/products"),
       where("active", "==", true),
     ),
   ),
 );
-await assertFails(getDocs(collection(guest, "branches/coronel/products")));
+await assertFails(getDocs(collection(guest, "catalog/main/products")));
 await assertSucceeds(getDoc(doc(client, "branches/coronel/orders/new-id")));
 console.log("CREATE ONE");
 await assertSucceeds(
@@ -117,7 +117,7 @@ await assertFails(
 );
 await assertSucceeds(
   updateDoc(doc(admin, "branches/coronel/orders/order-1"), {
-    status: "preparing",
+    status: "pending",
     updatedAt: serverTimestamp(),
   }),
 );
@@ -140,10 +140,10 @@ await assertFails(
   }),
 );
 await assertSucceeds(
-  setDoc(doc(admin, "branches/coronel/products/new-product"), product),
+  setDoc(doc(admin, "catalog/main/products/new-product"), product),
 );
 await assertFails(
-  setDoc(doc(bingen, "branches/coronel/products/cross-unit"), product),
+  setDoc(doc(bingen, "catalog/main/products/cross-unit"), product),
 );
 console.log("CREATE 10");
 await assertSucceeds(
@@ -170,11 +170,11 @@ for (const branch of ["coronel", "bingen", "correas"]) {
   const orderRef = `branches/${branch}/orders/unified-order`;
   await assertSucceeds(setDoc(doc(client, orderRef), {...order, branchId: branch}));
   await assertSucceeds(getDocs(collection(admin, `branches/${branch}/orders`)));
-  await assertSucceeds(updateDoc(doc(admin, orderRef), {status:"done",updatedAt:serverTimestamp()}));
+  await assertSucceeds(updateDoc(doc(admin, orderRef), {status:"done",finalTotalCents:6000,updatedAt:serverTimestamp()}));
   await assertFails(getDocs(collection(guest, `branches/${branch}/orders`)));
   await assertFails(getDocs(collection(disabledOwner, `branches/${branch}/orders`)));
   await assertFails(getDocs(collection(bingen, `branches/${branch}/orders`)));
-  const productRef = `branches/${branch}/products/unified-product`;
+  const productRef = `catalog/main/products/unified-product-${branch}`;
   await assertSucceeds(setDoc(doc(admin, productRef), product));
   await assertSucceeds(updateDoc(doc(admin, productRef), {description:"Produto editado pelo painel único"}));
   await assertSucceeds(deleteDoc(doc(admin, productRef)));
@@ -182,5 +182,23 @@ for (const branch of ["coronel", "bingen", "correas"]) {
 await assertFails(updateDoc(doc(admin, "admins/admin-coronel"), {role:"owner",enabled:false}));
 await assertFails(setDoc(doc(client, "admins/customer-a"), {role:"owner",enabled:true}));
 await assertFails(setDoc(doc(admin, "branches/desconhecida/products/new-product"), product));
-console.log("PASS rules: owner accesses all 3 stores; legacy/disabled/public accounts denied; private receipts, status-only updates and validation preserved.");
+await assertFails(setDoc(doc(admin,"branches/coronel/products/old-write"),product));
+await assertFails(setDoc(doc(client,"catalog/main/products/customer-write"),product));
+await assertSucceeds(setDoc(doc(admin,"catalog/main/categories/shared-category"),{name:"Teste",sort:1}));
+await assertFails(setDoc(doc(guest,"catalog/main/categories/public-write"),{name:"Teste",sort:1}));
+const finalRef=doc(admin,"branches/coronel/orders/order-1");
+await assertFails(updateDoc(finalRef,{status:"done",updatedAt:serverTimestamp()}));
+for(const value of [-1,0,1.5,"150",1000000001])await assertFails(updateDoc(finalRef,{finalTotalCents:value,updatedAt:serverTimestamp()}));
+await assertFails(setDoc(doc(client,"branches/coronel/orders/forged-final"),{...order,finalTotalCents:5000}));
+await assertSucceeds(updateDoc(finalRef,{finalTotalCents:5555,updatedAt:serverTimestamp()}));
+await assertSucceeds(updateDoc(finalRef,{status:"done",updatedAt:serverTimestamp()}));
+await assertSucceeds(updateDoc(finalRef,{status:"pending",finalTotalCents:5600,updatedAt:serverTimestamp()}));
+await assertFails(updateDoc(finalRef,{status:"preparing",updatedAt:serverTimestamp()}));
+await assertFails(updateDoc(finalRef,{status:"delivery",updatedAt:serverTimestamp()}));
+await assertFails(updateDoc(doc(client,"branches/coronel/orders/order-1"),{finalTotalCents:10,updatedAt:serverTimestamp()}));
+await assertFails(updateDoc(finalRef,{items:[],updatedAt:serverTimestamp()}));
+await assertFails(updateDoc(finalRef,{branchId:"bingen",updatedAt:serverTimestamp()}));
+const savedFinal=(await getDoc(finalRef)).data();
+if(savedFinal.totalCents!==4943||savedFinal.finalTotalCents!==5600)throw Error("Original estimate/final amount integrity");
+console.log("PASS rules: shared catalogue, legacy writes blocked, private receipts, owner-only final totals, immutable original estimate, two statuses and validation.");
 await env.cleanup();

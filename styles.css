@@ -1684,3 +1684,11 @@ html { scroll-behavior: smooth; scroll-padding-top: 16px; }
 
 .sale-hint { margin:0 0 10px; color:var(--wine); font-size:11px; font-weight:700; line-height:1.5; }
 @media(max-width:600px) { .admin-nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:6px; } .admin-nav button { justify-content:center; white-space:normal; } }
+
+.order-status-actions { display:flex; gap:8px; }
+.order-status-actions .icon-btn { border:1px solid var(--border,#ddd); background:white; color:#666; min-width:44px; min-height:44px; }
+.order-status-actions .selected.pending { background:#FFD583; color:#000; border-color:#FFD583; }
+.order-status-actions .selected.done { background:var(--wine); color:#fff; border-color:var(--wine); }
+[data-order-row] { cursor:pointer; }
+[data-order-row]:hover { background:#faf6f3; }
+[data-order-row]:focus-visible { outline:2px solid var(--wine); outline-offset:-2px; }
