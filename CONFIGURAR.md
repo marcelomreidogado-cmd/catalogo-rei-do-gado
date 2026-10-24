@@ -7,13 +7,13 @@
 ## Antes de divulgar
 
 1. Confira os preços no cadastro único. Qualquer alteração vale para Coronel, Bingen e Corrêas.
-2. Em **Produtos**, revise os cinco itens pausados com indicação **Revisar**. Confira se são vendidos por kg, pacote/unidade ou peça e ajuste o peso médio. Marque **Disponível para pedidos** para publicá-los.
+2. Em **Produtos**, revise os itens pausados com indicação **Revisar** (três na conferência de 23/10/2026). Confira se são vendidos por kg, pacote/unidade ou peça e ajuste o peso médio. Marque **Disponível para pedidos** para publicá-los.
 3. Confira a descrição e o endereço de Bingen e Corrêas em `js/config.js`: somente o bairro e a cidade estão preenchidos, porque os endereços completos não foram informados.
 4. Faça um pedido pequeno de teste em cada unidade e confirme que o WhatsApp aberto pertence à loja. O site monta a mensagem; o cliente precisa tocar em enviar no WhatsApp.
 
 ## Como o cliente compra
 
-O cliente escolhe produtos, subcortes e quantidades sem informar a loja. Preenche seus dados e toca em **Enviar pedido**. Só então aparecem os botões **Unidade Coronel**, **Unidade Bingen** e **Unidade Corrêas**, todos com o mesmo total estimado. Ao tocar na unidade, o pedido é registrado e o WhatsApp correspondente é aberto.
+O cliente escolhe produtos, subcortes e quantidades sem informar a loja. Pode incluir uma observação em cada item e editá-la na sacola; por exemplo, “bifes finos, separar em dois pacotes”. Preenche seus dados e toca em **Enviar pedido**. Só então aparecem os botões **Unidade Coronel**, **Unidade Bingen** e **Unidade Corrêas**, todos com o mesmo total estimado. Ao tocar na unidade, o pedido é registrado e o WhatsApp correspondente é aberto.
 
 ## Rotina
 

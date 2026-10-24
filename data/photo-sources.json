@@ -1,0 +1,26 @@
+{
+  "checkedAt": "2026-10-23",
+  "photos": [
+    {
+      "id": "12734670",
+      "name": "Linguiça de pernil Romana VPJ — 500 g",
+      "file": "assets/products/12734670.webp",
+      "source": "https://vpjalimentos.com.br/linguica-romana/",
+      "imageUrl": "https://vpjalimentos.com.br/img/768/uploads/produtos/696-1.webp.webp"
+    },
+    {
+      "id": "12414119",
+      "name": "Amstel Ultra — 275 ml",
+      "file": "assets/products/12414119.png",
+      "source": "https://www.amstelbrasil.com/",
+      "imageUrl": "https://www.amstelbrasil.com/media/zuwk1fhn/amstel_ultra_ln_275ml.png"
+    },
+    {
+      "id": "12414120",
+      "name": "Lagunitas DayTime — 350 ml",
+      "file": "assets/products/12414120.jpg",
+      "source": "https://express.heineken.com.br/products/7896045507504",
+      "imageUrl": "https://express.heineken.com.br/cdn/shop/files/7896045507504_0-260d38ec-f198-4d54-a4f7-5f43a0176407_a8a4ffb7-9d36-4b5c-aab0-3504508f9b75.jpg?v=1781191464&width=768"
+    }
+  ]
+}

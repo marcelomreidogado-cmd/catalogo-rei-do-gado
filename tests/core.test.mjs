@@ -96,3 +96,14 @@ const sameIds = ["coronel", "bingen", "correas"].map(branchId => ({id:"same-id",
 assert.equal(new Set(sameIds.map(orderKey)).size, 3);
 assert.equal(ordersForBranch(sameIds, "all").length, 3);
 assert.deepEqual(ordersForBranch(sameIds, "bingen"), [sameIds[1]]);
+
+const {changeLineNotes,normalizeItemNotes}=await import('../js/core.js');
+const noteA=makeLine(beef,'bife',500,'  Bifes finos\n separar em 2 pacotes  '),noteB=makeLine(beef,'bife',500,'Bifes grossos');
+assert.notEqual(noteA.key,noteB.key);
+assert.equal(noteA.notes,'Bifes finos separar em 2 pacotes');
+assert.equal(priceCart([noteA,noteB],storeA).lines[0].notes,noteA.notes);
+assert.equal(changeLineNotes([noteA,noteB],noteB.key,noteA.notes).length,1);
+assert.equal(changeLineNotes([noteA,noteB],noteB.key,noteA.notes)[0].grams,1000);
+assert.equal(normalizeItemNotes('x'.repeat(400)).length,300);
+assert.match(whatsappMessage({...order,items:[noteA,noteB]}, {name:'Coronel'}),/Preparo deste item:\* Bifes grossos/);
+console.log('PASS item instructions: independent lines, normalization, price refresh, merge and WhatsApp.');

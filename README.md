@@ -15,6 +15,7 @@ Use um servidor HTTP para rodar localmente: `python3 -m http.server 4173`. Abra 
 
 - Um único login administrativo, com pedidos e clientes consolidados das três unidades e filtros por loja. Produtos, fotos, categorias e preços são compartilhados. Apenas pedidos e WhatsApps são separados por unidade.
 - Cadastro, edição e exclusão de produtos e categorias; pausa de produtos e upload de fotos.
+- Observações por item, editáveis na sacola, preservadas no pedido, no WhatsApp e no histórico. O mesmo corte com instruções diferentes permanece em linhas separadas.
 - Variações de corte com preços diferentes; venda em kg, por unidade ou peça com peso médio.
 - Vitrine e sacola únicas, com os produtos ativos do cadastro único, preservadas neste navegador. Na sacola, os botões ajustam 250 g por toque; o campo de quantidade aceita precisão de 1 g, a partir de 250 g. Até 10 opções diferentes por pedido, limite consistente com as regras de validação do Firestore.
 - Checkout com nome, telefone, retirada/entrega, endereço, forma de pagamento, troco e observações. Ao clicar em **Enviar pedido**, aparecem os três botões de unidade, com o total correspondente. Os três botões usam o mesmo catálogo e preço; a unidade determina o destino do pedido e do WhatsApp.
@@ -55,13 +56,15 @@ O botão **Importar catálogo Goomer** adiciona somente os registros ausentes. E
 
 Importação inicial do [cardápio Goomer fornecido](https://cardapio-rei-do-gado.goomer.app), consultado em 17/09/2026: 99 produtos, 17 categorias e 89 fotos. Opções e preços são preservados. Os 10 produtos sem foto usam uma indicação visual de ausência de foto.
 
+A base `data/catalog.json` é a importação inicial para demonstração; não substitui o cadastro atual do Firebase. Em 23/10/2026, o cadastro real tem 94 produtos, 85 ativos e três com revisão comercial pendente.
+
 A revisão editorial de setembro de 2026 reuniu quatro cadastros repetidos: Bombom da alcatra, Peito de frango extra limpo, Maionese do Rei e Molhos da casa. A base revisada tem **95 produtos únicos, 90 ativos e 5 pausados**, distribuídos em 17 categorias. Foram corrigidos nomes, acentos, descrições, marcas, unidades escritas e opções. A maionese com bacon ficou em R$ 29,90, conforme confirmação do proprietário. O bombom preserva o preço da peça inteira e os preços dos cortes preparados.
 
 Cinco produtos com unidade, peso ou preço ambíguo permanecem pausados. Veja `data/import-review.json` e revise no painel antes de ativá-los. Os demais preços também devem ser conferidos pelo responsável antes de divulgar o catálogo. Em 22/09/2026, as três bases idênticas foram unificadas. Toda alteração passa a valer para as três lojas.
 
 A logo PNG original, sem redesenho ou distorção, e as fontes foram recuperadas do arquivo **Rei do Gado - Marca.rar** do proprietário. São usados **Corona**, **Clarendon BT** (Roman, Bold e Black) e **Dallas Print Shop Sans**, convertidos para WOFF2 e hospedados junto ao site. Não há fontes genéricas carregadas por CDN. A paleta segue os valores RGB do manual: vinho `#5A0B14`, preto `#000000`, branco `#FFFFFF` e amarelo `#FFD583`; o vermelho secundário é `#AE0114`.
 
-O arquivo Corona original mapeia letras acentuadas para letras sem acento. Por isso a fonte é reservada a chamadas fixas sem acentos; nomes e títulos dinâmicos usam Clarendon original, preservando a grafia correta. Veja `IDENTIDADE-E-REVISAO.md`. As fotos são do catálogo fornecido pelo proprietário.
+O arquivo Corona original mapeia letras acentuadas para letras sem acento. Por isso a fonte é reservada a chamadas fixas sem acentos; nomes e títulos dinâmicos usam Clarendon original, preservando a grafia correta. Veja `IDENTIDADE-E-REVISAO.md`. As fotos iniciais são do catálogo fornecido pelo proprietário. Três ausências foram preenchidas com imagens oficiais de fornecedores em 23/10/2026; fontes e correspondência em `data/photo-sources.json`.
 
 ## Fotos e plano gratuito
 

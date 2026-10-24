@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260922-catalogo-unico";
-import * as data from "./data.js?v=20260922-catalogo-unico";
+import { CONFIG } from "./config.js?v=20261023-preparo";
+import * as data from "./data.js?v=20261023-preparo";
 import {
   money,
   orderKey,
@@ -16,6 +16,7 @@ import {
   formatWeightWithGrams,
   STATUSES,
   makeLine,
+  changeLineNotes,
   lineTotal,
   lineQuantity,
   cartTotal,
@@ -23,7 +24,7 @@ import {
   groupCustomers,
   whatsappMessage,
   whatsappUrl,
-} from "./core.js?v=20260922-catalogo-unico";
+} from "./core.js?v=20261023-preparo";
 const $ = (s) => document.querySelector(s);
 const paths = {
   plus: "M12 5v14M5 12h14",
@@ -196,7 +197,7 @@ function quantitySummary(line) {
   return `Quantidade: ${quantity}${line.saleMode === "piece" ? ` • Peso total estimado: ${formatWeightWithGrams(line.grams)}` : ""}`;
 }
 function cartContent() {
-  return `<div class="cart-title"><h2>${icon("bag")} Sua sacola</h2><span class="count">${cart.length}</span></div>${cart.length ? `<div>${cart.map((line) => `<div class="cart-line"><div class="cart-line-top"><strong>${e(line.name)}</strong><button data-remove="${e(line.key)}" aria-label="Remover ${e(line.name)}">${icon("close")}</button></div><small>${e(line.variant)}</small>${line.saleMode === "piece" ? `<div class="cart-weight">Peso total estimado: <strong>${formatWeightWithGrams(line.grams)}</strong></div>` : line.saleMode === "weight" && line.grams < 1000 ? `<div class="cart-weight">${Math.round(line.grams)} g</div>` : ""}<div class="line-controls"><div class="stepper"><button data-quantity="${e(line.key)}" data-delta="-1" aria-label="Diminuir ${e(line.name)}">${icon("minus")}</button><span class="quantity-value">${lineQuantity(line)}</span><button data-quantity="${e(line.key)}" data-delta="1" aria-label="Aumentar ${e(line.name)}">${icon("plus")}</button></div><strong style="font-size:14px">${money(lineTotal(line))}</strong></div></div>`).join("")}</div>` : `<div class="cart-empty">${icon("bag")}<strong>Seu próximo bom momento.</strong><p>Adicione seus favoritos e<br>monte seu pedido.</p></div>`}<div class="cart-footer"><div class="total-row"><span>Subtotal estimado</span><strong>${money(cartTotal(cart))}</strong></div><button class="btn wide" data-action="checkout" ${!cart.length ? "disabled" : ""}>Continuar pedido ${icon("arrow")}</button><p class="fine">A unidade será escolhida ao enviar. Preço final após a pesagem; entrega a combinar.</p></div>`;
+  return `<div class="cart-title"><h2>${icon("bag")} Sua sacola</h2><span class="count">${cart.length}</span></div>${cart.length ? `<div>${cart.map((line) => `<div class="cart-line"><div class="cart-line-top"><strong>${e(line.name)}</strong><button data-remove="${e(line.key)}" aria-label="Remover ${e(line.name)}">${icon("close")}</button></div><small>${e(line.variant)}</small>${line.notes ? `<p class="item-notes"><strong>Preparo:</strong> ${e(line.notes)}</p>` : ""}<button class="item-notes-edit" data-item-notes="${e(line.key)}">${icon("edit")} ${line.notes ? "Editar observação" : "Observação deste item"}</button>${line.saleMode === "piece" ? `<div class="cart-weight">Peso total estimado: <strong>${formatWeightWithGrams(line.grams)}</strong></div>` : line.saleMode === "weight" && line.grams < 1000 ? `<div class="cart-weight">${Math.round(line.grams)} g</div>` : ""}<div class="line-controls"><div class="stepper"><button data-quantity="${e(line.key)}" data-delta="-1" aria-label="Diminuir ${e(line.name)}">${icon("minus")}</button><span class="quantity-value">${lineQuantity(line)}</span><button data-quantity="${e(line.key)}" data-delta="1" aria-label="Aumentar ${e(line.name)}">${icon("plus")}</button></div><strong style="font-size:14px">${money(lineTotal(line))}</strong></div></div>`).join("")}</div>` : `<div class="cart-empty">${icon("bag")}<strong>Seu próximo bom momento.</strong><p>Adicione seus favoritos e<br>monte seu pedido.</p></div>`}<div class="cart-footer"><div class="total-row"><span>Subtotal estimado</span><strong>${money(cartTotal(cart))}</strong></div><button class="btn wide" data-action="checkout" ${!cart.length ? "disabled" : ""}>Continuar pedido ${icon("arrow")}</button><p class="fine">A unidade será escolhida ao enviar. Preço final após a pesagem; entrega a combinar.</p></div>`;
 }
 function renderCart() {
   if ($("#desktop-cart")) $("#desktop-cart").innerHTML = cartContent();
@@ -225,7 +226,7 @@ function openProduct(id) {
   let amount = p.saleMode === "weight" ? 500 : 1;
   modal(
     p.name,
-    `<form id="add-product" data-id="${e(p.id)}"><img class="product-detail-img" src="${safeImage(p.image)}" alt="${e(p.name)}"><p class="product-detail-desc">${e(p.description || "Selecione a quantidade desejada.")}</p>${p.variants.length > 1 ? `<fieldset class="variant-options"><legend>${p.unit === "kg" ? "Como você quer o seu corte?" : "Escolha sua opção"}</legend>${p.variants.map((v, i) => `<label class="variant-choice"><input type="radio" name="variant" value="${e(v.id)}" ${i === 0 ? "checked" : ""} required><span>${e(v.name)}</span><b>${money(v.priceCents)}<small>/${p.unit}</small></b></label>`).join("")}</fieldset>` : `<input name="variant" type="hidden" value="${e(p.variants[0].id)}">`}<label class="field">${p.saleMode === "weight" ? "Quantidade em kg" : p.saleMode === "piece" ? "Quantidade de peças" : "Quantidade de unidades"}<input name="amount" type="number" inputmode="decimal" min="${p.saleMode === "weight" ? ".25" : "1"}" max="${p.saleMode === "weight" ? "30" : "30"}" step="${p.saleMode === "weight" ? ".001" : "1"}" value="${p.saleMode === "weight" ? "0.500" : "1"}" required aria-describedby="product-quantity"></label><p id="product-quantity" class="quantity-summary" aria-live="polite">${quantitySummary(makeLine(p, p.variants[0].id, amount))}</p>${p.unit === "kg" ? `<div class="notice">${p.saleMode === "piece" ? `Cada peça pesa aproximadamente ${formatWeight(p.weightGrams)}. ` : ""}O valor final depende da pesagem na loja.</div>` : ""}<div class="total-row"><span>Valor estimado</span><strong id="product-total">${money(makeLine(p, p.variants[0].id, amount).totalCents)}</strong></div><button class="btn wide" type="submit">${icon("plus")} Adicionar à sacola</button></form>`,
+    `<form id="add-product" data-id="${e(p.id)}"><img class="product-detail-img" src="${safeImage(p.image)}" alt="${e(p.name)}"><p class="product-detail-desc">${e(p.description || "Selecione a quantidade desejada.")}</p>${p.variants.length > 1 ? `<fieldset class="variant-options"><legend>${p.unit === "kg" ? "Como você quer o seu corte?" : "Escolha sua opção"}</legend>${p.variants.map((v, i) => `<label class="variant-choice"><input type="radio" name="variant" value="${e(v.id)}" ${i === 0 ? "checked" : ""} required><span>${e(v.name)}</span><b>${money(v.priceCents)}<small>/${p.unit}</small></b></label>`).join("")}</fieldset>` : `<input name="variant" type="hidden" value="${e(p.variants[0].id)}">`}<label class="field">${p.saleMode === "weight" ? "Quantidade em kg" : p.saleMode === "piece" ? "Quantidade de peças" : "Quantidade de unidades"}<input name="amount" type="number" inputmode="decimal" min="${p.saleMode === "weight" ? ".25" : "1"}" max="${p.saleMode === "weight" ? "30" : "30"}" step="${p.saleMode === "weight" ? ".001" : "1"}" value="${p.saleMode === "weight" ? "0.500" : "1"}" required aria-describedby="product-quantity"></label><p id="product-quantity" class="quantity-summary" aria-live="polite">${quantitySummary(makeLine(p, p.variants[0].id, amount))}</p>${p.unit === "kg" ? `<div class="notice">${p.saleMode === "piece" ? `Cada peça pesa aproximadamente ${formatWeight(p.weightGrams)}. ` : ""}O valor final depende da pesagem na loja.</div>` : ""}<div class="total-row"><span>Valor estimado</span><strong id="product-total">${money(makeLine(p, p.variants[0].id, amount).totalCents)}</strong></div><label class="field">Observação deste item <span class="subtle">(opcional)</span><textarea name="itemNotes" maxlength="300" placeholder="Ex.: bifes finos, separar em dois pacotes"></textarea></label><div role="alert" class="login-error"></div><button class="btn wide" type="submit">${icon("plus")} Adicionar à sacola</button></form>`,
   );
 }
 function addProduct(form) {
@@ -233,7 +234,7 @@ function addProduct(form) {
   const fd = new FormData(form);
   const amount =
     (p.saleMode === "weight" ? Math.round(Number(fd.get("amount")) * 1000) : Number(fd.get("amount")));
-  const line = makeLine(p, fd.get("variant"), amount);
+  const line = makeLine(p, fd.get("variant"), amount, fd.get("itemNotes"));
   const existing = cart.find((x) => x.key === line.key);
   if (!existing && cart.length >= CONFIG.maxCartLines)
     throw new Error(
@@ -246,7 +247,7 @@ function addProduct(form) {
         : existing.quantity + amount;
     if (next > (p.saleMode === "weight" ? 30000 : 30))
       throw new Error("Quantidade máxima por item atingida.");
-    Object.assign(existing, makeLine(p, line.variantId, next));
+    Object.assign(existing, makeLine(p, line.variantId, next, line.notes));
   } else cart.push(line);
   checkoutId = null;
   persistCart();
@@ -281,7 +282,7 @@ function checkout() {
   if (!cart.length) return;
   modal(
     "Vamos fechar seu pedido",
-    `<p class="subtle" style="margin-bottom:20px">Seus dados primeiro. A unidade, no próximo passo.</p>${data.isDemo ? '<div class="notice">Demonstração: use dados fictícios. O pedido ficará apenas neste navegador e nenhuma mensagem será enviada.</div>' : ""}<form id="checkout-form"><label class="field">Seu nome<input name="name" autocomplete="name" minlength="2" maxlength="80" placeholder="Como podemos chamar você?" required></label><label class="field">Telefone com DDD<input name="phone" type="tel" autocomplete="tel-national" maxlength="20" placeholder="(24) 99999-9999" required></label><div class="fields-row"><label class="field">Como deseja receber?<select name="fulfillment"><option value="pickup">Retirar na loja</option><option value="delivery">Entrega em domicílio</option></select></label><label class="field">Pagamento<select name="payment"><option>Pix</option><option>Cartão de crédito</option><option>Cartão de débito</option><option>Dinheiro</option></select></label></div><div id="address-field" class="hidden"><label class="field">Endereço completo<textarea name="address" maxlength="400" placeholder="Rua, número, bairro e complemento"></textarea></label><p class="fine" style="margin-top:-8px;margin-bottom:18px">Taxa e prazo de entrega serão confirmados pelo WhatsApp.</p></div><div id="change-field" class="hidden"><label class="field">Precisa de troco para quanto?<input name="changeFor" maxlength="40" placeholder="Ex.: R$ 200,00 ou sem troco"></label></div><label class="field">Observações <span class="subtle">(opcional)</span><textarea name="notes" maxlength="500" placeholder="Espessura do corte, ponto de referência…"></textarea></label><p class="fine">Seu nome, telefone e endereço serão usados pela unidade escolhida para atender este pedido e manter seu histórico de compras.</p><div class="divider"></div><div class="total-row"><span>Total estimado, sem frete</span><strong>${money(cartTotal(cart))}</strong></div><p class="fine" style="margin:-8px 0 20px">O pagamento é combinado com a loja. Não cobramos pelo site.</p><div id="checkout-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Enviar pedido ${icon("arrow")}</button></form>`,
+    `<p class="subtle" style="margin-bottom:20px">Seus dados primeiro. A unidade, no próximo passo.</p>${data.isDemo ? '<div class="notice">Demonstração: use dados fictícios. O pedido ficará apenas neste navegador e nenhuma mensagem será enviada.</div>' : ""}<form id="checkout-form"><label class="field">Seu nome<input name="name" autocomplete="name" minlength="2" maxlength="80" placeholder="Como podemos chamar você?" required></label><label class="field">Telefone com DDD<input name="phone" type="tel" autocomplete="tel-national" maxlength="20" placeholder="(24) 99999-9999" required></label><div class="fields-row"><label class="field">Como deseja receber?<select name="fulfillment"><option value="pickup">Retirar na loja</option><option value="delivery">Entrega em domicílio</option></select></label><label class="field">Pagamento<select name="payment"><option>Pix</option><option>Cartão de crédito</option><option>Cartão de débito</option><option>Dinheiro</option></select></label></div><div id="address-field" class="hidden"><label class="field">Endereço completo<textarea name="address" maxlength="400" placeholder="Rua, número, bairro e complemento"></textarea></label><p class="fine" style="margin-top:-8px;margin-bottom:18px">Taxa e prazo de entrega serão confirmados pelo WhatsApp.</p></div><div id="change-field" class="hidden"><label class="field">Precisa de troco para quanto?<input name="changeFor" maxlength="40" placeholder="Ex.: R$ 200,00 ou sem troco"></label></div><label class="field">Observações <span class="subtle">(opcional)</span><textarea name="notes" maxlength="500" placeholder="Ponto de referência, instruções de entrega…"></textarea></label><p class="fine">Seu nome, telefone e endereço serão usados pela unidade escolhida para atender este pedido e manter seu histórico de compras.</p><div class="divider"></div><div class="total-row"><span>Total estimado, sem frete</span><strong>${money(cartTotal(cart))}</strong></div><p class="fine" style="margin:-8px 0 20px">O pagamento é combinado com a loja. Não cobramos pelo site.</p><div id="checkout-error" class="login-error" role="alert"></div><button class="btn wide" type="submit">Enviar pedido ${icon("arrow")}</button></form>`,
   );
   if (checkoutDraft) {
     const form = $("#checkout-form");
@@ -471,7 +472,7 @@ function statusButtons(o) {
 function orderDetails(id, focusTotal = false) {
   const o = orders.find(o => orderKey(o) === id);
   if (!o) return;
-  modal(`Pedido #${o.code}`, `<div class="order-details"><div>${badge(orderStatus(o))}<p class="fine">${date(o.createdAt)} • Unidade ${e(branchLabel(o.branchId))}</p></div><div><h3>${e(o.customer.name)}</h3><p class="subtle">${e(o.customer.phone)}</p></div><div><h3>Sacola do cliente</h3><ul class="detail-list">${o.items.map(l => `<li><span>${e(l.name)}<small>${e(l.variant)} • ${lineQuantity(l)}${l.saleMode === "piece" ? " • aprox. " + formatWeight(l.grams) : ""}</small></span><strong>${money(l.totalCents)}</strong></li>`).join("")}</ul></div><div class="total-row"><span>Estimativa original, sem frete</span><strong>${money(o.totalCents)}</strong></div><div><h3>${o.fulfillment === "delivery" ? "Entrega em domicílio" : "Retirada na unidade"}</h3><p class="subtle">${e(o.address || knownBranch(o.branchId)?.address || "")}</p><p class="subtle">Pagamento: ${e(o.payment)}${o.changeFor ? " • Troco para " + e(o.changeFor) : ""}</p>${o.notes ? `<p class="subtle">Observações: ${e(o.notes)}</p>` : ""}</div><form id="final-total-form" data-id="${e(o.id)}" data-branch="${e(o.branchId)}"><label class="field">Valor final do pedido (R$)<input name="finalTotal" type="text" inputmode="decimal" maxlength="12" placeholder="Ex.: 125,90" value="${hasFinalTotal(o) ? (o.finalTotalCents / 100).toFixed(2).replace(".", ",") : ""}" required aria-describedby="final-total-help"></label><p id="final-total-help" class="fine">Informe o total combinado com o cliente após a pesagem, incluindo frete ou descontos quando houver. Este valor será usado no histórico. A estimativa original será preservada.</p><div class="login-error" role="alert"></div><button type="submit" class="btn wide">Salvar valor final</button></form><div><h3>Status do pedido</h3><p class="fine">Relógio: pendente. Confirmação: finalizado. Preencha o valor final antes de finalizar.</p>${statusButtons(o)}</div></div>`);
+  modal(`Pedido #${o.code}`, `<div class="order-details"><div>${badge(orderStatus(o))}<p class="fine">${date(o.createdAt)} • Unidade ${e(branchLabel(o.branchId))}</p></div><div><h3>${e(o.customer.name)}</h3><p class="subtle">${e(o.customer.phone)}</p></div><div><h3>Sacola do cliente</h3><ul class="detail-list">${o.items.map(l => `<li><span>${e(l.name)}<small>${e(l.variant)} • ${lineQuantity(l)}${l.saleMode === "piece" ? " • aprox. " + formatWeight(l.grams) : ""}</small>${l.notes ? `<small class="item-notes"><strong>Preparo:</strong> ${e(l.notes)}</small>` : ""}</span><strong>${money(l.totalCents)}</strong></li>`).join("")}</ul></div><div class="total-row"><span>Estimativa original, sem frete</span><strong>${money(o.totalCents)}</strong></div><div><h3>${o.fulfillment === "delivery" ? "Entrega em domicílio" : "Retirada na unidade"}</h3><p class="subtle">${e(o.address || knownBranch(o.branchId)?.address || "")}</p><p class="subtle">Pagamento: ${e(o.payment)}${o.changeFor ? " • Troco para " + e(o.changeFor) : ""}</p>${o.notes ? `<p class="subtle">Observações: ${e(o.notes)}</p>` : ""}</div><form id="final-total-form" data-id="${e(o.id)}" data-branch="${e(o.branchId)}"><label class="field">Valor final do pedido (R$)<input name="finalTotal" type="text" inputmode="decimal" maxlength="12" placeholder="Ex.: 125,90" value="${hasFinalTotal(o) ? (o.finalTotalCents / 100).toFixed(2).replace(".", ",") : ""}" required aria-describedby="final-total-help"></label><p id="final-total-help" class="fine">Informe o total combinado com o cliente após a pesagem, incluindo frete ou descontos quando houver. Este valor será usado no histórico. A estimativa original será preservada.</p><div class="login-error" role="alert"></div><button type="submit" class="btn wide">Salvar valor final</button></form><div><h3>Status do pedido</h3><p class="fine">Relógio: pendente. Confirmação: finalizado. Preencha o valor final antes de finalizar.</p>${statusButtons(o)}</div></div>`);
   if (focusTotal) $("[name=finalTotal]").focus();
 }
 async function changeOrderStatus(key, status) {
@@ -503,7 +504,7 @@ function customerDetails(phone) {
       .sort((a, b) => b.createdAt - a.createdAt)
       .map(
         (o) =>
-          `<li><div><strong>#${e(o.code)} • ${date(o.createdAt)}</strong><small>Unidade ${e(branchLabel(o.branchId))}</small><small>${o.items.map((l) => e(l.name) + " (" + lineQuantity(l) + ")").join(", ")}</small><small>${STATUSES[orderStatus(o)]}</small></div><div style="text-align:right"><strong>${money(orderTotalCents(o))}</strong><small>${hasFinalTotal(o) ? "Valor final" : "Estimativa • a confirmar"}</small><button class="btn ghost" style="margin-top:8px" data-order="${e(orderKey(o))}">Ver sacola</button></div></li>`,
+          `<li><div><strong>#${e(o.code)} • ${date(o.createdAt)}</strong><small>Unidade ${e(branchLabel(o.branchId))}</small><small>${o.items.map((l) => e(l.name) + " (" + lineQuantity(l) + ")" + (l.notes ? " — " + e(l.notes) : "")).join(", ")}</small><small>${STATUSES[orderStatus(o)]}</small></div><div style="text-align:right"><strong>${money(orderTotalCents(o))}</strong><small>${hasFinalTotal(o) ? "Valor final" : "Estimativa • a confirmar"}</small><button class="btn ghost" style="margin-top:8px" data-order="${e(orderKey(o))}">Ver sacola</button></div></li>`,
       )
       .join("")}</ul>`,
   );
@@ -643,7 +644,7 @@ document.addEventListener("input", (event) => {
     const fd = new FormData(form);
     const amount =
       (p.saleMode === "weight" ? Math.round(Number(fd.get("amount")) * 1000) : Number(fd.get("amount")));
-    const line = makeLine(p, fd.get("variant"), amount);
+    const line = makeLine(p, fd.get("variant"), amount, fd.get("itemNotes"));
     $("#product-total").textContent = money(line.totalCents);
     $("#product-quantity").textContent = input.closest("form").querySelector("[name=amount]").validity.valid
       ? quantitySummary(line) : "Informe uma quantidade válida.";
@@ -690,6 +691,10 @@ document.addEventListener("click", async (event) => {
       await sendToBranch(d.branch);
     }
     if (d.product) openProduct(d.product);
+    if (d.itemNotes) {
+      const line = cart.find(l => l.key === d.itemNotes);
+      if (line) modal("Preparo de " + line.name, `<form id="item-notes-form" data-key="${e(line.key)}"><label class="field">Observação deste item<textarea name="itemNotes" maxlength="300" placeholder="Ex.: separar em dois pacotes">${e(line.notes || "")}</textarea></label><p class="fine">A instrução acompanha somente este item no pedido.</p><div role="alert" class="login-error"></div><button type="submit" class="btn wide">Salvar observação</button></form>`);
+    }
     if (d.remove) {
       cart = cart.filter((x) => x.key !== d.remove);
       checkoutId = null;
@@ -800,6 +805,10 @@ document.addEventListener("submit", async (event) => {
   const button = form.querySelector("[type=submit]");
   try {
     if (form.id === "add-product") return addProduct(form);
+    if (form.id === "item-notes-form") {
+      cart = changeLineNotes(cart, form.dataset.key, new FormData(form).get("itemNotes"));
+      checkoutId = null; persistCart(); renderCart(); closeModal(); toast("Observação salva."); return;
+    }
     if (form.id === "checkout-form") return await submitCheckout(form);
     adminSaving = true;
     button.disabled = true;

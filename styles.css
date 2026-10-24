@@ -1692,3 +1692,7 @@ html { scroll-behavior: smooth; scroll-padding-top: 16px; }
 [data-order-row] { cursor:pointer; }
 [data-order-row]:hover { background:#faf6f3; }
 [data-order-row]:focus-visible { outline:2px solid var(--wine); outline-offset:-2px; }
+
+.item-notes { font-size:12px; line-height:1.5; color:var(--wine); overflow-wrap:anywhere; margin:8px 0; }
+.item-notes-edit { display:flex; gap:6px; align-items:center; font-size:11px; color:var(--wine); padding:8px 0; text-align:left; }
+.item-notes-edit .icon { width:15px; height:15px; }

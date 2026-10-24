@@ -1,5 +1,5 @@
-import { CONFIG } from "./config.js?v=20260922-catalogo-unico";
-import { cartTotal, makeLine } from "./core.js?v=20260922-catalogo-unico";
+import { CONFIG } from "./config.js?v=20261023-preparo";
+import { cartTotal, makeLine, normalizeItemNotes } from "./core.js?v=20261023-preparo";
 export const isDemo = CONFIG.demo && !CONFIG.firebase.projectId;
 const prefix = "rdg-demo-v1:";
 let sdk, db, auth, adminAuth, storage;
@@ -30,6 +30,7 @@ const toRecord = (doc) => {
       ...line,
       name: String(line.name || "Item"),
       variant: typeof line.variant === "string" ? line.variant : "",
+      notes: normalizeItemNotes(line.notes),
       unit: ["kg", "un"].includes(line.unit) ? line.unit : "un",
       saleMode: ["weight", "piece", "unit"].includes(line.saleMode)
         ? line.saleMode
@@ -117,9 +118,9 @@ export function refreshSavedCart(lines, catalog) {
     const variantId = seed.variantRedirects?.[line.productId]?.[line.variantId] || line.variantId;
     const p = catalog.products.find(p => p.id === productId && p.active);
     const next = p && p.saleMode === line.saleMode && p.unit === line.unit && p.variants.some(v => v.id === variantId)
-      ? makeLine(p, variantId, line.saleMode === 'weight' ? line.grams : line.quantity) : line;
+      ? makeLine(p, variantId, line.saleMode === 'weight' ? line.grams : line.quantity, line.notes) : line;
     const prior = restored.get(next.key);
-    if (prior && p) restored.set(next.key, makeLine(p, variantId, next.saleMode === 'weight' ? prior.grams + next.grams : prior.quantity + next.quantity));
+    if (prior && p) restored.set(next.key, makeLine(p, variantId, next.saleMode === 'weight' ? prior.grams + next.grams : prior.quantity + next.quantity, next.notes));
     else restored.set(next.key, next);
   }
   return [...restored.values()];
@@ -276,6 +277,7 @@ export async function saveOrder(branch, id, checkout, lines) {
       p,
       line.variantId,
       line.saleMode === "weight" ? line.grams : line.quantity,
+      line.notes,
     );
     if (
       current.unit !== line.unit ||

@@ -1,5 +1,29 @@
 # Avaliação do catálogo Rei do Gado
 
+## Situação atual — 23/10/2026
+
+O catálogo em produção tem **94 produtos cadastrados e 85 ativos**. As alterações feitas pelo proprietário foram preservadas. O cadastro de produtos, categorias, preços e fotos é único para as três lojas; somente os pedidos são separados por unidade.
+
+Implementado e testado nesta entrega: observação individual de preparo, edição da observação na sacola, instruções no WhatsApp, no pedido salvo e no histórico. O mesmo produto e corte com instruções diferentes fica em linhas separadas. A validação também cobre dez itens com observações de 300 caracteres e a finalização pelo administrador. Pedidos antigos sem esse campo continuam válidos.
+
+Fotos oficiais acrescentadas: **Linguiça de pernil Romana VPJ (500 g), Amstel Ultra (275 ml) e Lagunitas DayTime (350 ml)**. As fontes estão registradas em `data/photo-sources.json`. Nenhum preço do fornecedor foi copiado.
+
+Ainda precisam de foto correspondente ao produto vendido: **Picanha Pull Grill, Assado de tiras Angus, Sal de parrilla Cantagallo — 500 g e Palmito pupunha Grill**. Não foi presumida a marca do palmito nem a apresentação da embalagem do sal. A loja pode anexar essas fotos pelo painel.
+
+Somente três produtos seguem com indicação de revisão comercial; permanecem pausados até a confirmação do proprietário:
+
+| Produto | Informação a confirmar |
+|---|---|
+| Almôndegas temperadas | Cadastro a R$ 30,00 por pacote; texto antigo mencionava R$ 65,90/kg e aproximadamente 400 g. Confirmar preço e unidade. |
+| Costela de cordeiro | Confirmar disponibilidade e R$ 129,90/kg. |
+| Filé-mignon suíno do dia a dia | Confirmar disponibilidade, R$ 49,90/kg e se o pacote tem aproximadamente 400 g. |
+
+As seis outras pausas atuais foram mantidas conforme o cadastro da loja. A base inicial de demonstração tem contagens diferentes e não foi importada sobre o Firebase.
+
+O total final após pesagem e os dois status por ícones já estão implementados. Peso real por item, kits, promoções e novos filtros não fazem parte desta entrega. Endereços completos de Bingen e Corrêas ainda não foram informados.
+
+## Registro da avaliação anterior
+
 Revisão de 21/09/2026. O catálogo tem uma base adequada para vender carnes: subcortes dentro do produto, peso fracionado, peças com estimativa, mensagem organizada, gravação do pedido e escolha final da unidade. Ele já vai além de uma cópia do Goomer, mas ainda há oportunidades para facilitar a escolha e a preparação do pedido.
 
 ## Referências observadas

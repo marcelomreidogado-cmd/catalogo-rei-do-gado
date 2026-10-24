@@ -40,9 +40,11 @@ service cloud.firestore {
     // These are customer-supplied estimates, not a trusted charge or invoice.
     // Validate the display envelope here; staff confirm authoritative product prices.
     function validLine(l) {
-      return l is map && l.name is string && l.totalCents is int && l.totalCents > 0;
+      let notes = l.get("notes", "");
+      return l is map && l.name is string && l.totalCents is int && l.totalCents > 0
+        && notes is string && notes.size() <= 300;
     }
-    function validOrder(d, branch) {
+    function validOrder(d, branch, checkItems) {
       return d.keys().hasAll(['code','customer','fulfillment','payment','address','changeFor','notes','branchId','items','totalCents','status','ownerUid','createdAt','updatedAt'])
         && d.keys().hasOnly(['code','customer','fulfillment','payment','address','changeFor','notes','branchId','items','totalCents','status','ownerUid','createdAt','updatedAt','finalTotalCents'])
         && d.branchId == branch && str(d.code,8,8) && str(d.ownerUid,1,128) && validCustomer(d.customer)
@@ -55,12 +57,39 @@ service cloud.firestore {
         && d.totalCents is int && d.totalCents > 0 && d.totalCents <= 1000000000
         && d.createdAt is timestamp && d.updatedAt is timestamp
         && d.items is list && d.items.size() > 0 && d.items.size() <= 10
-        && validItems(d.items) && d.totalCents == sum0(d.items);
+        // On update the diff allowlist makes items and estimated total immutable.
+        // Validate their contents on create only, to stay within the Rules expression budget.
+        && (!checkItems || (validItems(d.items) && d.totalCents == sum0(d.items)));
     }
     // Item validation is expanded below because Rules deliberately have no loops.
-    function valid0(items) { return (items.size() <= 0 || (validLine(items[0]) && (items.size() <= 1 || (validLine(items[1]) && (items.size() <= 2 || (validLine(items[2]) && (items.size() <= 3 || (validLine(items[3]) && (items.size() <= 4 || (validLine(items[4]) && (items.size() <= 5 || (validLine(items[5]) && (items.size() <= 6 || (validLine(items[6]) && (items.size() <= 7 || (validLine(items[7]) && (items.size() <= 8 || (validLine(items[8]) && (items.size() <= 9 || (validLine(items[9]) && true)))))))))))))))))))); }
-    function sum0(items) { return (items.size() <= 0 ? 0 : items[0].totalCents + (items.size() <= 1 ? 0 : items[1].totalCents + (items.size() <= 2 ? 0 : items[2].totalCents + (items.size() <= 3 ? 0 : items[3].totalCents + (items.size() <= 4 ? 0 : items[4].totalCents + (items.size() <= 5 ? 0 : items[5].totalCents + (items.size() <= 6 ? 0 : items[6].totalCents + (items.size() <= 7 ? 0 : items[7].totalCents + (items.size() <= 8 ? 0 : items[8].totalCents + (items.size() <= 9 ? 0 : items[9].totalCents + 0)))))))))); }
-    function validItems(items) { return valid0(items); }
+    function validItems(items) {
+      let n = items.size();
+      return validLine(items[0])
+        && (n <= 1 || validLine(items[1]))
+        && (n <= 2 || validLine(items[2]))
+        && (n <= 3 || validLine(items[3]))
+        && (n <= 4 || validLine(items[4]))
+        && (n <= 5 || validLine(items[5]))
+        && (n <= 6 || validLine(items[6]))
+        && (n <= 7 || validLine(items[7]))
+        && (n <= 8 || validLine(items[8]))
+        && (n <= 9 || validLine(items[9]))
+        ;
+    }
+    function sum0(items) {
+      let n = items.size();
+      return items[0].totalCents
+        + (n > 1 ? items[1].totalCents : 0)
+        + (n > 2 ? items[2].totalCents : 0)
+        + (n > 3 ? items[3].totalCents : 0)
+        + (n > 4 ? items[4].totalCents : 0)
+        + (n > 5 ? items[5].totalCents : 0)
+        + (n > 6 ? items[6].totalCents : 0)
+        + (n > 7 ? items[7].totalCents : 0)
+        + (n > 8 ? items[8].totalCents : 0)
+        + (n > 9 ? items[9].totalCents : 0)
+        ;
+    }
     match /admins/{uid} {
       allow get: if signedIn() && request.auth.uid == uid;
       allow list, write: if false;
@@ -93,12 +122,12 @@ service cloud.firestore {
         && !('finalTotalCents' in request.resource.data)
         && request.resource.data.createdAt == request.time
         && request.resource.data.updatedAt == request.time
-        && validOrder(request.resource.data, branch);
+        && validOrder(request.resource.data, branch, true);
       allow update: if storeAdmin(branch)
         && request.resource.data.diff(resource.data).affectedKeys().hasOnly(['status','finalTotalCents','updatedAt'])
         && (request.resource.data.status != 'done' || 'finalTotalCents' in request.resource.data)
         && request.resource.data.updatedAt == request.time
-        && validOrder(request.resource.data, branch);
+        && validOrder(request.resource.data, branch, false);
       allow delete: if false;
     }
     match /{document=**} { allow read, write: if false; }

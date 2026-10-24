@@ -93,11 +93,11 @@ await assertSucceeds(
 );
 await assertFails(getDocs(collection(guest, "catalog/main/products")));
 await assertSucceeds(getDoc(doc(client, "branches/coronel/orders/new-id")));
-console.log("CREATE ONE");
+
 await assertSucceeds(
   setDoc(doc(client, "branches/coronel/orders/order-1"), order),
 );
-console.log("CREATED ONE");
+
 await assertSucceeds(getDoc(doc(client, "branches/coronel/orders/order-1")));
 await assertFails(getDoc(doc(other, "branches/coronel/orders/order-1")));
 await assertFails(getDocs(collection(client, "branches/coronel/orders")));
@@ -145,7 +145,7 @@ await assertSucceeds(
 await assertFails(
   setDoc(doc(bingen, "catalog/main/products/cross-unit"), product),
 );
-console.log("CREATE 10");
+
 await assertSucceeds(
   setDoc(doc(client, "branches/coronel/orders/large"), {
     ...order,
@@ -200,5 +200,11 @@ await assertFails(updateDoc(finalRef,{items:[],updatedAt:serverTimestamp()}));
 await assertFails(updateDoc(finalRef,{branchId:"bingen",updatedAt:serverTimestamp()}));
 const savedFinal=(await getDoc(finalRef)).data();
 if(savedFinal.totalCents!==4943||savedFinal.finalTotalCents!==5600)throw Error("Original estimate/final amount integrity");
+await assertSucceeds(setDoc(doc(client,"branches/coronel/orders/item-notes"),{...order,items:[{...line,notes:"Bifes finos, separar em 2 pacotes"}]}));
+await assertSucceeds(setDoc(doc(client,"branches/coronel/orders/ten-item-notes"),{...order,items:Array.from({length:10},(_,i)=>({...line,key:`${i}:0`,notes:"x".repeat(300)})),totalCents:49430}));
+await assertSucceeds(updateDoc(doc(admin,"branches/coronel/orders/ten-item-notes"),{status:"done",finalTotalCents:50000,updatedAt:serverTimestamp()}));
+await assertFails(setDoc(doc(client,"branches/coronel/orders/tenth-invalid-notes"),{...order,items:Array.from({length:10},(_,i)=>({...line,key:`${i}:0`,notes:i===9?123:"OK"})),totalCents:49430}));
+for(const notes of [123,{},"x".repeat(301)])await assertFails(setDoc(doc(client,"branches/coronel/orders/bad-item-notes"),{...order,items:[{...line,notes}]}));
+await assertFails(updateDoc(doc(admin,"branches/coronel/orders/item-notes"),{items:[{...line,notes:"Alteração indevida do preparo original"}],updatedAt:serverTimestamp()}));
 console.log("PASS rules: shared catalogue, legacy writes blocked, private receipts, owner-only final totals, immutable original estimate, two statuses and validation.");
 await env.cleanup();

@@ -38,7 +38,24 @@ export function lineTotal(line) {
       (line.unit === "kg" ? line.grams / 1000 : line.quantity),
   );
 }
-export function makeLine(product, variantId, amount) {
+export const normalizeItemNotes = value => typeof value === "string" ? value.replace(/\s+/g, " ").trim().slice(0, 300) : "";
+export const cartLineKey = (productId, variantId, notes = "") => `${productId}:${variantId}${notes ? ":" + encodeURIComponent(notes) : ""}`;
+export function changeLineNotes(lines, key, value) {
+  const line = lines.find(l => l.key === key);
+  if (!line) return lines;
+  const notes = normalizeItemNotes(value);
+  const next = {...line, notes, key: cartLineKey(line.productId, line.variantId, notes)};
+  const target = lines.find(l => l.key === next.key && l !== line);
+  if (!target) return lines.map(l => l === line ? next : l);
+  const merged = {...target};
+  if (merged.saleMode === "weight") merged.grams += next.grams;
+  else { merged.quantity += next.quantity; if (merged.unit === "kg") merged.grams += next.grams; }
+  if (merged.grams > 30000 || merged.quantity > 30) throw new Error("Quantidade máxima por item atingida. Mantenha instruções diferentes.");
+  merged.totalCents = lineTotal(merged);
+  return lines.filter(l => l !== line).map(l => l === target ? merged : l);
+}
+export function makeLine(product, variantId, amount, itemNotes = "") {
+  const notes = normalizeItemNotes(itemNotes);
   const variant =
     product.variants.find((v) => v.id === variantId) || product.variants[0];
   const quantity = product.saleMode === "weight" ? 1 : amount;
@@ -49,7 +66,8 @@ export function makeLine(product, variantId, amount) {
         : product.weightGrams * quantity
       : 0;
   const line = {
-    key: `${product.id}:${variant.id}`,
+    key: cartLineKey(product.id, variant.id, notes),
+    notes,
     productId: product.id,
     variantId: variant.id,
     name: product.name,
@@ -80,7 +98,7 @@ export function priceCart(cart, catalog) {
       unavailable.push(`${line.name}${line.variant && line.variant !== 'Padrão' ? ' — ' + line.variant : ''}`);
       continue;
     }
-    lines.push(makeLine(p, v.id, p.saleMode === 'weight' ? line.grams : line.quantity));
+    lines.push(makeLine(p, v.id, p.saleMode === 'weight' ? line.grams : line.quantity, line.notes));
   }
   return { lines, unavailable, totalCents: cartTotal(lines) };
 }
@@ -123,7 +141,7 @@ export function whatsappMessage(order, branch) {
   const itemText = order.items
     .map(
       (item) =>
-        `*Item - ${item.name}${item.variant && !["Padrão", "Kg", "KG"].includes(item.variant) ? ` — ${item.variant}` : ""}*\n*Quantidade: ${item.saleMode === "weight" ? formatWeightWithGrams(item.grams) : lineQuantity(item).toLocaleUpperCase("pt-BR")}*${item.saleMode === "piece" ? `\n*Peso total estimado: ${formatWeightWithGrams(item.grams)}*` : ""}\nPreço: ${money(item.unitPriceCents)}/${item.unit}\nTotal${item.unit === "kg" ? " estimado" : ""}: ${money(item.totalCents)}`,
+        `*Item - ${item.name}${item.variant && !["Padrão", "Kg", "KG"].includes(item.variant) ? ` — ${item.variant}` : ""}*\n*Quantidade: ${item.saleMode === "weight" ? formatWeightWithGrams(item.grams) : lineQuantity(item).toLocaleUpperCase("pt-BR")}*${item.saleMode === "piece" ? `\n*Peso total estimado: ${formatWeightWithGrams(item.grams)}*` : ""}\nPreço: ${money(item.unitPriceCents)}/${item.unit}\nTotal${item.unit === "kg" ? " estimado" : ""}: ${money(item.totalCents)}${item.notes ? `\n*Preparo deste item:* ${normalizeItemNotes(item.notes)}` : ""}`,
     )
     .join("\n\n");
   return `*REI DO GADO • UNIDADE ${branch.name.toUpperCase()}*\n*Pedido #${order.code}*\n\n*Cliente:* ${order.customer.name}\n*Telefone:* ${order.customer.phone}\n\n*MINHA SACOLA*\n${itemText}\n\n*Subtotal estimado: ${money(order.totalCents)}*\n${order.fulfillment === "delivery" ? "*Entrega:* Domicílio\n*Endereço:* " + order.address + "\n*Frete:* a confirmar pela unidade" : "*Retirada:* Unidade " + branch.name}\n*Pagamento:* ${order.payment}${order.changeFor ? "\n*Troco para:* " + order.changeFor : ""}${order.notes ? "\n*Observações:* " + order.notes : ""}\n\nO valor final dos itens por kg depende da pesagem. Disponibilidade, frete e prazo serão confirmados pela loja.`;
